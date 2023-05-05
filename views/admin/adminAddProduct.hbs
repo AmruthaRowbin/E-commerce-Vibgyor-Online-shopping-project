@@ -1,0 +1,174 @@
+
+
+
+
+<div class="row tm-mt-big">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="bg-black tm-block">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="tm-block-title d-inline-block">Add Product</h2>
+                </div>
+            </div>
+             <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                     <div class="bg-secondary rounded h-100 p-4">
+                        <div class="form-floating mb-3">
+                            
+                            
+                    <form action="/admin/adminAddProduct" method="post" enctype="multipart/form-data" class="tm-edit-product-form" onsubmit= "return validateForm();" >
+                     
+                        <div class="input-group mb-3">
+                            <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Product
+                                Name
+                            </label>
+                            <input id="name" name="name" type="text"
+                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" >
+                                 <div id="nameError" class="invalid-feedback"></div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="description"
+                                class="col-xl-4 col-lg-4 col-md-4 col-sm-5 mb-2">Description</label>
+                                <input id="description" name="description" type="text"
+                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" >
+                                <div id="descriptionError" class="invalid-feedback"></div>
+                            {{!-- <textarea class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" rows="3"
+                                name="description" ></textarea> --}}
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="category"
+                                class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
+                                 {{!-- <input id="category" name="category" type="text"
+                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" > --}}
+                                
+                            <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category"
+                                id="category" >
+                               <option value="">Select one</option>
+                                {{#each category}}
+                                
+                                <option value="{{this.name}}">{{this.name}}</option>
+                              
+                                {{/each}}
+                            </select>
+                            <div id="categoryError" class="invalid-feedback"></div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="expire_date" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Price
+                            </label>
+                            <input id="expire_date" name="price" type="text"
+                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" data-large-mode="true">
+                                 <div id="priceError" class="invalid-feedback"></div>
+                                
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="stock" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Units
+                                In
+                                Stock
+                            </label>
+                            <input id="stock" name="stock" type="text"
+                                class="form-control validate col-xl-9 col-lg-8 col-md-7 col-sm-7" >
+                                 <div id="stockError" class="invalid-feedback"></div>
+                        </div>
+
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 mx-auto mb-4">
+                    <div class="tm-product-img-dummy mx-auto">
+                        <i class="fas fa-5x fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="custom-file mt-3 mb-3">
+                        <input id="fileInput" multiple type="file" style="display:none;" name="image" />
+                        <input type="button" class="btn btn-primary d-block mx-auto" value="Upload ..."
+                            onclick="document.getElementById('fileInput').click();"  />
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
+                         <button type="submit" class="btn btn-primary">Add
+                        </button> 
+
+                        {{!-- <button type="submit" class="btn btn-primary" onclick="showAlert()">Add</button> --}}
+
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+     </div>
+     </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    // Get form and required fields
+const form = document.querySelector('.tm-edit-product-form');
+const nameInput = form.querySelector('#name');
+const descriptionInput = form.querySelector('#description');
+const categorySelect = form.querySelector('#category');
+const priceInput = form.querySelector('#expire_date');
+const stockInput = form.querySelector('#stock');
+const fileInput = form.querySelector('#fileInput');
+
+// Add submit event listener to form
+form.addEventListener('submit', function(event) {
+  // Prevent default form submission behavior
+  event.preventDefault();
+
+  // Check if required fields are empty and display error messages
+  if (nameInput.value.trim() === '') {
+    nameInput.classList.add('is-invalid');
+    nameInput.nextElementSibling.innerText = 'Product name is required';
+  } else {
+    nameInput.classList.remove('is-invalid');
+    nameInput.nextElementSibling.innerText = '';
+  }
+
+  if (descriptionInput.value.trim() === '') {
+    descriptionInput.classList.add('is-invalid');
+    descriptionInput.nextElementSibling.innerText = 'Description is required';
+  } else {
+    descriptionInput.classList.remove('is-invalid');
+    descriptionInput.nextElementSibling.innerText = '';
+  }
+
+  if (categorySelect.value === 'Select one') {
+    categorySelect.classList.add('is-invalid');
+    categorySelect.nextElementSibling.innerText = 'Category is required';
+  } else {
+    categorySelect.classList.remove('is-invalid');
+    categorySelect.nextElementSibling.innerText = '';
+  }
+
+  if (priceInput.value.trim() === '') {
+    priceInput.classList.add('is-invalid');
+    priceInput.nextElementSibling.innerText = 'Price is required';
+  } else {
+    priceInput.classList.remove('is-invalid');
+    priceInput.nextElementSibling.innerText = '';
+  }
+
+  if (stockInput.value.trim() === '') {
+    stockInput.classList.add('is-invalid');
+    stockInput.nextElementSibling.innerText = 'Units in stock is required';
+  } else {
+    stockInput.classList.remove('is-invalid');
+    stockInput.nextElementSibling.innerText = '';
+  }
+   
+
+  // Submit form if there are no errors
+  if (!form.querySelector('.is-invalid')) {
+    form.submit();
+  }
+
+  
+});
+
+
+</script>
+
+
+

@@ -1,0 +1,74 @@
+
+<style>
+  .bg-image-vertical {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+  }
+
+  @media (min-width: 1025px) {
+    .h-custom-2 {
+      height: 125%;
+    }
+  }
+</style>
+
+<section>
+  <div class="container-fluid container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 text-black">
+
+        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+
+           <form   action="/signup" method="post">
+                <div class="form-outline mb-4">
+                  <input type="text" id="form3Example1cg" class="form-control form-control-lg" name="name"/>
+                  <label class="form-label" for="form3Example1cg">Your Name</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="email" id="form3Example3cg" class="form-control form-control-lg" name="email"/>
+                  <label class="form-label" for="form3Example3cg">Your Email</label>
+                </div>
+                {{#if emailExist}}
+                  <label class="text-danger">{{emailExist}}</label>
+                  {{/if}}
+
+                <div class="form-outline mb-4">
+                  <input type="password" id="form3Example4cg" class="form-control form-control-lg" name="password"/>
+                  <label class="form-label" for="form3Example4cg">Password</label>
+                </div>
+                  {{#if errMsg}}
+                  <label class="text-danger">{{errMsg}}</label>
+                  {{/if}}
+
+                <div class="form-outline mb-4">
+                  <input type="tel" id="form3Example4cdg" class="form-control form-control-lg" maxlength="10" name="phone"/>
+                  <label class="form-label" for="form3Example4cdg">Enter your phone No</label>
+                </div>
+                  {{#if errmsg}}
+                  <label class="text-danger">{{errmsg}}</label>
+                  {{/if}}
+
+                <div class="d-flex justify-content-center">
+                  <a href="/"><button type="submit"
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button></a>
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/login"
+                    class="fw-bold text-body"><u>Login here</u></a></p>
+              </form>
+        </div>
+      </div>
+      <div class="col-sm-6 px-0 d-none d-sm-block">
+        <img src="https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8bW9kZWwlMjBnaXJsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="Login image"
+          style="object-fit: cover; object-position: left; width: 100vh; height: 80vh">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
