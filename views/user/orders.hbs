@@ -1,137 +1,326 @@
 {{#if orders}}
-<section class="page-add cart-page-add">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="page-breadcrumb">
-                    <h2>Orders<span>.</span></h2>
-                    <a href="#">Home</a>
-                    <a href="#">Products</a>
-                    <a class="active" href="#"></a>
+    <section class="page-add cart-page-add">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="page-breadcrumb">
+                        <h2>Orders<span>.</span></h2>
+                        <a href="#">Home</a>
+                        <a href="#">Products</a>
+                        <a class="active" href="#"></a>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <img src="" alt="" />
                 </div>
             </div>
-            <div class="col-lg-8">
-                <img src="" alt="">
-            </div>
         </div>
-    </div>
-</section>
-<div class="cart-page" style="margin-bottom: 13rem;">
-    <div class="container">
-        <div class="cart-table">
-            <table class="table-hover table-striped tm-table-striped-even mb-5 text-center">
-                <thead>
-                     <tr class="tm-bg-gray">
-                                <th>Date</th>
-                                <th>Address</th>
-                                <th class="text-center">Mobile</th>
-                                <th>Payment</th>
-                                <th>Status</th>
-                                <th class="text-center">View</th>
-                                <th>Cancel</th>
+    </section>
+    <div class="cart-page" style="margin-bottom: 13rem;">
+        <div class="container">
+            <div class="cart-table">
+                <table
+                    class="table-hover table-striped tm-table-striped-even mb-5 text-center"
+                    id="productsTable"
+                >
+                    <thead>
+                        <tr class="tm-bg-gray">
+                            <th>Date</th>
+                            <th>Address</th>
+                            <th>Mobile</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                            <th>View</th>
+                            <th>Cancel</th>
+                            {{#if isDelivered}}
+                            <th>Review</th>
+                            {{/if}}
                         </tr>
-                </thead>
-                <tbody>
-                    {{#each orders}}
+                    </thead>
+                    <tbody>
+                        {{#each orders}}
                             <tr>
                                 <td class="tm-product-name">{{date}}</td>
-                                <td class="text-center">{{shippingAddress.address}}</td>
-                                <td class="text-center">{{shippingAddress.phone}}</td>
+                                <td
+                                    class="text-center"
+                                >{{shippingAddress.address}}</td>
+                                <td
+                                    class="text-center"
+                                >{{shippingAddress.phone}}</td>
                                 <td>{{paymentMethod}}</td>
                                 <td>{{status}}</td>
-                                <td><a class="btn btn-dark" href="/orders/viewProduct/{{_id}}">View Details</a></td>
-                                <td><a class=" btn btn-dark text-light" data-toggle="modal" data-target="#delete{{_id}}">Cancel</a></td>
+                                <td><a
+                                        class="btn btn-dark"
+                                        href="/orders/viewProduct/{{_id}}"
+                                    >View Details</a></td>
+                                {{#if isCancelled}}
+                                    <td><a
+                                            class="btn btn-danger text-light"
+                                        >Cancel Order</a></td>
+                                {{else if isDelivered}}
+                                    <td><a
+                                            class="btn btn-danger text-light"
+                                            data-toggle="modal"
+                                            data-target="#return{{_id}}"
+                                        >Return Order</a></td>
+                                    <td>
+                                        <style>
+                                            .Efhm0G:hover { /* Add your hover
+                                            styles here */ background-color:
+                                            #3cdb7e; color: #333; cursor:
+                                            pointer; }
+                                        </style>
+                                        <a
+                                            class="Efhm0G"
+                                            data-toggle="modal"
+                                            data-target="#review{{_id}}"
+                                        >
+                                            <img
+                                                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTYnIGhlaWdodD0nMTknIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTggMTgiPgoJPGcgZmlsbD0nbm9uZSc+CgkJPHBvbHlnb24gaWQ9IlNoYXBlIiBmaWxsPSIjMjg3NEYxIiBwb2ludHM9IjkgMTIuMDYyNSAxMy42Mzc1IDE1LjQzNzUgMTEuODYyNSA5Ljk4NzUgMTYuNSA2LjY4NzUgMTAuODEyNSA2LjY4NzUgOSAxLjA2MjUgNy4xODc1IDYuNjg3NSAxLjUgNi42ODc1IDYuMTM3NSA5Ljk4NzUgNC4zNjI1IDE1LjQzNzUiIC8+CgkJPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjAgMCAxOCAwIDE4IDE4IDAgMTgiIC8+Cgk8L2c+Cjwvc3ZnPg=="
+                                                class="_1dki8b col-1-5"
+                                            />
+                                            <span class="_2YpB-X col-3-5">Rate
+                                                &amp; Review Product</span>
+                                        </a>
+                                    </td>
 
-                                {{!-- Cancel Modal --}}
-                                <div class="modal fade" id="delete{{_id}}" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                {{else if isReturned}}
+                                    <td><a
+                                            href=""
+                                            class="btn btn-danger disabled"
+                                        >order returned</a>
+                                        &nbsp;</td>
+                                {{else}}
+                                    <td><a
+                                            href=""
+                                            class="btn btn-danger text-light"
+                                            data-toggle="modal"
+                                            data-target="#delete{{this._id}}"
+                                        >cancel order</a>
+                                        &nbsp;</td>
+                                {{/if}}
+                          {{!-- Cancel Modal --}}
+                        <div class="modal fade" id="delete{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Cancel Order</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                         <div class="modal-body">
+                                        <form action="/cancelOrder/{{_id}}" method="post">
+                                            <div class="form-group">
+                                                <label for="reason">Reason for Canccelling:</label>
+                                                <textarea id="reason" name="reason" rows="4" class="form-control" placeholder="Enter reason"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-danger">yes</button>
+                                            <button type="button" class="btn btn-secondary mx-3" data-dismiss="modal">Cancel</button>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                                {{!-- Return Order --}}
+                        <div class="modal fade" id="return{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Return confirmation</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/returnOrder/{{_id}}" method="post">
+                                            <div class="form-group">
+                                                <label for="reason">Reason for returning:</label>
+                                                <textarea id="reason" name="reason" rows="4" class="form-control" placeholder="Enter reason"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-danger">yes</button>
+                                            <button type="button" class="btn btn-secondary mx-3" data-dismiss="modal">Cancel</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                <!-- Review Modal -->
+                                <div
+                                    class="modal fade"
+                                    id="review{{_id}}"
+                                    tabindex="-1"
+                                    role="dialog"
+                                    aria-labelledby="reviewModalLabel"
+                                    aria-hidden="true"
+                                >
+                                    <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
+                                                <h5
+                                                    class="modal-title"
+                                                    id="reviewModalLabel"
+                                                >Review</h5>
+                                                <button
+                                                    type="button"
+                                                    class="close"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    <span
+                                                        aria-hidden="true"
+                                                    >&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                Do you want to cancel order <b class="text-dark"></b>
+                                                <!-- Review form or content goes here -->
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label
+                                                            for="reviewTitle"
+                                                        >Title:</label>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="reviewTitle"
+                                                            placeholder="Enter title"
+                                                            required
+                                                        />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label
+                                                            for="reviewBody"
+                                                        >Review:</label>
+                                                        <textarea
+                                                            class="form-control"
+                                                            id="reviewBody"
+                                                            rows="5"
+                                                            placeholder="Enter your review"
+                                                            required
+                                                        ></textarea>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label
+                                                            for="reviewRating"
+                                                        >Rating:</label>
+                                                        <select
+                                                            class="form-control"
+                                                            id="reviewRating"
+                                                            required
+                                                        >
+                                                            <option
+                                                                value=""
+                                                            >Select rating</option>
+                                                            <option value="1">1
+                                                                star</option>
+                                                            <option value="2">2
+                                                                stars</option>
+                                                            <option value="3">3
+                                                                stars</option>
+                                                            <option value="4">4
+                                                                stars</option>
+                                                            <option value="5">5
+                                                                stars</option>
+                                                        </select>
+                                                    </div>
+                                                    {{! <button type="submit" class="btn btn-primary">Submit</button> }}
+                                                </form>
+
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">cancel</button>
-                                                <a href="/cancelOrder/{{_id}}" type="button"
-                                                    class="btn btn-danger">yes</a>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-secondary"
+                                                    data-dismiss="modal"
+                                                >Close</button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-primary"
+                                                    data-dismiss="modal"
+                                                    data-toggle="modal"
+                                                    data-target="#thankYouModal"
+                                                >Submit Review</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Thank You Modal -->
+                                <div
+                                    class="modal"
+                                    id="thankYouModal"
+                                    tabindex="-1"
+                                    role="dialog"
+                                >
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Thank
+                                                    you so much!</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Your review has been saved.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-secondary"
+                                                    data-dismiss="modal"
+                                                >Close</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
 {{else}}
 
-<style>
-     body {
-        background-color: #fff;
-    }
-    .mt-100 {
-        margin-top: 100px;
-    }
-    .card {
-        margin-bottom: 30px;
-        border: 0;
-        -webkit-transition: all .3s ease;
-        transition: all .3s ease;
-        letter-spacing: .5px;
-        border-radius: 8px;
-        -webkit-box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05);
-        box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05);
-    }
-    .card .card-header {
-        background-color: #fff;
-        border-bottom: none;
-        padding: 24px;
-        border-bottom: 1px solid #f6f7fb;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-    }
-    .card-header:first-child {
-        border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
-    }
-    .card .card-body {
-        padding: 30px;
-        background-color: transparent;
-    }
-    .btn-primary,
-    .btn-primary.disabled,
-    .btn-primary:disabled {
-        background-color: #4466f2 !important;
-        border-color: #4466f2 !important;
-    }
-</style>
+    <style>
+        body { background-color: #fff; } .mt-100 { margin-top: 100px; } .card {
+        margin-bottom: 30px; border: 0; -webkit-transition: all .3s ease;
+        transition: all .3s ease; letter-spacing: .5px; border-radius: 8px;
+        -webkit-box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05); box-shadow:
+        1px 5px 24px 0 rgba(68, 102, 242, .05); } .card .card-header {
+        background-color: #fff; border-bottom: none; padding: 24px;
+        border-bottom: 1px solid #f6f7fb; border-top-left-radius: 8px;
+        border-top-right-radius: 8px; } .card-header:first-child {
+        border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0; } .card
+        .card-body { padding: 30px; background-color: transparent; }
+        .btn-primary, .btn-primary.disabled, .btn-primary:disabled {
+        background-color: #4466f2 !important; border-color: #4466f2 !important;
+        }
+    </style>
 
-
-<div class="container-fluid  mt-100">
-    <div class="row">
-        <div class="col-md-12  my-5">
-            <div class="card my-5">
-                <div class="card-body cart">
-                    <div class="col-sm-12 empty-cart-cls text-center  mb-5">
-                        <h3 class="mb-4"><strong>Your Have No Order History</strong></h3>
-                        <h4  class="mb-4">Order something to make me happy :)</h4>
-                        <a href="/shop" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+    <div class="container-fluid mt-100">
+        <div class="row">
+            <div class="col-md-12 my-5">
+                <div class="card my-5">
+                    <div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center mb-5">
+                            <h3 class="mb-4"><strong>Your Have No Order History</strong></h3>
+                            <h4 class="mb-4">Order something to make me happy :)</h4>
+                            <a
+                                href="/shop"
+                                class="btn btn-primary cart-btn-transform m-3"
+                                data-abc="true"
+                            >continue shopping</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 {{/if}}
+
+<script>
+    $(function () { $('#productsTable').DataTable(); });
+</script>

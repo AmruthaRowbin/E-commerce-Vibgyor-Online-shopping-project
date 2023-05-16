@@ -3,41 +3,80 @@ const collection = require('../config/collection');
 const objectId = require('mongodb-legacy').ObjectId;
 
 module.exports = {
-  addCategory:(detailes) => {
-    return new Promise (async (resolve, reject) => {
-            const Category = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({name: detailes.name})
-            if(Category){
-                resolve(false)
-            }else{
-                detailes.listed = true;
-                db.get().collection(collection.CATEGORY_COLLECTION).insertOne(detailes).then((response) => {
-                    resolve(response.insertedId);
-                })
-            }
-    }) 
-},
+    // addCategory: (detailes) => {
+    //     return new Promise(async (resolve, reject) => {
+    //         const Category = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ name: detailes.name })
+    //         if (Category) {
+    //             resolve(false)
+    //         } else {
+    //             detailes.listed = true;
+    //             db.get().collection(collection.CATEGORY_COLLECTION).insertOne(detailes).then((response) => {
+    //                 resolve(response.insertedId);
+    //             })
+    //         }
+    //     })
+    // },
+
+    
+    addCategory:(detailes) => {
+        return new Promise (async (resolve, reject) => {
+            const name=detailes.name
+            const categoryName = detailes.name.toLowerCase();
+                const Category = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ name: { $regex: new RegExp("^" + categoryName + "$", "i") } })
+                if(Category){
+                    resolve(false);
+                }else{
+                    detailes.name = name
+                    detailes.listed = true;
+                    db.get().collection(collection.CATEGORY_COLLECTION).insertOne(detailes).then( (response) => {
+                        db.get().collection(collection.PRODUCT_COLLECTION).updateMany(
+                            {
+                                category: detailes.name
+                            },
+                            {
+                                $set: {
+                                    listed: true
+                                }
+                            }
+                        )
+                        resolve(response.insertedId);
+                    })
+                }
+        })
+    },
+
 
     getCategory: () => {
-        return new Promise (async (resolve, reject) => {
-           const category = await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray();
-            if(category){
+        return new Promise(async (resolve, reject) => {
+            const category = await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray();
+            if (category) {
                 console.log(category);
                 resolve(category)
-            }else{
-                
+            } else {
+
                 resolve("Category not found");
             }
         })
     },
 
-    deleteCategory: (categoryId) => {
-        return new Promise ((resolve, reject) => {
+    deleteCategory: (categoryId, cateName) => {
+        return new Promise((resolve, reject) => {
             db.get().collection(collection.CATEGORY_COLLECTION).deleteOne(
                 {
                     _id: new objectId(categoryId)
                 }
-            ).then((response) => {
-                console.log(response);
+            ).then(async () => {
+                const listed = await db.get().collection(collection.PRODUCT_COLLECTION).updateMany(
+                    {
+                        category: cateName
+                    },
+                    {
+                        $set: {
+                            listed: false
+                        }
+                    }
+                )
+                console.log(listed);
                 resolve();
             }).catch((err) => {
                 console.log(err);
@@ -46,33 +85,41 @@ module.exports = {
         })
     },
 
-    getSelectedCategory:(catName)=>{
+
+
+
+
+
+
+
+
+
+    getSelectedCategory: (catName) => {
         console.log(catName);
-        return new Promise(async(resolve, reject)=>{
-            try{
+        return new Promise(async (resolve, reject) => {
+            try {
                 const products = await db.get().collection(collection.CATEGORY_COLLECTION).aggregate(
                     [
                         {
-                          '$match': {
-                            'name': catName
-                          }
+                            '$match': {
+                                'name': catName
+                            }
                         }, {
-                          '$lookup': {
-                            'from': collection.PRODUCT_COLLECTION, 
-                            'localField': 'name', 
-                            'foreignField': 'category', 
-                            'as': 'productDetails'
-                          }
+                            '$lookup': {
+                                'from': collection.PRODUCT_COLLECTION,
+                                'localField': 'name',
+                                'foreignField': 'category',
+                                'as': 'productDetails'
+                            }
                         }, {
-                          '$project': {
-                            'productDetails': 1, 
-                            '_id': 0
-                          }
+                            '$project': {
+                                'productDetails': 1,
+                                '_id': 0
+                            }
                         }
                     ]).toArray();
-                // console.log(products[0].productDetails);
                 resolve(products[0].productDetails);
-            }catch{
+            } catch {
                 resolve(null);
             }
         })

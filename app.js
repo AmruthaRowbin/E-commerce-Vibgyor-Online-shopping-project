@@ -4,13 +4,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyparser = require("body-parser");
+const handlebars = require('handlebars')
 const session = require('express-session');
 const yup = require('yup');
 //const flash = require('express-flash');
 const flash = require('connect-flash');
+const mathHelpers = require('./helpers/mathHelpers');
+require('dotenv').config();
 
 // var hbs = require('express-hbs')
-
+handlebars.registerHelper(mathHelpers);
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 const hbs = require('express-handlebars');

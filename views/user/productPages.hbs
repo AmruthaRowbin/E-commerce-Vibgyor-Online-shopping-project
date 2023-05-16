@@ -66,13 +66,32 @@
                     <ul class="tags">
                         <li><span>Category :</span> {{product.category}}</li>
                         <li><span>Tags :</span> {{product.category}}, elegant, cool</li>
+                         {{#if (gte product.stock 1)}}
+                        <li><span>Product in Stock :</span> {{product.stock}}</li>
+                        {{else}}
+                        <li><span class="text-danger mt-5" style="font-weight: bold;">Product out of stock</span></li>
+                        {{/if}}
                     </ul>
-                    <div class="product-quantity">
-                        <div class="pro-qty">
-                            <input type="text" value="1">
-                        </div>
-                    </div>
-                    <a onclick="addToCart('{{product._id}}')" class="primary-btn pc-btn">Add to cart</a>
+                    <div class="input-group mb-3">
+                        {{#if userName}}
+                        {{#if (eq product.stock 0) }}
+                        <a class="primary-btn pc-btn mx-4 text-danger mb-4"
+                            onclick="this.blur(); Toastify({text: 'This product is currently out of stock', duration: 2000, close: true, gravity: 'top', style: {background: 'linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)'}, position: 'center'}).showToast();">Out
+                            of Stock</a>
+                        {{else}}
+                        <a onclick="addToCart('{{product._id}}')" class="primary-btn pc-btn mx-4 mb-4">Add to cart</a>
+                        {{/if}}
+
+                        {{else}}
+                        <a href="/login" class="primary-btn pc-btn mx-4 mb-4">Add to cart</a>
+                        {{/if}}
+
+                  
+                    {{#if userName}}
+                        <a onclick="addWishlist('{{product._id}}')" class="primary-btn pc-btn mx-4 mb-4">Add to Wishlist</a>
+                        {{else}}
+                        <a href="/login" class="primary-btn pc-btn mx-4 mb-4">Add to Wishlist</a>
+                        {{/if}}
                     <ul class="p-info">
                         <li>Product Information</li>
                         <li>Reviews</li>
@@ -81,6 +100,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 <!-- Product Page Section End -->
@@ -95,69 +115,34 @@
                     </div>
                 </div>
             </div>
+             {{#if getRelatedProduct}}
             <div class="row">
+                 {{#each getRelatedProduct}}
                <div class="col-lg-3 col-sm-6">
                     <div class="single-product-item">
                         <figure>
-                            <a href="#"><img src="https://assets.ajio.com/medias/sys_master/root/20230224/U1fu/63f927a4aeb26924e38e8b58/-1117Wx1400H-465823691-navy-MODEL.jpg"></a>
+                            <img src="{{this.images.[0]}}">
                             <div class="p-status">new</div>
                         </figure>
                         <div class="product-text">
-                            <h6>saree</h6>
-                            <p>₹999.00</p>
-                            {{!-- {{/each}} --}}
+                          <a href="/product/{{this._id}}">
+                            <h5>{{this.name}}</h5>
+                            <h6>{{this.category}}</h6>
+                            <p>₹{{this.price}}.00</p>
+                        </a>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single-product-item">
-                        <figure>
-                            <a href="#"><img src="https://assets.ajio.com/medias/sys_master/root/20221116/YtdF/637409acf997ddfdbd786f84/-1117Wx1400H-465287402-rust-MODEL2.jpg"></a>
-                            <div class="p-status">new</div>
-                        </figure>
-                        <div class="product-text">
-                            <h6>Skirt&Top</h6>
-                            <p>₹799.00</p>
-                            {{!-- {{/each}} --}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single-product-item">
-                        <figure>
-                            <a href="#"><img src="https://assets.ajio.com/medias/sys_master/root/20230105/Xp9v/63b5e9feaeb269659c25789f/-1117Wx1400H-465555211-navy-MODEL.jpg"></a>
-                            <div class="p-status">new</div>
-                        </figure>
-                        <div class="product-text">
-                            <h6>Bridal Gown</h6>
-                            <p>₹2509.00</p>
-                            {{!-- {{/each}} --}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single-product-item">
-                        <figure>
-                            <a href="#"><img src="https://assets.ajio.com/medias/sys_master/root/20230109/yYu2/63bbd1e2aeb269c651cb902a/-1117Wx1400H-465571092-multi-MODEL.jpg"></a>
-                            <div class="p-status">new</div>
-                        </figure>
-                        <div class="product-text">
-                            <h6>WesternWear</h6>
-                            <p>₹599.00</p>
-                            {{!-- {{/each}} --}}
-                        </div>
-                    </div>
-                </div>
+ {{/each}}
             </div>
+            {{/if}}
+                
         </div>
     </section>
 <!-- Related Product Section End -->  
 
 
-{{!-- axios --}}
+{{!-- axios AddToCart and AddToWishlist --}}
 <script>
     function addToCart(productId) {
         console.log("apicall")
@@ -170,9 +155,9 @@
                     gravity: "bottom",
                     position: "center",
                     style: {
-                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        background: "linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)",
                     }
-                }).showToast();
+                }).showToast(); 
             }
         }).catch((err) => {
             Toastify({
@@ -182,14 +167,41 @@
                 gravity: "bottom",
                 position: "center",
                 style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    background: "linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)",
                 }
             }).showToast();
         })
     }
+   function addWishlist(productId) {
+  axios.get(`/addToWishlist/${productId}`).then((response) => {
+    if (response.status) {
+      Toastify({
+        text: `${response.data.message}`,
+        duration: 3000,
+        className: "info",
+        gravity: "bottom",
+        position: "center",
+        style: {
+          background: "linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)",
+        }
+      }).showToast();
 
+      
+    }
+        }).catch((err) => {
+            Toastify({
+                text: "product is not added to wishlis",
+                duration: 3000,
+                className: "info",
+                gravity: "bottom",
+                position: "center",
+                style: {
+                    background: "linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)",
+                }
+            }).showToast();
+        })
+    }
 </script>
-
 
 
 

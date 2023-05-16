@@ -17,22 +17,24 @@
                         <div class="form-floating mb-3">
                             
                             
-                    <form action="/admin/adminAddProduct" method="post" enctype="multipart/form-data" class="tm-edit-product-form" onsubmit= "return validateForm();" >
-                     
+                    <form action="/admin/adminAddProduct" method="post" enctype="multipart/form-data" class="tm-edit-product-form" name="myForm" onsubmit="return validateForm()">
+                  
                         <div class="input-group mb-3">
                             <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Product
                                 Name
                             </label>
                             <input id="name" name="name" type="text"
                                 class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" >
-                                 <div id="nameError" class="invalid-feedback"></div>
+                                <span id="nameError" class="text-danger error-message"></span>
+                               
                         </div>
                         <div class="input-group mb-3">
                             <label for="description"
                                 class="col-xl-4 col-lg-4 col-md-4 col-sm-5 mb-2">Description</label>
                                 <input id="description" name="description" type="text"
                                 class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" >
-                                <div id="descriptionError" class="invalid-feedback"></div>
+                                  <span id="descriptionError" class="text-danger error-message"></span>
+                               
                             {{!-- <textarea class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" rows="3"
                                 name="description" ></textarea> --}}
                         </div>
@@ -51,14 +53,15 @@
                               
                                 {{/each}}
                             </select>
-                            <div id="categoryError" class="invalid-feedback"></div>
+                            <span id="categoryError" class="text-danger error-message"></span>
                         </div>
                         <div class="input-group mb-3">
                             <label for="expire_date" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Price
                             </label>
                             <input id="expire_date" name="price" type="text"
                                 class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" data-large-mode="true">
-                                 <div id="priceError" class="invalid-feedback"></div>
+                                   <span id="priceError" class="text-danger error-message"></span>
+                                 
                                 
                         </div>
                         <div class="input-group mb-3">
@@ -68,7 +71,9 @@
                             </label>
                             <input id="stock" name="stock" type="text"
                                 class="form-control validate col-xl-9 col-lg-8 col-md-7 col-sm-7" >
-                                 <div id="stockError" class="invalid-feedback"></div>
+
+                                  <span id="stockError" class="text-danger error-message"></span>
+                                 
                         </div>
 
                 </div>
@@ -99,76 +104,95 @@
     </div>
 </div>
 
-
-
-
 <script>
-    // Get form and required fields
-const form = document.querySelector('.tm-edit-product-form');
-const nameInput = form.querySelector('#name');
-const descriptionInput = form.querySelector('#description');
-const categorySelect = form.querySelector('#category');
-const priceInput = form.querySelector('#expire_date');
-const stockInput = form.querySelector('#stock');
-const fileInput = form.querySelector('#fileInput');
 
-// Add submit event listener to form
-form.addEventListener('submit', function(event) {
-  // Prevent default form submission behavior
-  event.preventDefault();
-
-  // Check if required fields are empty and display error messages
-  if (nameInput.value.trim() === '') {
-    nameInput.classList.add('is-invalid');
-    nameInput.nextElementSibling.innerText = 'Product name is required';
-  } else {
-    nameInput.classList.remove('is-invalid');
-    nameInput.nextElementSibling.innerText = '';
-  }
-
-  if (descriptionInput.value.trim() === '') {
-    descriptionInput.classList.add('is-invalid');
-    descriptionInput.nextElementSibling.innerText = 'Description is required';
-  } else {
-    descriptionInput.classList.remove('is-invalid');
-    descriptionInput.nextElementSibling.innerText = '';
-  }
-
-  if (categorySelect.value === 'Select one') {
-    categorySelect.classList.add('is-invalid');
-    categorySelect.nextElementSibling.innerText = 'Category is required';
-  } else {
-    categorySelect.classList.remove('is-invalid');
-    categorySelect.nextElementSibling.innerText = '';
-  }
-
-  if (priceInput.value.trim() === '') {
-    priceInput.classList.add('is-invalid');
-    priceInput.nextElementSibling.innerText = 'Price is required';
-  } else {
-    priceInput.classList.remove('is-invalid');
-    priceInput.nextElementSibling.innerText = '';
-  }
-
-  if (stockInput.value.trim() === '') {
-    stockInput.classList.add('is-invalid');
-    stockInput.nextElementSibling.innerText = 'Units in stock is required';
-  } else {
-    stockInput.classList.remove('is-invalid');
-    stockInput.nextElementSibling.innerText = '';
-  }
-   
-
-  // Submit form if there are no errors
-  if (!form.querySelector('.is-invalid')) {
-    form.submit();
-  }
-
+function validateForm() {
+  var name = document.forms["myForm"]["name"].value;
+  var description = document.forms["myForm"]["description"].value;
+  var category = document.forms["myForm"]["category"].value;
+  var price = document.forms["myForm"]["expire_date"].value;
+  var stock = document.forms["myForm"]["stock"].value;
+  var file = document.forms["myForm"]["image"].value;
   
-});
 
+  // Validate name
+  if (name == "") {
+    document.getElementById("nameError").innerHTML = "Please enter a name.";
+    document.forms["myForm"]["name"].addEventListener("click", function() {
+      document.getElementById("nameError").innerHTML = "";
+    });
+    return false;
+  }
 
+  // Validate description
+  if (description == "") {
+    document.getElementById("descriptionError").innerHTML = "Please enter a description.";
+    document.forms["myForm"]["description"].addEventListener("click", function() {
+      document.getElementById("descriptionError").innerHTML = "";
+    });
+    return false;
+  }
+
+  // Validate category
+  if (category == "") {
+    document.getElementById("categoryError").innerHTML = "Please select a category.";
+    document.forms["myForm"]["category"].addEventListener("click", function() {
+      document.getElementById("categoryError").innerHTML = "";
+    });
+    return false;
+  }
+
+  // Validate price
+  if (price == "") {
+    document.getElementById("priceError").innerHTML = "Please enter a price.";
+    document.forms["myForm"]["expire_date"].addEventListener("click", function() {
+      document.getElementById("priceError").innerHTML = "";
+    });
+    return false;
+  } else if (isNaN(price)) {
+    document.getElementById("priceError").innerHTML = "Price must be a number.";
+    document.forms["myForm"]["expire_date"].addEventListener("click", function() {
+      document.getElementById("priceError").innerHTML = "";
+    });
+    return false;
+  } else if (price <= 0) {
+    document.getElementById("priceError").innerHTML = "Price cannot be negative or Zero.";
+    document.forms["myForm"]["expire_date"].addEventListener("click", function() {
+      document.getElementById("priceError").innerHTML = "";
+    });
+    return false;
+  }
+
+  // Validate stock
+  if (stock == "") {
+    document.getElementById("stockError").innerHTML = "Please enter the number of units in stock.";
+    document.forms["myForm"]["stock"].addEventListener("click", function() {
+      document.getElementById("stockError").innerHTML = "";
+    });
+    return false;
+  } else if (isNaN(stock)) {
+    document.getElementById("stockError").innerHTML = "Units in stock must be a number.";
+    document.forms["myForm"]["stock"].addEventListener("click", function() {
+      document.getElementById("stockError").innerHTML = "";
+    });
+    return false;
+  } else if (stock <= 0) {
+    document.getElementById("stockError").innerHTML = "Units in stock cannot be negative or Zero.";
+    document.forms["myForm"]["stock"].addEventListener("click", function() {
+      document.getElementById("stockError").innerHTML = "";
+    });
+    return false;
+  }
+
+  // Validate file
+  if (file == "") {
+    alert("Please select a file to upload.");
+    document.forms["myForm"]["image"].addEventListener("click", function() {
+      alert("Please select a file to upload.");
+    });
+    return false;
+  }
+
+  return true;
+}
 </script>
-
-
-

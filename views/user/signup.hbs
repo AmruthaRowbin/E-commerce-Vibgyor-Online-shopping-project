@@ -1,4 +1,3 @@
-
 <style>
   .bg-image-vertical {
     position: relative;
@@ -22,49 +21,59 @@
 
         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
 
-           <form   action="/signup" method="post">
-                <div class="form-outline mb-4">
-                  <input type="text" id="form3Example1cg" class="form-control form-control-lg" name="name"/>
-                  <label class="form-label" for="form3Example1cg">Your Name</label>
-                </div>
+          {{!-- <form name="signupForm" action="/signup" method="post"> --}}
+            <form action="/signup" method="post" name="myForm" onsubmit="return validateForm()">
 
-                <div class="form-outline mb-4">
-                  <input type="email" id="form3Example3cg" class="form-control form-control-lg" name="email"/>
-                  <label class="form-label" for="form3Example3cg">Your Email</label>
-                </div>
-                {{#if emailExist}}
-                  <label class="text-danger">{{emailExist}}</label>
-                  {{/if}}
+              <div class="form-outline mb-4">
+                <input type="text" id="form3Example1cg" class="form-control form-control-lg" name="name" />
+                <label class="form-label" for="form3Example1cg">Your Name</label>
+                <span id="nameError" class="text-danger error-message"></span>
 
-                <div class="form-outline mb-4">
-                  <input type="password" id="form3Example4cg" class="form-control form-control-lg" name="password"/>
-                  <label class="form-label" for="form3Example4cg">Password</label>
-                </div>
-                  {{#if errMsg}}
-                  <label class="text-danger">{{errMsg}}</label>
-                  {{/if}}
+              </div>
 
-                <div class="form-outline mb-4">
-                  <input type="tel" id="form3Example4cdg" class="form-control form-control-lg" maxlength="10" name="phone"/>
-                  <label class="form-label" for="form3Example4cdg">Enter your phone No</label>
-                </div>
-                  {{#if errmsg}}
-                  <label class="text-danger">{{errmsg}}</label>
-                  {{/if}}
+              <div class="form-outline mb-4">
+                <input type="email" id="form3Example3cg" class="form-control form-control-lg" name="email" />
+                <label class="form-label" for="form3Example3cg">Your Email</label>
+                <span id="emailError" class="text-danger error-message"></span>
+              </div>
+              {{#if emailExist}}
+              <label class="text-danger">{{emailExist}}</label>
+              {{/if}}
 
-                <div class="d-flex justify-content-center">
-                  <a href="/"><button type="submit"
-                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button></a>
-                </div>
+              <div class="form-outline mb-4">
+                <input type="password" id="form3Example4cg" class="form-control form-control-lg" name="password" />
+                <label class="form-label" for="form3Example4cg">Password</label>
+                <span id="passwordError" class="text-danger error-message"></span>
+              </div>
+              {{#if errMsg}}
+              <label class="text-danger">{{errMsg}}</label>
+              {{/if}}
 
-                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/login"
-                    class="fw-bold text-body"><u>Login here</u></a></p>
-              </form>
+              <div class="form-outline mb-4">
+                <input type="tel" id="form3Example4cdg" class="form-control form-control-lg" maxlength="10"
+                  name="phone" />
+                <label class="form-label" for="form3Example4cdg">Enter your phone No</label>
+                <span id="phoneError" class="text-danger error-message"></span>
+              </div>
+              {{#if errmsg}}
+              <label class="text-danger">{{errmsg}}</label>
+              {{/if}}
+
+              <div class="d-flex justify-content-center">
+                <a href="/"><button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
+                    onclick="return validateForm()">Register</button>
+                </a>
+              </div>
+
+              <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/login"
+                  class="fw-bold text-body"><u>Login here</u></a></p>
+            </form>
         </div>
       </div>
       <div class="col-sm-6 px-0 d-none d-sm-block">
-        <img src="https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8bW9kZWwlMjBnaXJsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="Login image"
-          style="object-fit: cover; object-position: left; width: 100vh; height: 80vh">
+        <img
+          src="https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8bW9kZWwlMjBnaXJsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+          alt="Login image" style="object-fit: cover; object-position: left; width: 100vh; height: 80vh">
       </div>
     </div>
   </div>
@@ -72,3 +81,58 @@
 
 
 
+
+
+<script>
+  function validateForm() {
+    var name = document.forms["myForm"]["name"].value;
+    var email = document.forms["myForm"]["email"].value;
+    var password = document.forms["myForm"]["password"].value;
+    var phone = document.forms["myForm"]["phone"].value;
+
+    if (name == "") {
+      document.getElementById("nameError").innerHTML = "Please enter your name.";
+      return false;
+    } else {
+      document.getElementById("nameError").innerHTML = "";
+    }
+
+    if (email == "") {
+      document.getElementById("emailError").innerHTML = "Please enter your email.";
+      return false;
+    } else {
+      document.getElementById("emailError").innerHTML = "";
+    }
+
+    if (password == "") {
+      document.getElementById("passwordError").innerHTML = "Please enter your password.";
+      return false;
+    } else {
+      document.getElementById("passwordError").innerHTML = "";
+    }
+
+    if (phone == "") {
+      document.getElementById("phoneError").innerHTML = "Please enter your phone number.";
+      return false;
+    } else {
+      document.getElementById("phoneError").innerHTML = "";
+    }
+  }
+
+  // Clear error message when user starts typing in input fields
+  document.getElementById("name").addEventListener("input", function () {
+    document.getElementById("nameError").innerHTML = "";
+  });
+
+  document.getElementById("email").addEventListener("input", function () {
+    document.getElementById("emailError").innerHTML = "";
+  });
+
+  document.getElementById("password").addEventListener("input", function () {
+    document.getElementById("passwordError").innerHTML = "";
+  });
+
+  document.getElementById("phone").addEventListener("input", function () {
+    document.getElementById("phoneError").innerHTML = "";
+  });
+</script>

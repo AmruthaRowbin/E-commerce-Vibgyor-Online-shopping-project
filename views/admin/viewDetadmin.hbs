@@ -1,12 +1,16 @@
+
+            
+
+
+
 <style>
     .gradient-custom {
-        /* fallback for old browsers */
-        background: #ffffff;
-        /* Chrome 10-25, Safari 5.1-6 */
-        background: -webkit-linear-gradient(to top left, rgb(255, 255, 255), rgb(255, 255, 255));
-        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        background: linear-gradient(to top left, rgb(255, 255, 255), rgb(255, 255, 255))
-    }
+    background-color: #000000;
+    background: -webkit-linear-gradient(to top left, #000000, #000000);
+    background: linear-gradient(to top left, #000000, #000000);
+}
+
+     
 </style>
 <div class="container">
     <section class="h-100 gradient-custom">
@@ -15,13 +19,21 @@
                 <div class="col-lg-10 col-xl-8">
                     <div class="card" style="border-radius: 10px;">
                         <div class="card-header px-4 py-5" style="background-color: rgb(0, 0, 0);">
-                            <h5 class="text-muted mb-0">Thanks for your Order, <span
-                                    style="color: #ffffff;">{{userName}}</span>!</h5>
+                          <h5 class="text-muted mb-0 text-center" style="font-size: 2.2em;">Order Details!</h5>
+
                         </div>
                         {{#each orders}}
-                        <div class="card-body p-4">
+                         
+                                        
+                        <div class="card-body p-4"> 
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                
+                               <p class="small text-muted mb-0" style="font-size: 1.2em; font-weight: bold;">Order Details of: {{userName}}</p>
+
+                            </div>
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <p class="lead fw-normal mb-0" style="color: #ffffff;">Receipt</p>
+        
                                 <p class="small text-muted mb-0">Order Id : {{_id}}</p>
                             </div>
                             {{#each products}}
@@ -29,13 +41,16 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <img src="{{product.images.[0]}}" class="img-fluid" alt="Phone">
+                                            <img src="{{product.images.[0]}}"
+                                                class="img-fluid" alt="Phone">
                                         </div>
+                                        
                                         <div
+                                        
                                             class="col-md-2 text-center d-flex justify-content-center align-items-center">
                                             <p class="text-muted mb-0">{{product.name}}</p>
                                         </div>
-
+                                        
                                         <div
                                             class="col-md-2 text-center d-flex justify-content-center align-items-center">
                                             <p class="text-muted mb-0 small">{{product.category}}</p>
@@ -48,11 +63,12 @@
                                             class="col-md-2 text-center d-flex justify-content-center align-items-center">
                                             <p class="text-muted mb-0 small">₹{{product.price}}</p>
                                         </div>
+                                        
                                         {{/each}}
                                     </div>
                                     <hr class="mb-4" <div class="row d-flex align-items-center">
                                     <div class="col-md-10">
-
+                                      
                                         <div class="d-flex">
                                             <p class="text-muted mt-1 mb-0 small ms-xl-5">Order Status: {{status}}</p>
                                             {{!-- <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p> --}}
@@ -61,7 +77,7 @@
                                 </div>
                             </div>
                         </div>
-
+                      
                         <div class="container">
 
 
@@ -69,13 +85,22 @@
                                 <p class="fw-bold mb-0">Order Details</p>
                                 <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span> ₹{{total}}</p>
                             </div>
+                            
+                                      
+                                        <div class="d-flex justify-content-between pt-2">
+                                <p class="text-muted mb-0">Address Details : {{shippingAddress.address}}  <br>State: {{shippingAddress.state}} 
+                                    <br>  Post Code: {{shippingAddress.postCode}}
+                                    <br>  Phone Number: {{shippingAddress.phone}}
+                                </p>
+                            
+                            </div>
 
                             <div class="d-flex justify-content-between pt-2">
                                 <p class="text-muted mb-0">Order Status : {{status}}</p>
                                 <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> ₹00.00</p>
                             </div>
 
-
+                           
 
                             <div class="d-flex justify-content-between mb-5">
                                 <p class="text-muted mb-0">Order Id : {{_id}}</p>

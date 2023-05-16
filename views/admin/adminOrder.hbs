@@ -2,14 +2,16 @@
 <div class="container">
     <div class="row tm-content-row tm-mt-big">
         <div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-block-col">
-            {{!-- <div class="bg-white tm-block h-100"> --}}
+            
                 <div class="row">
                     <div class="col-md-8 col-sm-12">
                         <h2 class="tm-block-title d-inline-block">Order</h2>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    {{!-- <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                    <div class="bg-secondary rounded h-100 p-4">
+                    <!-- orders.hbs -->
+                    <table class="table table-hover table-striped tm-table-striped-even mt-3" id="productsTable">
                         <thead>
                             <tr class="tm-bg-gray">
                                 <th scope="col">Product Name</th>
@@ -19,61 +21,17 @@
                                 <th scope="col">Status</th>
                                 <th scope="col" class="text-center">Image</th>
                                 <th scope="col">Edit Status</th>
+                                <th scope="col">Order Details</th>
+                                {{!-- <th scope="col">View Status</th> --}}
                             </tr>
                         </thead>
                         <tbody>
-                            {{#if adminOrder}}
-                            {{#each adminOrder}}
-                            {{#each adminOrder.order as |order|}}
-                            {{#each order.item as |item|}}
-                            <tr>
-                                <td class="tm-product-name">{{item.product.name}}</td>
-                                <td class="text-center">{{order.shippingAddress.name}}</td>
-                                <td class="text-center">{{order.shippingAddress.phone}}</td>
-                                <td>{{order.total}}</td>
-                                <td>{{order.status}}</td>
-                                <td><img src="{{item.product.images.[0]}}" alt="" style="width: 60px; height: 60px;">
-                                </td>
-                                <td><a data-toggle="modal" data-target="#edit{{this._id}}"><i
-                                            class="fas fa-edit"></i></a></td>
-                                <td><a class=" btn btn-primary" data-toggle="modal" data-target="#delete{{this._id}}"><i
-                                            class="fas fa-trash-alt tm-trash-icon"></i></a></td>
-                            </tr>
-                            {{/each}}
-                            {{/each}}
-                            {{/each}}
-                            {{/if}}
-                        </tbody>
-                    </table> --}}
-                    <!-- orders.hbs -->
-
-
-                <!-- Table Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">  
-                    <div class="col-12">
-                        <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Orders</h6>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr class="tm-bg-gray">
-                                   <th scope="col">Product Name</th>
-                                <th scope="col">customer</th>
-                                <th scope="col" class="text-center">Mobile</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Status</th>
-                                <th scope="col" class="text-center">Image</th>
-                                <th scope="col">Edit Status</th>
-                                </tr>
-                                    </thead>
-                                    
-                        <tbody>
+                            
                             
                             {{#each adminOrder}}
                             
                             <tr>
-                                <td class="tm-product-name"> {{#each products}}{{product.name}} <br> {{/each}}</td>
+                                <td class="tm-product-name"> <a href="/admin/adminOrdersView/{{this._id}}">{{#each products}}{{product.name}} <br> {{/each}}</a></td>
                                 <td class="text-center">{{userName}}</td>
                                 <td class="text-center">{{shippingAddress.phone}}</td>
                                 
@@ -82,9 +40,21 @@
                                 <td>{{status}}</td>
                                 <td> {{#each products}}<img src="{{product.images.[0]}}" alt="" style="width: 60px; height: 60px;" >{{/each}} 
                                 </td>
-                                <td><a data-toggle="modal" data-target="#edit{{_id}}"><i
-                                            class="fas fa-edit"></i></a></td>
-                            </tr>
+                                
+                                <td>
+                                    <a data-toggle="modal" data-target="#edit{{_id}}">
+                                      <i class="fas fa-edit" >
+                                     <style>
+                                       .fa-edit:hover {
+                                         color: white;
+                                           cursor: pointer;
+                                              }
+                                           </style>
+                                           </i>
+                                            </a>
+                                            </td>
+                                             <td><a class="btn btn-sm btn-primary" href="/admin/viewProducts/{{this._id}}">Detail</a></td>
+                                </tr>
 
                             {{!-- Edit order Modal --}}
                             <div class="modal fade" id="edit{{_id}}" tabindex="-1" role="dialog"
@@ -92,7 +62,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Edit User</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -100,7 +70,7 @@
                                         <div class="modal-body">
                                             <form class="text-dark" action="/admin/adminOrderStatus/{{_id}}"
                                                 method="post">
-                                                <div class="form-group">
+                                                <dm iv class="form-group">
                                                    {{!-- <select name="" id=""><label for="name" class="col-form-label">Status: 
                                                         <option value="{{this.name}}">{{status}}</option> --}}
                                                         
@@ -141,3 +111,108 @@
             </div>
         </div>
     </div>
+
+    {{!-- Add Coupon --}}
+   
+<div class="modal fade" id="added" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Coupon</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="text-dark" action="/admin/adminAddCoupon" method="post">
+                   <div class="form-group">
+                            <label for="name" class="col-form-label">Product Name : </label>
+                            <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border"
+                                id="name">
+                        </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="view{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="text-dark">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <p class="small text-muted mb-0" style="font-size: 1.2em; font-weight: bold;">Order Details of: {{userName}}</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <p class="lead fw-normal mb-0" style="color: #ffffff;">Receipt</p>
+                            <p class="small text-muted mb-0">Order Id: {{_id}}</p>
+                        </div>
+                        {{#each products}}
+                            <div class="card shadow-0 border mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <img src="{{this.product.images.[0]}}" class="img-fluid" alt="Phone">
+                                        </div>
+                                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                            <p class="text-muted mb-0">{{this.product.name}}</p>
+                                        </div>
+                                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                            <p class="text-muted mb-0 small">{{this.product.category}}</p>
+                                        </div>
+                                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                            <p class="text-muted mb-0 small">Qty: {{this.quantity}}</p>
+                                        </div>
+                                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                            <p class="text-muted mb-0 small">₹{{this.product.price}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <hr class="mb-4">
+                    <div class="container">
+                        <div class="d-flex justify-content-between pt-2">
+                            <p class="fw-bold mb-0">Order Details</p>
+                            <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span> ₹{{total}}</p>
+                        </div>
+                        <div class="d-flex justify-content-between pt-2">
+                            <p class="text-muted mb-0">Address Details: {{shippingAddress.address}} <br>
+                                State: {{shippingAddress.state}} <br>
+                                Post Code: {{shippingAddress.postCode}} <br>
+                                Phone Number: {{shippingAddress.phone}}
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between pt-2">
+                            <p class="text-muted mb-0">Order Status: {{status}}</p>
+                            <p class="text-muted mb-0">
+
+                    </div>
+                      </div>
+                </form>
+                        </div>
+                          </div>
+                            </div>
+  </div>
+
+{{!-- pagination --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script>
+     $(function () {
+    $('#productsTable').DataTable();
+  });
+</script>

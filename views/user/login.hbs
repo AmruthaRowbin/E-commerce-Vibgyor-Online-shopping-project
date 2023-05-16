@@ -21,27 +21,32 @@
 
         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
 
-          <form style="width: 23rem;" class="mt-5" action="/Home" method="post">
+          <form style="width: 23rem;" class="mt-5" action="/Home" method="post" name="myForm"
+            onsubmit="return validateForm()">
+
+
 
             <h3 class="fw-normal mb-3" style="letter-spacing: 1px;">Log in</h3>
 
             <div class="form-outline mb-4">
               <input type="email" id="form2Example18" class="form-control form-control-lg" name="email" />
               <label class="form-label" for="form2Example18">Email address</label>
-              
+              <span id="emailError" class="text-danger error-message"></span>
+
             </div>
             {{#if emailErr}}
-              <label class="text-danger">{{emailErr}}</label>
-              {{/if}}
+            <label class="text-danger">{{emailErr}}</label>
+            {{/if}}
 
             <div class="form-outline mb-4">
               <input type="password" id="form2Example28" class="form-control form-control-lg" name="password" />
               <label class="form-label" for="form2Example28">Password</label>
-              
+              <span id="passwordError" class="text-danger error-message"></span>
+
             </div>
             {{#if passErr}}
-              <label class="text-danger">{{passErr}}</label>
-              {{/if}}
+            <label class="text-danger">{{passErr}}</label>
+            {{/if}}
 
             <div class="pt-1 mb-4">
               <button class="btn btn-info btn-lg btn-block" type="submit">Login</button>
@@ -54,8 +59,9 @@
         </div>
       </div>
       <div class="col-sm-6 px-0 d-none d-sm-block">
-        <img src="https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8bW9kZWwlMjBnaXJsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="Login image"
-          style="object-fit: cover; object-position: left; width: 100vh; height: 80vh">
+        <img
+          src="https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8bW9kZWwlMjBnaXJsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+          alt="Login image" style="object-fit: cover; object-position: left; width: 100vh; height: 80vh">
       </div>
     </div>
   </div>
@@ -64,62 +70,41 @@
 
 
 
-
-
 <script>
-  const form = document.querySelector('form');
-  const emailInput = document.querySelector('input[name="email"]');
-  const passwordInput = document.querySelector('input[name="password"]');
-  
-  form.addEventListener('submit', (event) => {
-    let emailErr = '';
-    let passErr = '';
+  function validateForm() {
 
-    if (!emailInput.value.includes('@')) {
-      emailErr = 'Please enter a valid email address.';
+    var email = document.forms["myForm"]["email"].value;
+    var password = document.forms["myForm"]["password"].value;
+
+
+
+
+    if (email == "") {
+      document.getElementById("emailError").innerHTML = "Please enter your email.";
+      return false;
+    } else {
+      document.getElementById("emailError").innerHTML = "";
     }
 
-    if (passwordInput.value.length < 8) {
-      passErr = 'Password must be at least 8 characters long.';
+    if (password == "") {
+      document.getElementById("passwordError").innerHTML = "Please enter your password.";
+      return false;
+    } else {
+      document.getElementById("passwordError").innerHTML = "";
     }
 
-    if (emailErr || passErr) {
-      event.preventDefault();
-      const emailErrorElement = document.querySelector('#form2Example18 ~ .text-danger');
-      const passErrorElement = document.querySelector('#form2Example28 ~ .text-danger');
+  }
 
-      emailErrorElement.textContent = emailErr;
-      passErrorElement.textContent = passErr;
-    }
+  // Clear error message when user starts typing in input fields
+
+
+  document.getElementById("email").addEventListener("input", function () {
+    document.getElementById("emailError").innerHTML = "";
   });
-</script>
 
-
-<script>
-  const form = document.querySelector('form');
-  const emailInput = document.querySelector('input[name="email"]');
-  const passwordInput = document.querySelector('input[name="password"]');
-  
-  form.addEventListener('submit', (event) => {
-    let emailErr = '';
-    let passErr = '';
-
-    if (!emailInput.value.includes('@')) {
-      emailErr = 'Please enter a valid email address.';
-    }
-
-    if (passwordInput.value.length < 8) {
-      passErr = 'Password must be at least 8 characters long.';
-    }
-
-    if (emailErr || passErr) {
-      event.preventDefault();
-      const emailErrorElement = document.querySelector('#form2Example18 ~ .text-danger');
-      const passErrorElement = document.querySelector('#form2Example28 ~ .text-danger');
-
-      emailErrorElement.textContent = emailErr;
-      passErrorElement.textContent = passErr;
-    }
+  document.getElementById("password").addEventListener("input", function () {
+    document.getElementById("passwordError").innerHTML = "";
   });
-</script>
 
+
+</script>

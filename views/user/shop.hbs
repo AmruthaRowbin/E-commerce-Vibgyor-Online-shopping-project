@@ -1,222 +1,304 @@
-<!-- Page Add Section Begin -->
-    <section class="page-add">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="page-breadcrumb">
-                        <h2>Products<span>.</span></h2>
-                        <a href="/">Home</a>
-                        <a href="/shop" class="active">Products</a>
-                    </div>
-                    <div class="page-breadcrumb">
-                        <h5>Category</h5>
-                        <div class="page-breadcrumbs">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
+
+<section class="page-add">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="page-breadcrumb">
+                    <h2>Products<span>.</span></h2>
+                    <a href="/">Home</a>
+                    <a href="/shop" class="active">Products</a>
+                </div>
+                <div class="page-breadcrumb">
+                    <h5>Category</h5>
+                    <div class="page-breadcrumbs">
                         <ul class="container">
                             {{#each categories}}
-                                <li><a href="/category/{{this.name}}">{{this.name}}</a></li>
+                            <li><a href="/category/{{this.name}}">{{this.name}}</a></li>
                             {{/each}}
                         </ul>
-                        </div>
-                        
-                      
                     </div>
-                </div>
-                <div class="col-lg-8">
-                   <a href="/shop"><img src="https://images.unsplash.com/photo-1526178613552-2b45c6c302f0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGRyZXNzJTIwb2ZmZXJzJTIwc2FsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt=""style="width: 550px; height: 350px;" ></a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Page Add Section End -->
 
-    <!-- Categories Page Section Begin -->
-    <section class="categories-page spad">
-        <div class="container">
-            <div class="categories-controls">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="categories-filter">
-                            <div class="cf-left">
-                                <form action="#">
-                                    <select class="sort">
-                                        <option value="">Sort by</option>
-                                        <option value="">Orders</option>
-                                        <option value="">Newest</option>
-                                        <option value="">Price</option>
-                                    </select>
-                                </form>
-                            </div>
-                            {{!-- <div class="cf-right">
-                                <span>20 Products</span>
-                                <a href="#">2</a>
-                                <a href="#" class="active">4</a>
-                                <a href="#">6</a>
-                            </div> --}}
-                        </div>
-                    </div>
+
                 </div>
             </div>
+            <div class="col-lg-8">
+                <a href="/shop">
+                    <img src="https://img.freepik.com/free-psd/summer-sale-70-discount_23-2148476960.jpg" alt=""
+                        width="1100" height="400">
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- Page Add Section End -->
+
+
+
+{{!-- pagination --}}
+<input id="totalCount" hidden value="{{totalPages}}">
+<input id="currentPages" hidden value="{{currentPage}}">
+
+
+<!-- Categories Page Section Begin -->
+<section class="categories-page spad">
+    <div class="container">
+        <div class="categories-controls">
             <div class="row">
-                {{!-- <div class="col-lg-6 col-md-6">
-                    <div class="single-product-item">
-                       <figure>
-                            <img src="img/products/bat-pattern-polo-tshirt-ramzan-main-image-.jpg" alt="">
-                           <a href="/product"><div class="p-status">new</div></a> 
-                            <div class="hover-icon">
-                                <a href="img/products/bat-pattern-polo-tshirt-ramzan-main-image-.jpg" class="pop-up"><img src="img/icons/zoom-plus.png"
-                                        alt=""></a>
+               
+                <div class="col-lg-3">
+                    <div class="categories-filter">
+                        <div class="col-md-12">
+                            <label for="range">Price range:</label>
+                            <div class="range-slider">
+                                <input type="text" id="range" class="js-range-slider" value="" />
                             </div>
-                        </figure>
-                        <div class="product-text">
-                            <a href="/product"> 
-                                <h6>Green Dress with details</h6>
-                            </a>
-                            <p>$22.90</p>
                         </div>
-                    </div>
-                </div> --}}
-                {{!-- {{#each products}}
-                <div class="col-lg-6 col-md-6">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6">
-                            <div class="single-product-item">
-                                <figure>
-                                    <img src="{{this.images.[0]}}" alt="">
-                                    <div class="p-status sale">sale</div>
-                                    <div class="hover-icon">
-                                <a href="img/products/neon-graffiti-shirt-male-model-display-image.jpg" class="pop-up"><img src="img/icons/zoom-plus.png"
-                                        alt=""></a>
-                            </div>
-                                </figure>
-                                <div class="product-text">
-                                    <a href="/product">
-                                        <h6>{{this.name}}</h6>
-                                    </a>
-                                    <p>{{this.price}}</p>
+
+                        <div class="col-md-6">
+                            <div class="extra-controls mb-4">
+                                <label hidden for="selectMinPrice">Minimum price:</label>
+                                <input hidden type="number" class="form-control" id="selectMinPrice" name="minPrice"
+                                    value="{{minPrice}}" />
+
+                                <label hidden for="selectMaxPrice">Maximum price:</label>
+                                <input hidden type="number" class="form-control" id="selectMaxPrice" name="maxPrice"
+                                    value="{{maxPrice}}" />
+
+                                <div class="text-center">
+                                    <button class="btn btn-dark" onclick="applyFilter()">Apply</button>
                                 </div>
                             </div>
                         </div>
+                        <div class="cf-left mt-3">
+                            {{!-- <select class="sort"> --}}
+                                {{!-- <option value="">Sort by</option> --}}
+                                <a href="" class="btn btn-dark" onclick="sortPrice(1)">Low to High</a>
+                                <a href="" class="btn btn-dark" onclick="sortPrice(-1)">High to Low</a>
+
+
+                        </div>
+
                     </div>
                 </div>
-                {{/each}} --}}
-                {{#each products}}
-                    <div class="col-lg-3 col-md-6">
-                        <div class="single-product-item">
-                            <figure>
-                                <img src="{{this.images.[0]}}" alt="">
-                                <div class="p-status">new</div>
-                                <div class="hover-icon">
-                                    <a href="{{this.images.[0]}}" class="pop-up"><img src="img/icons/zoom-plus.png"
-                                            alt=""></a>
-                                </div>
-                            </figure>
-                            <div class="product-text">
-                                <a href="/product/{{this.slug}}">
-                                    <h5>{{this.name}}</h5>
-                                    <h6>{{this.category}}</h6>
-                                <p>₹{{this.price}}.00</p>
-                                </a>
+                <div class="main">
+                    <!-- Another variation with a button -->
+                    <form action="/user/userSearchProduct" method="post">
+                        <div style="padding-left: 494px;" class="input-group col-*">
+                            <input type="search" name="name" class="form-control form-control-sm" placeholder="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
-                    </div>
-                {{/each}} 
-            </div>
-            {{!-- <div class="more-product">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <a href="#" class="primary-btn">Load More</a>
-                    </div>
-                </div>
-            </div> --}}
-        </div>
-    </section>
-    <!-- Categories Page Section End -->
-
-    <!-- Footer Section Begin -->
-    {{!-- <footer class="footer-section spad">
-        <div class="container">
-            <div class="newslatter-form">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <form action="#">
-                            <input type="text" placeholder="Your email address">
-                            <button type="submit">Subscribe to our newsletter</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-widget">
-                <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h4>About us</h4>
-                            <ul>
-                                <li>About Us</li>
-                                <li>Community</li>
-                                <li>Jobs</li>
-                                <li>Shipping</li>
-                                <li>Contact Us</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h4>Customer Care</h4>
-                            <ul>
-                                <li>Search</li>
-                                <li>Privacy Policy</li>
-                                <li>2019 Lookbook</li>
-                                <li>Shipping & Delivery</li>
-                                <li>Gallery</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h4>Our Services</h4>
-                            <ul>
-                                <li>Free Shipping</li>
-                                <li>Free Returnes</li>
-                                <li>Our Franchising</li>
-                                <li>Terms and conditions</li>
-                                <li>Privacy Policy</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h4>Information</h4>
-                            <ul>
-                                <li>Payment methods</li>
-                                <li>Times and shipping costs</li>
-                                <li>Product Returns</li>
-                                <li>Shipping methods</li>
-                                <li>Conformity of the products</li>
-                            </ul>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="social-links-warp">
-			<div class="container">
-				<div class="social-links">
-					<a href="" class="instagram"><i class="fa fa-instagram"></i><span>instagram</span></a>
-					<a href="" class="pinterest"><i class="fa fa-pinterest"></i><span>pinterest</span></a>
-					<a href="" class="facebook"><i class="fa fa-facebook"></i><span>facebook</span></a>
-					<a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
-					<a href="" class="youtube"><i class="fa fa-youtube"></i><span>youtube</span></a>
-					<a href="" class="tumblr"><i class="fa fa-tumblr-square"></i><span>tumblr</span></a>
-				</div>
-			</div>
-
-<div class="container text-center pt-5">
-                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+    </div>
+    <div class="container">
+        <div class="row">
+            {{#if products}}
+            {{#each products}}
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-item">
+                    <figure>
+                        <img src="{{this.images.[0]}}" alt="">
+                        <div class="p-status">new</div>
+                        <div class="hover-icon">
+                            <a href="{{this.images.[0]}}" class="pop-up"><img src="img/icons/zoom-plus.png" alt=""></a>
+                        </div>
+                    </figure>
+                    <div class="product-text">
+                        <a href="/product/{{this.slug}}">
+                            <h5>{{this.name}}</h5>
+                            <h6>{{this.category}}</h6>
+                            <p>₹{{this.price}}.00</p>
+                        </a>
+                    </div>
+                </div>
             </div>
+            {{/each}}
+            {{else if product}}
+            {{#each product}}
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-item">
+                    <figure>
+                        <img src="{{this.images.[0]}}" alt="">
+                        <div class="p-status">new</div>
+                        <div class="hover-icon">
+                            <a href="{{this.images.[0]}}" class="pop-up"><img src="img/icons/zoom-plus.png" alt=""></a>
+                        </div>
+                    </figure>
+                    <div class="product-text">
+                        <a href="/product/{{this.slug}}">
+                            <h5>{{this.name}}</h5>
+                            <h6>{{this.category}}</h6>
+                            <p>₹{{this.price}}.00</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            {{else if filteredProducts}}
+            {{#each filteredProducts}}
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-item">
+                    <figure>
+                        <img src="{{this.images.[0]}}" alt="">
+                        <div class="p-status">new</div>
+                        <div class="hover-icon">
+                            <a href="{{this.images.[0]}}" class="pop-up"><img src="img/icons/zoom-plus.png" alt=""></a>
+                        </div>
+                    </figure>
+                    <div class="product-text">
+                        <a href="/product/{{this.slug}}">
+                            <h5>{{this.name}}</h5>
+                            <h6>{{this.category}}</h6>
+                            <p>₹{{this.price}}.00</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            {{else if sortedProducts}}
+            {{#each sortedProducts}}
+
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-item">
+                    <figure>
+                        <img src="{{this.images.[0]}}" alt="">
+                        <div class="p-status">new</div>
+                        <div class="hover-icon">
+                            <a href="{{this.images.[0]}}" class="pop-up"><img src="img/icons/zoom-plus.png" alt=""></a>
+                        </div>
+                    </figure>
+                    <div class="product-text">
+                        <a href="/product/{{this.slug}}">
+                            <h5>{{this.name}}</h5>
+                            <h6>{{this.category}}</h6>
+                            <p>₹{{this.price}}.00</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            {{else}}
+
+            <div id="notfound">
+                <div class="notfound">
+                    <div class="notfound-404">
+                        <h1>Oops!</h1>
+                        <h2>404 - No Results Found</h2>
+                    </div>
+                    <a href="/shop">Go TO Shop</a>
+                </div>
+            </div>
+            {{/if}}
 
 
-		</div>
-    </footer> --}}
-    <!-- Footer Section End -->
+
+
+
+        </div>
+        <div class="col d-flex justify-content-center pagination text-dark">
+        </div>
+
+
+    </div>
+    {{!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script> --}}
+
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    const range = document.getElementById('range');
+    const selectMinPrice = document.getElementById('selectMinPrice');
+    const selectMaxPrice = document.getElementById('selectMaxPrice');
+
+    // initialize range slider
+    let instance = null;
+    const min = 500;
+    const max = 3000;
+    const defaultMin = min;
+    const defaultMax = max;
+    range.value = `${defaultMin},${defaultMax}`;
+    instance = $(range).ionRangeSlider({
+        skin: "square",
+        type: "double",
+        min: min,
+        max: max,
+        from: defaultMin,
+        to: defaultMax,
+        onStart: updateInputs,
+        onChange: updateInputs
+    }).data("ionRangeSlider");
+
+    function updateInputs(data) {
+        selectMinPrice.value = data.from;
+        selectMaxPrice.value = data.to;
+    }
+
+    function applyFilter() {
+        event.preventDefault();
+
+        console.log(`Selected price range: ${selectMinPrice.value} - ${selectMaxPrice.value}`);
+
+        axios.post('/shopPriceFilter', {
+            minPrice: selectMinPrice.value,
+            maxPrice: selectMaxPrice.value,
+        })
+            .then(() => {
+                location.href = '/shop';
+            })
+            .catch(() => {
+                console.error('Error applying price filter')
+            });
+    }
+
+    function sortPrice(value) {
+        axios.post('/shopPriceSort', {
+            minPrice: selectMinPrice.value,
+            maxPrice: selectMaxPrice.value,
+            sort: value
+        })
+            .then(() => {
+                location.href = '/shop';
+            })
+            .catch(() => {
+                location.href = '/shop';
+            });
+    }
+
+</script>
+
+
+{{!-- Pagination --}}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const totalCountInput = document.getElementById('totalCount');
+        const totalCount = Number(totalCountInput.value);
+
+        const currentPageInput = document.getElementById('currentPages');
+        const currentPage = Number(currentPageInput.value);
+        const totalPages = Math.ceil(totalCount / 8);
+
+        let page = currentPage || 1;
+        const paginationElement = document.querySelector('.pagination')
+
+        let pageLinks = '';
+        console.log(currentPage);
+        console.log(totalPages);
+        for (let i = 1; i <= totalPages; i++) {
+            pageLinks += `<ul style="list-style-type: none;"><li class="page-item${i === page ? ' active' : ''}"><a class="page-link" style="color: black;" href="?page=${i}">${i}</a></li></ul>`;
+        }
+        paginationElement.innerHTML = pageLinks;
+    });
+</script>

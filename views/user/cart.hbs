@@ -61,9 +61,25 @@
                                         style="color: black;border-color: rgb(192, 192, 192);">&nbsp;+&nbsp;</span>
                                 </div>
                             </div>
+                            
+
+                            {{!-- <span id="{{this.product._id}}stockOut text-danger" hidden >stock is out</span>  --}}
+								<span id="{{this.product._id}}stocks" style="font-weight: bold;" class="text-danger">{{substract this.product.stock this.quantity}}</span>
+
+								<span class="text-danger" style="font-weight: bold;" id="{{this.product._id}}inStock">Product in Stock</span>
+
+                                <span class="text-danger" style="font-weight: bold; display: none;"  id="{{this.product._id}}outOfStock">Out of stock</span>
+
+
+
+
+
+
+
+
                         </td>
                         {{!-- <td id="sub-{{this.product._id}}">$ {{this.product.price}}*{{this.quantity}}</td> --}}
-                        <td class="product-close"><a href="/deleteCart/{{this.product._id}}"
+                         <td class="product-close"><a class="deleteProduct" onclick="deleteProduct('{{this.product._id}}')"
                                 style="margin-left:35px; color: black;">x</a></td>
                     </tr>
 
@@ -74,19 +90,7 @@
             </table>
 
         </div>
-        {{!-- <div class="cart-btn">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="coupon-input">
-                        <input type="text" placeholder="Enter cupone code">
-                    </div>
-                </div>
-                <div class="col-lg-5 offset-lg-1 text-left text-lg-right">
-                    <div class="site-btn clear-btn">Clear Cart</div>
-                    <div class="site-btn update-btn">Update Cart</div>
-                </div>
-            </div>
-        </div> --}}
+      
     </div>
     <div class="shopping-method">
         <div class="container">
@@ -97,17 +101,13 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        {{!-- <th>Total</th>
-                                        <th>Subtotal</th> --}}
-                                        {{!-- <th>Shipping</th> --}}
+                                        
                                         <th class="total-cart">Total Cart</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        {{!-- <td class="total">$29</td>
-                                        <td id="sub-total">$29</td> --}}
-                                        {{!-- <td class="shipping">10</td> --}}
+                                      
                                         <td id="total" class="total-cart-p">{{total}}</td>
                                     </tr>
 
@@ -205,12 +205,26 @@
 
 
 {{!-- Scripts --}}
+
+
+    {{!-- Change Quantity Increase and Decrease the quantity of products--}}
+
+{{!-- Change Quantity Increase and Decrease the quantity of products--}}
 <script>
     function changeQuantity(productId, count, productPrice) {
         let quantity = parseInt(document.getElementById(productId).value)
         let Count = parseInt(count)
         let price = parseFloat(productPrice);
-        $.ajax({
+
+        let stocks = document.getElementById(`${productId}stocks`);
+
+        //console.log(stocks+"thendi")
+        //console.log(stocks.innerHTML+"asasasasas")
+
+		let stocksValue = Number(stocks.innerHTML);
+
+        if(stocksValue-(count)>=0){
+            $.ajax({
             url: '/change-product-quantity',
             data: {
                 product: productId,
@@ -225,10 +239,61 @@
                 } else {
                     document.getElementById(productId).value = quantity + count
                     document.getElementById('total').innerHTML = response.total
-                    document.getElementById('total1').innerHTML = response.total + 10
-                    document.getElementById('sub-' + productId).innerHTML = (price * (quantity + count))
+                    document.getElementById(`${productId}stocks`).innerHTML = stocksValue-(count);
+                    //document.getElementById('total1').innerHTML = response.total + 10
+                    if(stocksValue - count === 0){
+                        document.getElementById(`${productId}outOfStock`).style.display='inline'
+                        document.getElementById(`${productId}stocks`).style.display='none'
+                        document.getElementById(`${productId}inStock`).style.display='none'
+
+                    }else{
+                        document.getElementById(`${productId}outOfStock`).style.display='none'
+                        document.getElementById(`${productId}stocks`).style.display='inline'
+                        document.getElementById(`${productId}inStock`).style.display='inline'
+
+                    }
                 }
             }
         })
+        }
+        
     }
-</script>
+
+
+    async function deleteProduct(productId){
+		const res = await axios({
+			method: 'GET', 
+            url: `/deleteCart/${productId}`
+		});
+		try{
+			if(res.data.status === "success"){
+				Toastify({
+					text: res.data.message,
+					duration: 3000,
+					gravity: "bottom",
+					position: "center",
+					style: {
+						background: "linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)",
+					},
+				}).showToast();
+				setTimeout(()=>{
+					location.reload();
+				}, 850);
+			}else{
+				Toastify({
+					text: res.data.message,
+					duration: 3000,
+					gravity: "bottom",
+					position: "center",
+					style: {
+						background: "linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)",
+					},
+				}).showToast();
+				location.assign('/login')
+			}
+		}catch(err){
+			console.log(err);
+		}
+	}
+    
+</script>  

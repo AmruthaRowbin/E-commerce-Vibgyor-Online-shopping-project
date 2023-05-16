@@ -30,18 +30,19 @@
 <!-- Hero Slider Begin -->
 <section class="hero-slider">
     <div class="hero-items owl-carousel">
-        <div class="single-slider-item set-bg" data-setbg="https://img.freepik.com/free-photo/dark-haired-woman-with-red-lipstick-smiles-leans-stand-with-clothes-holds-package-pink-background_197531-17609.jpg ">
+        <div class="single-slider-item set-bg" data-setbg="{{banner.image}}">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <h1>2023</h1>
-                        <h2>Fasion World</h2>
+                        {{!-- <h2>Fasion World</h2> --}}
+                         <h2>{{banner.heading}}.</h2>
                         <a href="/shop" class="primary-btn">See Products</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="single-slider-item set-bg" data-setbg="img/slider-2.jpg">
+        {{!-- <div class="single-slider-item set-bg" data-setbg="img/slider-2.jpg">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -63,7 +64,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </section>
 <!-- Hero Slider End -->
 
@@ -151,17 +152,17 @@
                     <div class="section-title">
                         <h2>Latest Products</h2>
                     </div>
-                    <ul class="product-controls">
+                    {{!-- <ul class="product-controls">
                         <li data-filter="*">All</li>
                         <li data-filter=".dresses">Dresses</li>
                         <li data-filter=".bags">Bags</li>
                         <li data-filter=".shoes">Shoes</li>
                         <li data-filter=".accesories">Accesories</li>
-                    </ul>
+                    </ul> --}}
                 </div>
             </div>
         </div>
-        <div class="row" id="product-list">
+        {{!-- <div class="row" id="product-list">
             <div class="col-lg-3 col-sm-6 mix all accesories bags">
                 <div class="single-product-item">
                     <figure>
@@ -210,6 +211,26 @@
                     </div>
                 </div>
             </div>
+        </div> --}}
+         <div class="container">
+        <div class="row">
+            {{#each products}}
+            <div class="col-lg-3 col-md-6">
+                <div class="single-product-item">
+                    <figure>
+                        <img src="{{this.images.[0]}}" alt="">
+                        <div class="p-status">new</div>
+                    </figure>
+                    <div class="product-text">
+                        <a href="/product/{{this._id}}">
+                            <h5>{{name}}</h5>
+                            <h6>{{category}}</h6>
+                            <p>₹{{price}}.00</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
         </div>
     </div>
 </section>

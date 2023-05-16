@@ -32,11 +32,11 @@
                 <div class="row g-4">  
                     <div class="col-12">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Category</h6>
+                        
                             <div class="table-responsive">
                                 <table class="table">
                 
-                    <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                    <table class="table table-hover table-striped tm-table-striped-even mt-3" id="productsTable">
                         <thead>
                             <tr class="tm-bg-gray">
                                 <th scope="col">Product Name</th>
@@ -73,69 +73,72 @@
                 </div>
                  </div>
         </div>
+        {{!-- pagination --}}
+<input id="totalCount" hidden value="{{totalPages}}">
+<input id="currentPages" hidden value="{{currentPage}}">
     </div>
-
+ <div class="col d-flex justify-content-center pagination text-dark"></div>
     {{!-- Edit products Modal --}}
     {{#each productData}}
-    <div class="modal fade" id="edit{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="text-dark" action="/admin/adminEditProduct/{{this._id}}" method="post"
-                        enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="name" class="col-form-label">Product Name : </label>
-                            <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border"
-                                id="name">
-                        </div>
+<div class="modal fade" id="edit{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="text-dark" action="/admin/adminEditProduct/{{this._id}}" method="post"
+                    enctype="multipart/form-data" onsubmit="return validateForm(this)">
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">Product Name : </label>
+                        <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border"
+                            id="name">
+                        <div class="text-danger error-message" id="name-error"></div>
+                    </div>
 
-                        {{!-- <div class="form-group">
-                            <label for="category" class="col-form-label">Product Category : </label>
-                            <input type="text" name="category" value="{{this.category}}" class="border" id="category">
-                        </div> --}}
-
-                        <div class="input-group mb-3">
-                            <label for="category"
-                                class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
-                            <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category"
-                                id="category" required>
-                                <option selected>Select one</option>
-                                <option>Saree</option>
-                                <option>Skirt&Top</option>
-                                <option>Bridal Gown</option>
-                                <option>Western wear</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="description" class="col-form-label">Description : </label>
-                            <input type="text" value="{{this.description}}" name="description" class="border"
-                                id="description">
-                        </div>
-                        <div class="form-group">
-                            <label for="price" class="col-form-label">Price : </label>
-                            <input type="number" name="price" value="{{this.price}}" class="border" id="price">
-                        </div>
-                        <div class="form-group">
-                            <label for="stock" class="col-form-label">In stock : </label>
-                            <input type="number" name="stock" value="{{this.stock}}" class="border" id="stock">
-                        </div>
-                        <div class="form-group">
-                            <label for="fileInput" class="col-form-label">Images : </label>
-                            <input type="file" name="image" multiple value="{{this.images.[0]}}" class="border"
-                                id="fileInput">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-                            <a><button type="submit" class="btn btn-primary">confirm</button></a>
-                        </div>
-                    </form>
+                    <div class="input-group mb-3">
+                        <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
+                        <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category"
+                            id="category" required>
+                            <option selected>Select one</option>
+                            <option>Saree</option>
+                            <option>Skirt&Top</option>
+                            <option>Bridal Gown</option>
+                            <option>Western wear</option>
+                        </select>
+                        <div class="text-danger error-message" id="category-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-form-label">Description : </label>
+                        <input type="text" value="{{this.description}}" name="description" class="border"
+                            id="description">
+                        <div class="text-danger error-message" id="description-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="price" class="col-form-label">Price : </label>
+                        <input type="number" name="price" value="{{this.price}}" class="border" id="price">
+                        <div class="text-danger error-message" id="price-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="stock" class="col-form-label">In stock : </label>
+                        <input type="number" name="stock" value="{{this.stock}}" class="border" id="stock">
+                        <div class="text-danger error-message"id="stock-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fileInput" class="col-form-label">Images : </label>
+                        <input type="file" name="image" multiple value="{{this.images.[0]}}" class="border"
+                            id="fileInput">
+                       
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                        <a><button type="submit" class="btn btn-primary">confirm</button></a>
+                    </div>
+                </form>
                 </div>
             </div>
         </div>
@@ -204,7 +207,7 @@
                             <div class="table-responsive">
                                 <table class="table">
                 
-                    <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                    <table class="table table-hover table-striped tm-table-striped-even mt-3"id="productsTable">
                         <thead>
                             <tr class="tm-bg-gray">
                                 <th scope="col">Product Name</th>
@@ -246,66 +249,66 @@
     </div>
 
     {{!-- Edit products Modal --}}
-    {{#each product}}
-    <div class="modal fade" id="edit{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="text-dark" action="/admin/adminEditProduct/{{this._id}}" method="post"
-                        enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="name" class="col-form-label">Product Name : </label>
-                            <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border"
-                                id="name">
-                        </div>
+   {{#each productData}}
+<div class="modal fade" id="edit{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="text-dark" action="/admin/adminEditProduct/{{this._id}}" method="post"
+                    enctype="multipart/form-data" onsubmit="return validateForm(this)">
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">Product Name : </label>
+                        <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border"
+                            id="name">
+                        <div class="text-danger error-message" id="name-error"></div>
+                    </div>
 
-                        {{!-- <div class="form-group">
-                            <label for="category" class="col-form-label">Product Category : </label>
-                            <input type="text" name="category" value="{{this.category}}" class="border" id="category">
-                        </div> --}}
-
-                        <div class="input-group mb-3">
-                            <label for="category"
-                                class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
-                            <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category"
-                                id="category" required>
-                                <option selected>Select one</option>
-                                <option>Saree</option>
-                                <option>Bridal Gown</option>
-                                <option>Skirt&Top</option>
-                                <option>Western Wear</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="description" class="col-form-label">Description : </label>
-                            <input type="text" value="{{this.description}}" name="description" class="border"
-                                id="description">
-                        </div>
-                        <div class="form-group">
-                            <label for="price" class="col-form-label">Price : </label>
-                            <input type="number" name="price" value="{{this.price}}" class="border" id="price">
-                        </div>
-                        <div class="form-group">
-                            <label for="stock" class="col-form-label">In stock : </label>
-                            <input type="number" name="stock" value="{{this.stock}}" class="border" id="stock">
-                        </div>
-                        <div class="form-group">
-                            <label for="fileInput" class="col-form-label">Images : </label>
-                            <input type="file" name="image" multiple value="{{this.images.[0]}}" class="border"
-                                id="fileInput">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-                            <a><button type="submit" class="btn btn-primary">confirm</button></a>
-                        </div>
-                    </form>
+                    <div class="input-group mb-3">
+                        <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
+                        <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category"
+                            id="category" required>
+                            <option selected>Select one</option>
+                            <option>Saree</option>
+                            <option>Skirt&Top</option>
+                            <option>Bridal Gown</option>
+                            <option>Western wear</option>
+                        </select>
+                        <div class="text-danger error-message" id="category-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-form-label">Description : </label>
+                        <input type="text" value="{{this.description}}" name="description" class="border"
+                            id="description">
+                        <div class="text-danger error-message"id="description-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="price" class="col-form-label">Price : </label>
+                        <input type="number" name="price" value="{{this.price}}" class="border" id="price">
+                        <div class="text-danger error-message"id="price-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="stock" class="col-form-label">In stock : </label>
+                        <input type="number" name="stock" value="{{this.stock}}" class="border" id="stock">
+                        <div class="text-danger error-message" id="stock-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fileInput" class="col-form-label">Images : </label>
+                        <input type="file" name="image" multiple value="{{this.images.[0]}}" class="border"
+                            id="fileInput">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                        <a><button type="submit" class="btn btn-primary">confirm</button></a>
+                    </div>
+                </form>
                 </div>
             </div>
         </div>
@@ -374,6 +377,91 @@
             </div>
         </div>
     </div>
+    
     </div>
 
-{{/if}}
+{{/if}} 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{{!-- Pagination  --}}
+<script>
+    document.addEventListener("DOMContentLoaded", () =>{
+        const totalCountInput = document.getElementById('totalCount');
+        const totalCount = Number(totalCountInput.value);
+
+        const currentPageInput  = document.getElementById('currentPages');
+        const currentPage = Number(currentPageInput.value);
+        const totalPages = Math.ceil(totalCount/8);
+
+        let page = currentPage || 1;
+        const paginationElement = document.querySelector('.pagination')
+
+        let pageLinks = '';
+        console.log(currentPage);
+        console.log(totalPages);
+        for(let i = 1; i <= totalPages; i++){
+            pageLinks += `<ul style="list-style-type: none;"><li class="page-item${i === page ? ' active' : ''}"><a class="page-link" style="color: black;" href="?page=${i}">${i}</a></li></ul>`;
+        }
+        paginationElement.innerHTML = pageLinks;
+    });
+</script>
+
+
+
+
+<script>
+function validateForm(form) {
+    var name = form.name.value.trim();
+    var category = form.category.value;
+    var description = form.description.value.trim();
+    var price = parseFloat(form.price.value);
+    var stock = parseInt(form.stock.value);
+    
+
+    var isValid = true;
+
+    // Reset error messages
+    var errorElements = form.getElementsByClassName('error-message');
+    for (var i = 0; i < errorElements.length; i++) {
+        errorElements[i].innerHTML = '';
+    }
+
+    // Validate name
+    if (name === '') {
+        document.getElementById('name-error').innerHTML = 'Please enter a product name.';
+        isValid = false;
+    }
+
+    // Validate category
+    if (category === 'Select one') {
+        document.getElementById('category-error').innerHTML = 'Please select a category.';
+        isValid = false;
+    }
+
+    // Validate description
+    if (description === '') {
+        document.getElementById('description-error').innerHTML = 'Please enter a description.';
+        isValid = false;
+    }
+
+    // Validate price
+    if (isNaN(price) || price <= 0) {
+        document.getElementById('price-error').innerHTML = 'Please enter a valid price.';
+        isValid = false;
+    }
+
+    // Validate stock
+    if (isNaN(stock) || stock <= 0) {
+        document.getElementById('stock-error').innerHTML = 'Please enter a valid stock quantity.';
+        isValid = false;
+    }
+
+   
+    return isValid;
+}
+</script>
+

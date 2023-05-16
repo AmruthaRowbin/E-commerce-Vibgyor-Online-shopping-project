@@ -5,9 +5,15 @@ const express = require('express');
 const router = express.Router();
 const userControllers = require('../controllers/userControllers');
 const verifySession = require('../middleware/verifySession');
+const userHelpers = require('../helpers/userhelpers');
 
  
 // User Home, Login, Signup
+
+
+
+
+
 router.get('/', userControllers.userHome);
 
 router.post('/Home', userControllers.userLoginPost);
@@ -66,16 +72,23 @@ router.post('/checkOutPost', verifySession.verifyUserLoggedIn, userControllers.c
 router.post('/editAddressPost/:id', verifySession.verifyUserLoggedIn, userControllers.editAddressPost);
 
 router.get('/deleteAddress/:id' , verifySession.verifyUserLoggedIn, userControllers.deleteAddress);
+
 router.post('/placeOrder', verifySession.verifyUserLoggedIn, userControllers.placeOrder);
+
+router.post('/verifyPayment', verifySession.verifyUserLoggedIn, userControllers.verifyPayment);
 
 
 
 // User  Orders
 router.get('/orders', verifySession.verifyUserLoggedIn, userControllers.orders);
-router.get('/cancelOrder/:id', verifySession.verifyUserLoggedIn, userControllers.cancelOrder);
+
 
 router.get('/orders/viewProduct/:id', verifySession.verifyUserLoggedIn, userControllers.viewDet);
 
+
+router.post('/cancelOrder/:id', verifySession.verifyUserLoggedIn, userControllers.cancelOrder);
+
+router.post('/returnOrder/:id', verifySession.verifyUserLoggedIn, userControllers.returnOrder);
 
 
 //UserProfile
@@ -84,6 +97,33 @@ router.get('/userProfile', verifySession.verifyUserLoggedIn, userControllers.use
 router.post('/userProfilePost', verifySession.verifyUserLoggedIn, userControllers.userProfilePost);
 
 router.get('/userManageAddress', verifySession.verifyUserLoggedIn, userControllers.manageAddress);
+
+router.get('/wallet', verifySession.verifyUserLoggedIn, userControllers.getWallet);
+
+
+//Wishlist
+router.get('/wishlist', verifySession.verifyUserLoggedIn, userControllers.wishlist);
+
+router.get('/addToWishlist/:id', verifySession.verifyUserLoggedIn, userControllers.wishlistPage);
+
+router.get('/deleteWishlist/:id', verifySession.verifyUserLoggedIn, userControllers.deleteWishlist);
+
+
+
+
+//Filter
+
+//Filter
+router.post('/shopPriceFilter', verifySession.verifyUserLoggedIn, userControllers.priceFilter);
+
+router.post('/shopPriceSort', verifySession.verifyUserLoggedIn, userControllers.sortPrice);
+
+router.post('/user/userSearchProduct', verifySession.verifyUserLoggedIn, userControllers.userSearchProduct);
+
+
+router.post('/couponApply', verifySession.verifyUserLoggedIn, userControllers.couponApply);
+
+
 
 
 
