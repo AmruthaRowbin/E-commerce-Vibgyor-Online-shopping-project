@@ -6,6 +6,7 @@ const { ObjectId } = require("mongodb")
 //const adminHelpers = require("../helpers/adminhelpers");
 const { default: axios } = require("axios");
 const { response } = require("../app");
+const cloudinary = require('../utils/cloudinary');
 
 
 // Twilio-config
@@ -24,20 +25,12 @@ const client = require("twilio")(accountSid, authToken);
 
 module.exports = {
 
-  //User Home 
-  // userHome: (req, res) => {
-  //   productHelpers.getProducts().then((products) => {
-  //     res.render("index", { user: true, userName: req.session.userName, products });
-  //   })
-  // },
-
-
 
   //User Home
   userHome: (req, res) => {
     productHelpers.getSomeProducts().then(async (products) => {
       const banner = await userHelpers.getActiveBanner()
-      res.render("index", {user: true,userName: req.session.userName, products,banner });
+      res.render("index", { user: true, userName: req.session.userName, products, banner });
     });
   },
 
@@ -196,11 +189,11 @@ module.exports = {
         req.session.user = response.user;
         req.session.userName = req.session.user.name;
         req.session.userLoggedIn = true;
-        productHelpers.getSomeProducts().then(async(products)=>{
+        productHelpers.getSomeProducts().then(async (products) => {
           const banner = await userHelpers.getActiveBanner();
-          res.render("index", { user: true, userName: req.session.userName,products,banner });
+          res.render("index", { user: true, userName: req.session.userName, products, banner });
         })
-        
+
       }
     }).catch((err) => {
       console.log(err);
@@ -293,27 +286,9 @@ module.exports = {
 
 
 
-  //User Product Page  
-
-  // productPage: (req, res) => {
-  //   const productData = req.params.id;
-  //   const userName = req.session.userName;
-  //   productHelpers.getSingleProduct(productData)
-  //     .then((product) => {
-  //       if (!product) {
-  //         res.render("user/productNotFound", { user: true, userName });
-  //       }
-  //       else {
-  //         res.render("user/productPages", { user: true, userName, product });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     })
-  // },
 
 
-  //User Product Page
+  // User Product Page
   productPage: async (req, res) => {
     const productData = req.params.id;
     const userName = req.session.userName;
@@ -321,11 +296,11 @@ module.exports = {
       .getSingleProduct(productData)
       .then(async (product) => {
         if (!product) {
-                  res.render("user/productNotFound", { user: true, userName });
-                 }
-                else {
-                 res.render("user/productPages", { user: true, userName, product });
-                 }
+          res.render("user/productNotFound", { user: true, userName });
+        }
+        else {
+          res.render("user/productPages", { user: true, userName, product });
+        }
         console.log(product + "category");
         const getRelatedProduct = await productHelpers.getRelatedProducts(
           product.category
@@ -341,6 +316,11 @@ module.exports = {
         console.log(err);
       });
   },
+
+
+
+
+
 
   shopPage: async (req, res) => {
     const userName = req.session.userName;
@@ -486,15 +466,15 @@ module.exports = {
   placeOrder: async (req, res) => {
     const addressId = req.body.address
     const userDetails = req.session.user;
-    
-    const total = await cartHelpers.getCartTotal(req.session.user._id);
-  
+
+    const total = req.body.total;
+
     const paymentMethod = req.body.paymentMethod
-   
+
     const shippingAddress = await userHelpers.findAddress(addressId, req.session.user._id)
     const cartItems = await cartHelpers.getCart(req.session.user._id)
     const now = new Date();
-    const status = req.body.paymentMethod === "COD" ? "placed": "pending";
+    const status = req.body.paymentMethod === "COD" ? "placed" : "pending";
     const order = {
       userId: new ObjectId(req.session.user._id),
       userName: req.session.userName,
@@ -503,9 +483,9 @@ module.exports = {
       total: total,
       paymentMethod: paymentMethod,
       products: cartItems,
-      date: new Date(now.getFullYear(),now.getMonth(),now.getDate(),0,0,0,0),
-        status,
-        coupon: req.body.coupon,
+      date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0),
+      status,
+      coupon: req.body.coupon,
     }
 
     userHelpers.addOrderDetails(order)
@@ -520,7 +500,7 @@ module.exports = {
 
         } else if (req.body.paymentMethod === "card") {
           const orderId = order.insertedId;
-          
+
           userHelpers.generateRazorpay(orderId, total).then((response) => {
             res.json({
               response: response,
@@ -572,7 +552,7 @@ module.exports = {
 
   // Orders Page
   // Orders Page
-  orders: async (req, res) => {
+   orders: async (req, res) => {
     const userName = req.session.userName;
     const userId = req.session.user._id;
     const orders = await userHelpers.getOrders(userId);
@@ -592,7 +572,6 @@ module.exports = {
   },
 
   cancelOrder: (req, res) => {
-    console.log("inside one cance;l")
     const orderId = req.params.id;
     const reason = req.body.reason;
     userHelpers.cancelOrder(orderId, reason).then(() => {
@@ -603,7 +582,6 @@ module.exports = {
     const userName = req.session.userName;
     const orderId = req.params.id;
     const orders = await userHelpers.getOrderedProduct(orderId);
-    console.log(orders + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     res.render('user/viewDet', { user: true, userName, orders })
   },
 
@@ -617,8 +595,8 @@ module.exports = {
   // User Profile
   userProfile: async (req, res) => {
     const userName = req.session.userName;
-    const address = await userHelpers.getAddress(req.session.user._id);
-    res.render('user/userprofile', { user: true, userName, userDetailes: req.session.user, address });
+    const userProfile = await userHelpers.getUser(req.session.user._id);
+    res.render("user/userProfile", { user: true, userName, userDetailes: req.session.user, userProfile });
   },
 
   userProfilePost: (req, res) => {
@@ -643,6 +621,30 @@ module.exports = {
         res.redirect('/userprofile');
       }
     });
+  },
+
+
+  profileImage: async (req, res) => {
+    const imageUrl = req.file;
+    const userId = req.session.user._id;
+    try {
+      const result = await cloudinary.uploader.upload(imageUrl.path);
+
+      if (result) {
+        res.json({
+          status: true,
+          data: result.url,
+        })
+
+        await userHelpers.profileImage(userId, result.url);
+      } else {
+        console.log("Image Not Found")
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+
   },
 
 
@@ -688,13 +690,13 @@ module.exports = {
     const category = req.session.category;
 
     req.session.filteredProduct = await productHelpers.filterPrice(req.session.minPrice, req.session.maxPrice, category);
-   
+
     res.json({
       status: "success"
     });
   },
 
- 
+
   sortPrice: async (req, res) => {
     console.log("inside");
     req.session.minPrice = req.body.minPrice;
@@ -724,7 +726,6 @@ module.exports = {
 
   //Razorpay 
   verifyPayment: (req, res) => {
-    console.log(req.body + "verify payment");
     userHelpers.verifyPayment(req.body).then(() => {
       userHelpers.changeOrderStatus(req.body.order.receipt).then(() => {
         res.json({
@@ -734,31 +735,30 @@ module.exports = {
     })
   },
 
-  returnOrder:(req, res) => {
+  returnOrder: (req, res) => {
     const orderId = req.params.id;
     const reason = req.body.reason;
-    console.log(reason+"vannnnnnnnnnnnnnnnuuuuuuuuuuuuuuuuuuuuuuuuuu");
     userHelpers.returnProduct(orderId, reason).then(() => {
       res.redirect('back');
     })
   },
 
 
-  couponApply:(req, res)=> {
+  couponApply: (req, res) => {
     const userId = req.session.user._id;
-    userHelpers.couponApply(req.body.couponCode, userId).then((coupon)=> {
-      if(coupon){
-        if(coupon === 'couponExists'){
+    userHelpers.couponApply(req.body.couponCode, userId).then((coupon) => {
+      if (coupon) {
+        if (coupon === 'couponExists') {
           res.json({
-            status:"coupon is already used, try another coupon"
+            status: "coupon is already used, try another coupon"
           })
-        }else{
+        } else {
           res.json({
             status: "success",
             coupon: coupon
           })
         }
-      }else{
+      } else {
         res.json({
           status: "coupon is not valid !!"
         })
@@ -767,10 +767,26 @@ module.exports = {
   },
 
 
-  getWallet:async (req, res)=> {
-    const wallet = await userHelpers.getWallet();
-    res.render('user/wallet', {user:true, userName: req.session.userName, wallet})
-  }
+  getWallet: async (req, res) => {
+    try {
+      const userId = req.session.user._id;
+      const wallet = await userHelpers.getWallet(userId);
+      res.render('user/wallet', { user: true, userName: req.session.userName, wallet: wallet });
+    } catch (error) {
+      // Handle any errors that occurred during the process
+      res.render('error', { message: 'An error occurred', error: error });
+    }
+  },
+
+  invoicegenerator:(req, res)=> {
+    const userName = req.session.userName;
+    userHelpers.getOrderedProducts(req.params.id).then((singleproduct) => {
+        userHelpers.getSingleorder(req.params.id).then((order) => { 
+        res.render('user/invoice', { user: true, singleproduct,order,userName })
+      })
+    })
+
+  },
 
 
 }

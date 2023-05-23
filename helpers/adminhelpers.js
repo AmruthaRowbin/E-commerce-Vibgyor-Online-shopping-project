@@ -62,37 +62,39 @@ module.exports = {
 
 
 
+  
+
+    // getUserOrder: () => {
+    //     return new Promise(async (resolve, reject) => {
+    //       try {
+      //         const userDet = await db.get().collection(collection.ORDER_COLLECTION).find().toArray();
+      
+    //         // Sort the orders based on the embedded timestamp in the _id field
+    //         const sortedOrders = userDet.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
+      
+    //         resolve(sortedOrders);
+    //       } catch (error) {
+    //         reject(error);
+    //       }
+    //     });
+    //   },
+      
     getUserOrder: () => {
         return new Promise(async (resolve, reject) => {
-            try {
-                const userDet = await db.get().collection(collection.ORDER_COLLECTION).find().sort({ _id: -1 }).toArray();
-                resolve(userDet);
-            } catch (error) {
-                reject(error);
-            }
+          try {
+            const userDet = await db
+              .get()
+              .collection(collection.ORDER_COLLECTION)
+              .find()
+              .sort({ _id: -1 }) // Sort by _id in descending order
+              .toArray();
+            resolve(userDet);
+          } catch (error) {
+            reject(error);
+          }
         });
-    },
-
-
-
-    // adminOrderStatus: (orderId, status) => {
-    //     return new Promise((resolve, reject) => {
-    //         db.get().collection(collection.ORDER_COLLECTION)
-    //             .updateOne({
-
-    //                 _id: new objectId(orderId),
-    //                 //   order:{$elemMatch:{id: new objectId(orderId)}}
-
-    //             },
-    //                 {
-    //                     $set: {
-    //                         "status": status,
-    //                     }
-    //                 }).then((response) => {
-    //                     resolve(response)
-    //                 })
-    //     })
-    // },
+      },
+      
 
 
     adminOrderStatus: (orderId, status) => {
@@ -215,7 +217,6 @@ module.exports = {
     //viewdatils in order
 
     getOrderedProducts: (ordersId) => {
-        console.log('inside333')
         return new Promise(async (resolve, reject) => {
             ordersId = new objectId(ordersId);
             console.log(ordersId);
@@ -411,6 +412,7 @@ module.exports = {
 
     getCoupon:()=> {
         return new Promise(async(resolve, reject)=> {
+            try{
             const coupons = await db.get().collection(collection.COUPON_COLLECTION).find().toArray();
             const newDate = new Date();
             coupons.forEach(coupon => {
@@ -426,6 +428,9 @@ module.exports = {
                 coupon.date = formattedDate;
             })
             resolve(coupons);
+        }catch(error){
+            reject("Failed to get coupons");
+        }
         })
       },
 
@@ -448,11 +453,13 @@ module.exports = {
             );
 
             if(couponExist){
-                resolve(null)
+                reject("Coupon already exists");
             }else{
                 db.get().collection(collection.COUPON_COLLECTION).insertOne(coupon).then(()=> {
                     resolve();
-                })
+                }) .catch((error) => {
+                    reject("Failed to add coupon");
+                  });
             }
         })
       },
@@ -626,50 +633,126 @@ module.exports = {
     },
 
 
-    adminRefund: (orderId) => {
+    // adminRefund: (orderId) => {
+    //     return new Promise(async (resolve, reject) => {
+    //       try {
+    //         const order = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: new objectId(orderId) });
+      
+    //         if (order) {
+    //           const balance = order.total;
+    //           const date = order.date;
+    //           const userId = order.userId;
+      
+    //           const walletCollection = db.get().collection(collection.WALLET_COLLECTION);
+      
+    //           const existingWallet = await walletCollection.findOne({userId});
+      
+    //           if (existingWallet) {
+    //             const existingBalance = existingWallet.balance;
+    //             const updatedBalance = existingBalance + balance;
+    //             console.log(updatedBalance)
+    //             console.log('updatedbalance')
+      
+    //             await walletCollection.updateOne(
+    //               {userId},
+    //               { $set: { orderId: new objectId(orderId), date: date, balance: updatedBalance } }
+                  
+    //             );
+
+    //           } else {
+    //             await walletCollection.insertOne({userId,
+    //               orderId: new objectId(orderId),
+    //               date: date,
+    //               balance: balance,
+    //             });
+    //           }
+    
+    //           await db.get().collection(collection.ORDER_COLLECTION).updateOne(
+    //             { _id: new objectId(orderId) },
+    //             { $set: { refunded: true } }
+    //           );
+              
+      
+    //           resolve();
+    //         }
+    //       } catch (error) {
+    //         reject(error);
+    //       }
+    //     });
+    //   },
+
+
+    getSingle: (orderId) => {
+        return new Promise((resolve, reject) => {
+          db.get()
+            .collection(collection.ORDER_COLLECTION)
+            .findOne({ _id: new objectId(orderId) })
+            .then((orderData) => {
+              if (orderData) {
+                const userId = orderData.userId;
+                console.log('userId')
+                console.log(userId)
+                // Add the userId property to the orderData object
+                orderData.userId = userId;
+                resolve(userId);
+                
+              } else {
+                reject(new Error('Order not found'));
+              }
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        });
+      },
+
+
+      adminRefund: (orderId, userId) => {
         return new Promise(async (resolve, reject) => {
           try {
-            const order = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: new objectId(orderId) });
+            const order = await db.get()
+              .collection(collection.ORDER_COLLECTION)
+              .findOne({ _id: new objectId(orderId) });
       
             if (order) {
               const balance = order.total;
-              const date = order.date;
-      
+              const date = order. date;
+              
               const walletCollection = db.get().collection(collection.WALLET_COLLECTION);
       
-              const existingWallet = await walletCollection.findOne({});
+              const existingWallet = await walletCollection.findOne({ _id: new objectId(userId) });
       
               if (existingWallet) {
                 const existingBalance = existingWallet.balance;
                 const updatedBalance = existingBalance + balance;
       
                 await walletCollection.updateOne(
-                  {},
-                  { $set: { orderId: new objectId(orderId), date: date, balance: updatedBalance } }
+                  { _id: new objectId(userId) },
+                  { $set: { balance: updatedBalance } }
                 );
               } else {
                 await walletCollection.insertOne({
+                  _id: new objectId(userId),
                   orderId: new objectId(orderId),
-                  date: date,
-                  balance: balance,
+                  date : date,
+                  balance: balance
                 });
               }
-    
+      
               await db.get().collection(collection.ORDER_COLLECTION).updateOne(
                 { _id: new objectId(orderId) },
                 { $set: { refunded: true } }
               );
-              
       
               resolve();
+            } else {
+              reject(new Error('Order not found'));
             }
           } catch (error) {
             reject(error);
           }
         });
       },
-
-
 
 
 

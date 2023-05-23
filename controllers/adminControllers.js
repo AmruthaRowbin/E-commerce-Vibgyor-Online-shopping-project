@@ -84,16 +84,25 @@ module.exports = {
         })
     },
 
-
     adminBlockUser: (req, res) => {
         const userId = req.params.id;
         console.log(userId);
-        adminHelpers.blockUser(userId).then(() => {
-            res.redirect('/admin/adminUserManagement')
-        }).catch((err) => {
-            console.log(err);
-        })
+        adminHelpers
+            .blockUser(userId)
+            .then(() => {
+                if (req.session.userId === userId) {
+                req.session.userLoggedIn = false;
+                req.session.userName = false;
+                res.redirect("/admin/adminUserManagement");
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     },
+
+
+    
     adminsearchuser: (req, res) => {
         const userId = req.params.id;
         adminHelpers.suser(userId).then(() => {
@@ -209,7 +218,6 @@ module.exports = {
     deleteCategory: (req, res) => {
         const category = req.params.id;
         const cateName = req.params.name;
-        console.log(category);
         categoryHelpers.deleteCategory(category, cateName).then(() => {
             res.redirect('/admin/adminCategory');
         }).catch((err) => {
@@ -231,22 +239,9 @@ module.exports = {
         })
     },
 
-    // adminOrderStatus: (req, res) => {
-    //     const orderId = req.params.id;
-    //     //    const userId = req.body.userId;
-    //     const status = req.body.status;
-
-    //     adminHelpers.adminOrderStatus(orderId, status).then(() => {
-    //         res.redirect('back');
-    //     })
-    // },
-
     adminOrderStatus: (req, res) => {
         const orderId = req.params.id;
-        console.log(orderId);
         const status = req.body.status;
-        console.log("status check");
-        console.log(status);
 
         adminHelpers
             .adminOrderStatus(orderId, status)
@@ -309,25 +304,6 @@ module.exports = {
         })
     },
 
-
-
-
-
-
-
-
-
-
-
-    // viewDetadmin: async (req, res) => {
-
-    //     const adminName = req.session.adminName;
-    //     const orderId = req.params.id;
-    //     const orders = await adminHelpers.getOrderedProducts(orderId);
-    //     console.log(orders + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    //     res.render('admin/viewDetadmin', { orders })
-    // },
-
     viewDetadmin: async (req, res) => {
         console.log("inside check viewDetail");
         const adminName = req.session.adminName;
@@ -342,12 +318,14 @@ module.exports = {
                     admin: true,
                     adminName,
                     orders,
+                    
                 });
             } else {
                 res.render("user/viewDetadmin", {
                     admin: false,
                     adminName,
                     orders,
+                    
                 });
             }
         });
@@ -361,14 +339,25 @@ module.exports = {
          res.render('admin/adminCoupon', {admin: true, adminName: req.session.adminName, coupons})
      },
  
-     adminAddCoupon:(req, res)=> {
-         adminHelpers.adminAddCoupon(req.body).then(()=> {
-             res.redirect('/admin/adminCoupon');
-         }).catch(()=> {
-             res.redirect('/admin/adminCoupon');
-         })
-     },
+    //  adminAddCoupon:(req, res)=> {
+    //      adminHelpers.adminAddCoupon(req.body).then(()=> {
+    //          res.redirect('/admin/adminCoupon');
+    //      }).catch(()=> {
+    //          res.redirect('/admin/adminCoupon');
+    //      })
+    //  },
  
+
+    adminAddCoupon: (req, res) => {
+        adminHelpers.adminAddCoupon(req.body)
+          .then(() => {
+            res.status(200).send({ success: "Coupon added successfully" });
+          })
+          .catch((error) => {
+            res.status(400).send({ error: error || "Failed to add coupon" });
+          });
+      },
+      
      adminEditCoupon:(req, res)=> {
         const couponId = req.params.id; 
         adminHelpers.adminEditCoupon(couponId, req.body).then(()=> {
@@ -444,15 +433,26 @@ module.exports = {
     },
 
 
-    adminRefund:(req, res)=> {
-        const orderId = req.params.id;
-        adminHelpers.adminRefund(orderId).then(()=>{
-            res.redirect('back');
-        })
-    },
+    // adminRefund:(req, res)=> {
+    //     const orderId = req.params.id;
+    //     adminHelpers.adminRefund(orderId).then(()=>{
+    //         res.redirect('back');
+    //     })
+    // },
 
 
     
+
+    adminRefund:async(req, res)=> {
+        const orderId = req.params.id;
+        const userId = await adminHelpers.getSingle(orderId);
+        console.log('userId')
+        console.log(userId)
+        console.log('req.body.order.userId')
+        adminHelpers.adminRefund(orderId,userId).then(()=>{
+            res.redirect('back');
+        })
+    },
 
 
 

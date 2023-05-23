@@ -11,6 +11,7 @@ const yup = require('yup');
 const flash = require('connect-flash');
 const mathHelpers = require('./helpers/mathHelpers');
 require('dotenv').config();
+const nocache=require('nocache')
 
 // var hbs = require('express-hbs')
 handlebars.registerHelper(mathHelpers);
@@ -26,6 +27,9 @@ require('dotenv').config();
 var app = express();
 
 var fileUpload=require('express-fileupload')
+
+app.use(nocache());
+
 
 
 app.use(session({

@@ -3,17 +3,24 @@
   <head>
     <title>{{title}}</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-  {{!-- toastify --}}
+
+    {{!-- toastify --}}
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+     
+     {{#if user}}
+
+     {{!-- jquery 3.3.1 --}}
+  <script src="/javascripts/jquery-3.3.1.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 
-
-  {{#if user}}
+     
       {{!-- jquery 3.3.1 --}}
   <script src="/javascripts/jquery-3.3.1.min.js"></script>
   
@@ -34,36 +41,23 @@
   <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
   <link rel="stylesheet" href="/css/style.css" type="text/css">
 
-
-
   {{!-- pagination --}}
-
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
 
-
   {{/if}}
-
-
-
+     
   {{#if admin}}
+  {{!-- pagination --}}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
+
   
-  <!-- jQuery -->
+<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
 
 
- {{!-- pagination --}}
-
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
-
-
-
-<!-- Bootstrap JS -->
-{{!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script> --}}
-
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
    
    <link href="/admin/img/favicon.ico" rel="icon">
 
@@ -83,28 +77,18 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/admin/css/bootstrap.min.css" rel="stylesheet">
 
-
-     <!-- https://fullcalendar.io/ -->
-    {{!-- <link rel="stylesheet" href="/admin/css/fullcalendar.min.css"> --}}
-
     <!-- Template Stylesheet -->
     <link href="/admin/css/style.css" rel="stylesheet">
 
-
-    {{!-- <link rel="stylesheet" href="/admin/css/tooplate.css"> --}}
-
-
-    {{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">  --}}
+    {{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
   <!-- Bootstrap CSS -->
-{{!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-MHkIuV7Lz9XnXV7ZiP+8uVRVGjI1TBrxmvTlTFAW8f80aQmdlv4+y4+j7JZ2z6ltJmk6BPLz6wzU6rDeU6GMg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-MHkIuV7Lz9XnXV7ZiP+8uVRVGjI1TBrxmvTlTFAW8f80aQmdlv4+y4+j7JZ2z6ltJmk6BPLz6wzU6rDeU6GMg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   {{/if}}
   </head>
   <body>
 
-    {{#if user}}
+   {{#if user}}
   {{>user-header}}
   {{else if admin}}
   {{>admin-header}}
@@ -114,9 +98,8 @@
     {{>userFooters}}
     {{/if}}
 
-
     {{#if user}}
-<!-- Js Plugins -->
+  <!-- Js Plugins -->
   {{!-- <script src="/javascripts/jquery-3.3.1.min.js"></script> --}}
  
 
@@ -133,47 +116,31 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-
-
+{{!-- pagination --}}
 <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
+
 
   {{!-- toastify --}}
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   
   {{!-- axios --}}
   <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-
+  
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
-
-
-  {{!-- pagination --}}
-
-
-  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
-
-
-
-
-
-{{!-- <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.11.2/dist/toastify.min.js"></script> --}}
-
+  
 
 
   {{/if}}
 
 
-
-
-
-
-
-
-
 {{#if admin}}
+<script>cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
    <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -185,7 +152,7 @@
     <script src="/admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="/admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     
-     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
@@ -193,19 +160,9 @@
     <!-- Template Javascript -->
     <script src="/admin/js/main.js"></script>
 
-      <script src="js/Chart.min.js"></script>
-
-      {{!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
-
-      {{!-- <script src="/admin/js/utils.js"></script>  --}}
-
-      {{!-- <script src="js/fullcalendar.min.js"></script> --}}
-
-
-      {{!-- <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script> --}}
-
-    {{!-- <script src="js/tooplate-scripts.js"></script> --}}
+{{!-- pagination --}}
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
 
 
 
@@ -214,11 +171,6 @@
 
 <!-- CSS -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-
-
-{{!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> --}}
 
 
 <!-- DataTables JS -->
@@ -241,24 +193,13 @@
 <!-- DataTables Bootstrap 4 JS -->
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
 
-
-   
-  {{!-- pagination --}}
-
+ {{!-- axios --}}
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
   
-  {{!-- pagination --}}
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
-  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
-
-
-
-
-
-
-
- 
+    
     
   {{/if}}
 

@@ -3,20 +3,7 @@ const collection = require('../config/collection');
 const objectId = require('mongodb-legacy').ObjectId;
 
 module.exports = {
-    // addCategory: (detailes) => {
-    //     return new Promise(async (resolve, reject) => {
-    //         const Category = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ name: detailes.name })
-    //         if (Category) {
-    //             resolve(false)
-    //         } else {
-    //             detailes.listed = true;
-    //             db.get().collection(collection.CATEGORY_COLLECTION).insertOne(detailes).then((response) => {
-    //                 resolve(response.insertedId);
-    //             })
-    //         }
-    //     })
-    // },
-
+   
     
     addCategory:(detailes) => {
         return new Promise (async (resolve, reject) => {
@@ -84,15 +71,6 @@ module.exports = {
             })
         })
     },
-
-
-
-
-
-
-
-
-
 
     getSelectedCategory: (catName) => {
         console.log(catName);

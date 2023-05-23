@@ -1,4 +1,4 @@
-   <section class="page-add cart-page-add">
+<section class="page-add cart-page-add">
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
@@ -28,10 +28,10 @@
                 <tbody>
                    
                     <tr>
-                        {{#each wallet}}
-                        <td class="tm-product-name" style="font-weight: bold;">{{balance}}</td>
+                        
+                        <td class="tm-product-name" style="font-weight: bold;">{{wallet.balance}}</td>
                         <td class="btn btn-dark" data-toggle="modal" data-target="#moreDetailes{{_id}}" style="padding-top: 0.5rem;">Last Transaction</td>
-                        {{/each}}
+                        
                     </tr>
                 </tbody>
             </table>
@@ -39,7 +39,7 @@
     </div>
 </div>
 
-    {{#each wallet}}
+   
      <div class="modal fade" id="moreDetailes{{this._id}}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -52,11 +52,11 @@
                     </div>
                     <div class="modal-body">
                             <div class="form-group">
-                                <label for="name" class="col-form-label">Date : {{date}}</label>
+                                <label for="name" class="col-form-label">Date : {{wallet.date}}</label>
                             </div>
 
                             <div class="form-group">
-                                <label for="name" class="col-form-label">Transaction Id : {{orderId}}</label>
+                                <label for="name" class="col-form-label">Transaction Id : {{wallet.orderId}}</label>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -65,4 +65,3 @@
                 </div>
             </div>
         </div>
-        {{/each}}

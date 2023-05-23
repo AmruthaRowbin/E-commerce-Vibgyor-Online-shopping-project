@@ -6,6 +6,7 @@ const router = express.Router();
 const userControllers = require('../controllers/userControllers');
 const verifySession = require('../middleware/verifySession');
 const userHelpers = require('../helpers/userhelpers');
+const multer = require('../utils/multer');
 
  
 // User Home, Login, Signup
@@ -86,6 +87,9 @@ router.get('/orders', verifySession.verifyUserLoggedIn, userControllers.orders);
 router.get('/orders/viewProduct/:id', verifySession.verifyUserLoggedIn, userControllers.viewDet);
 
 
+router.post('/setinvoice/:id',verifySession.verifyUserLoggedIn,userControllers.invoicegenerator)
+
+
 router.post('/cancelOrder/:id', verifySession.verifyUserLoggedIn, userControllers.cancelOrder);
 
 router.post('/returnOrder/:id', verifySession.verifyUserLoggedIn, userControllers.returnOrder);
@@ -100,6 +104,7 @@ router.get('/userManageAddress', verifySession.verifyUserLoggedIn, userControlle
 
 router.get('/wallet', verifySession.verifyUserLoggedIn, userControllers.getWallet);
 
+router.post('/uploadProfileImage', multer.single('file'), userControllers.profileImage);
 
 //Wishlist
 router.get('/wishlist', verifySession.verifyUserLoggedIn, userControllers.wishlist);

@@ -21,89 +21,93 @@ module.exports = {
     })
   },
 
-  getAdminProducts:(currentPage) => {
+  getAdminProducts: (currentPage) => {
+    return new Promise(async (resolve, reject) => {
+      const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();
+      if (productData) {
+        resolve(productData);
+      } else {
+        resolve("No data to show")
+      }
+    })
+  },
+
+
+  getSomeProducts: () => {
+    return new Promise(async (resolve, reject) => {
+      const someProduct = await db.get().collection(collection.PRODUCT_COLLECTION).find().limit(8).toArray();
+      if (someProduct) {
+        resolve(someProduct)
+      } else {
+        resolve("No data found");
+      }
+    })
+  },
+
+  getSingleProduct: (productId) => {
+    return new Promise(async (resolve, reject) => {
+      const productSingleData = await db.get().collection(collection.PRODUCT_COLLECTION).findOne(
+        {
+          _id: new objectId(productId)
+        });
+      console.log(productSingleData);
+      resolve(productSingleData);
+    })
+  },
+
+
+  getProducts: (currentPage) => {
+    return new Promise(async (resolve, reject) => {
+      currentPage = parseInt(currentPage);
+      const limit = 8;
+      const skip = (currentPage - 1) * limit;
+      const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find(
+        {
+          listed: true
+        }
+      ).skip(skip).limit(limit).toArray();
+      if (productData) {
+        resolve(productData);
+      } else {
+        resolve("No data to show")
+      }
+    })
+  },
+
+  getProductsAdmin:(currentPage) => {
     return new Promise (async (resolve, reject) => {
-        const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();
+      currentPage = parseInt(currentPage);
+        console.log('currentPage');
+        console.log(currentPage);
+        const limit = 8;
+        const skip = (currentPage-1)*limit;
+        const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find(
+          {
+              listed: true
+          }
+      ).skip(skip).limit(limit).toArray();
+  
+        // const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();
         if(productData){
             resolve(productData);
         }else{
             resolve("No data to show")
         }
     })
-},
+  },
 
-
-  getSomeProducts:() => {
+  getRelatedProducts: (category) => {
     return new Promise(async (resolve, reject) => {
-        const someProduct = await db.get().collection(collection.PRODUCT_COLLECTION).find().limit(8).toArray();
-        if(someProduct){
-            resolve(someProduct)
-        }else{
-            resolve("No data found");
-        }
+      const getRelatedProduct = await db.get().collection(collection.PRODUCT_COLLECTION).find({
+        category: category
+      }).limit(4).toArray();
+      if (getRelatedProduct) {
+        resolve(getRelatedProduct)
+      } else {
+        resolve("No data Found");
+      }
     })
-},
-
-  getSingleProduct: (productId) => {
-    return new Promise (async (resolve, reject) =>{
-        const productSingleData = await db.get().collection(collection.PRODUCT_COLLECTION).findOne(
-            {
-                _id: new objectId(productId)
-            });
-            console.log(productSingleData);
-            resolve(productSingleData);
-        })
-},
-
-
- getProducts:(currentPage) => {
-        return new Promise (async (resolve, reject) => {
-            currentPage = parseInt(currentPage);
-            const limit = 8;
-            const skip = (currentPage-1)*limit;
-            const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find(
-                {
-                    listed: true
-                }
-            ).skip(skip).limit(limit).toArray();
-            if(productData){
-                resolve(productData);
-            }else{
-                resolve("No data to show")
-            }
-        })
-    },
-
-
-    getProductsAdmin:(currentPage) => {
-      return new Promise (async (resolve, reject) => {
-        currentPage = parseInt(currentPage);
-          console.log('currentPage');
-          console.log(currentPage);
-          const limit = 8;
-          const skip = (currentPage-1)*limit;
-          const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find().skip(skip).limit(limit).toArray();
-          // const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();
-          if(productData){
-              resolve(productData);
-          }else{
-              resolve("No data to show")
-          }
-      })
-    },
-
-  getRelatedProducts:(category) => {
-    return new Promise (async (resolve, reject) => {
-        const getRelatedProduct = await db.get().collection(collection.PRODUCT_COLLECTION).find({
-            category: category
-        }).limit(4).toArray();
-        if(getRelatedProduct){
-            resolve(getRelatedProduct)
-        }else{
-            resolve("No data Found"); 
-        }
-    })
-},
+  },
 
   getSingleProduct: (slug) => {
     return new Promise(async (resolve, reject) => {
@@ -214,17 +218,6 @@ module.exports = {
     })
   },
 
-  // getListedCategory:()=>{
-  //     return new Promise(async(resolve, reject)=>{
-  //         const categories = await db.get().collection(collection.CATEGORY_COLLECTION).find(
-  //             {
-  //                 listed : true
-  //             }
-  //         ).toArray();
-  //         console.log(categories);
-  //         resolve(categories);
-  //     })
-  // },
 
 
   getListedCategory: () => {
@@ -340,7 +333,6 @@ module.exports = {
   // },
 
   sortPrice: (detailes, category) => {
-    console.log("details")
     console.log(detailes)
     return new Promise(async (resolve, reject) => {
       try {
@@ -408,41 +400,58 @@ module.exports = {
     })
   },
 
-  // totalPages: () => {
-  //   return new Promise(async (resolve, reject) => {
-  //     const totalCount = await db.get().collection(collection.PRODUCT_COLLECTION).countDocuments({});
-  //     resolve(totalCount);
-  //   })
-  // },
 
 
-  
-  totalPages:()=> {
+
+
+  totalPages: () => {
     return new Promise(async (resolve, reject) => {
-        const totalCount = await db.get().collection(collection.PRODUCT_COLLECTION).countDocuments({});
-        resolve(totalCount);
+      const totalCount = await db.get().collection(collection.PRODUCT_COLLECTION).countDocuments({});
+      resolve(totalCount);
     })
   },
 
-  totalOrdersPlaced:() => {
-    return new Promise (async (resolve, reject) => {
-        try{
-            const orderPlacedCount = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({});
-            resolve(orderPlacedCount);
-        }catch{
-            resolve(0)
+  totalOrdersPlaced: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const orderPlacedCount = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({});
+        resolve(orderPlacedCount);
+      } catch {
+        resolve(0)
+      }
+    })
+  },
+
+  totalPagesOfOrder: () => {
+    return new Promise(async (resolve, reject) => {
+      const totalPages = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({});
+      resolve(totalPages);
+    })
+  },
+
+  checkUserBlockExist: (email) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ email: email });
+
+        if (user) {
+          if (user.blocked) {
+            resolve({ status: "User Blocked" });
+          } else {
+            resolve({ phone: user.phone });
+          }
+        } else {
+          resolve({ status: "No user Found" });
         }
-    })
+      } catch (error) {
+        reject(error);
+      }
+    });
   },
 
-  totalPagesOfOrder:()=>{
-    return new Promise(async (resolve, reject) => {
-        const totalPages = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({});
-        resolve(totalPages);
-    })
-  },
-
-    
 }
 
 
