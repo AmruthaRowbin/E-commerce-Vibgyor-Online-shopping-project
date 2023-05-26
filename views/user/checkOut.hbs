@@ -517,41 +517,39 @@
 
   let coupon
   function submitCoupon() {
-    let totalCost = parseInt(document.getElementById('total').value)
-    const code = document.getElementById('couponCode').value;
-    coupon = document.getElementById('couponCode').value;
+  let totalCost = parseInt(document.getElementById('total').value);
+  const code = document.getElementById('couponCode').value;
+  coupon = document.getElementById('couponCode').value;
 
-    axios.post('/couponApply', { 'couponCode': code }).then((response) => {
-      if (response.data.status === 'success') {
-        const coupon = response.data.coupon;
-        if (coupon.status == 'Deactivated' || coupon.status == 'Expired') {
-          document.getElementById('invalidCoupon').innerHTML = "Coupon has been expired!"
-        } else if (totalCost <= 1000) {
-          document.getElementById('invalidCoupon').innerHTML = "Purchase for atleast 1000 to apply Coupon!"
-        } else {
-          const couponAmt = parseInt(coupon.discount);
-          totalCost = totalCost - couponAmt;
-
-          console.log(totalCost+"asasasasasasasas")
-
-          document.getElementById('total').value = totalCost;
-          document.getElementById('strong').innerHTML = `Rs.${totalCost}`;
-          document.getElementById('invalidCoupon').innerHTML = "";
-          document.getElementById('couponName').innerHTML = coupon.code;
-          document.getElementById('couponPrice').innerHTML = `Rs.${couponAmt}`;
-          document.getElementById('couponCode').value = code;
-          //console.log(totalCost, couponAmt)
-
-          document.getElementById('redeem').onclick = null;
-          
-        }
+  axios.post('/couponApply', { 'couponCode': code }).then((response) => {
+    if (response.data.status === 'success') {
+      const coupon = response.data.coupon;
+      if (coupon.status == 'Deactivated' || coupon.status == 'Expired') {
+        document.getElementById('invalidCoupon').innerHTML = "Coupon has expired!";
+      } else if (totalCost < 1000) {
+        document.getElementById('invalidCoupon').innerHTML = "Purchase for at least 1000 to apply the coupon!";
+      } else if (totalCost <= parseInt(coupon.discount)) {
+        document.getElementById('invalidCoupon').innerHTML = "Coupon amount exceeds the total cost!";
       } else {
-        document.getElementById('invalidCoupon').innerHTML = response.data.status;
+        const couponAmt = parseInt(coupon.discount);
+        totalCost -= couponAmt;
+
+        document.getElementById('total').value = totalCost;
+        document.getElementById('strong').innerHTML = `Rs.${totalCost}`;
+        document.getElementById('invalidCoupon').innerHTML = "";
+        document.getElementById('couponName').innerHTML = coupon.code;
+        document.getElementById('couponPrice').innerHTML = `Rs.${couponAmt}`;
+        document.getElementById('couponCode').value = code;
+
+        document.getElementById('redeem').onclick = null;
       }
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
+    } else {
+      document.getElementById('invalidCoupon').innerHTML = response.data.status;
+    }
+  }).catch((err) => {
+    console.log(err);
+  });
+}
 
 
 
@@ -596,10 +594,10 @@
 
   function razorpayPayment(order, userDetails) {
     var options = {
-      "key": "rrzp_test_xMMpExEP8RJtcM",       // Enter the Key ID generated from the Dashboard
+      "key": "rzp_test_V2TIxU08jpA7R3",       // Enter the Key ID generated from the Dashboard
       "amount": order.amount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       "currency": "INR",
-      "name": "Marvelous Wear", //your business name
+      "name": "Vibgyor Womens Wear", //your business name
       "description": "Test Transaction",
       "image": "https://res.cloudinary.com/dcc8meh8i/image/upload/v1679116198/logo3_gtrtz9.jpg",
       "order_id": order.id,       //This is a sample Order ID. Pass the `id` obtained in the response of Step 1

@@ -47,7 +47,7 @@ router.post('/forgotPassOtpVerificaion',verifySession.ifUserLoggedIn,userControl
 
 // User Panel shop page
 
-router.get('/shop',verifySession.verifyUserLoggedIn, userControllers.shopPage);
+router.get('/shop',verifySession.verifyUserLoggedIn, userControllers.userStatus,userControllers.shopPage);
 
 router.get('/product/:id',verifySession.verifyUserLoggedIn, userControllers.productPage);
 
@@ -56,7 +56,7 @@ router.get('/product/:id',verifySession.verifyUserLoggedIn, userControllers.prod
 
 
 // User Cart
-router.get('/cart/',verifySession.verifyUserLoggedIn, userControllers.cart);
+router.get('/cart/',verifySession.verifyUserLoggedIn,userControllers.userStatus, userControllers.cart);
 
 router.get('/addToCart/:id', verifySession.verifyUserLoggedIn, userControllers.cartPage);
 
@@ -65,6 +65,8 @@ router.get('/deleteCart/:id', verifySession.verifyUserLoggedIn, userControllers.
  router.post('/change-product-quantity', verifySession.verifyUserLoggedIn, userControllers.changeProductQuantity);
 
 //User checkout
+
+router.get('/checkOut',verifySession.verifyUserLoggedIn, userControllers.checkOutPage);
 
 router.get('/checkOut',verifySession.verifyUserLoggedIn, userControllers.checkOutPage);
 
@@ -78,11 +80,16 @@ router.post('/placeOrder', verifySession.verifyUserLoggedIn, userControllers.pla
 
 router.post('/verifyPayment', verifySession.verifyUserLoggedIn, userControllers.verifyPayment);
 
+router.get('/success', verifySession.verifyUserLoggedIn, userControllers.paypalSuccess);
+
+router.get('/cancel', verifySession.verifyUserLoggedIn, userControllers.failure);
+
+
+
 
 
 // User  Orders
-router.get('/orders', verifySession.verifyUserLoggedIn, userControllers.orders);
-
+router.get('/orders', verifySession.verifyUserLoggedIn,userControllers.userStatus, userControllers.orders);
 
 router.get('/orders/viewProduct/:id', verifySession.verifyUserLoggedIn, userControllers.viewDet);
 
@@ -96,7 +103,7 @@ router.post('/returnOrder/:id', verifySession.verifyUserLoggedIn, userController
 
 
 //UserProfile
-router.get('/userProfile', verifySession.verifyUserLoggedIn, userControllers.userProfile);
+router.get('/userProfile', verifySession.verifyUserLoggedIn, userControllers.userStatus,userControllers.userProfile);
 
 router.post('/userProfilePost', verifySession.verifyUserLoggedIn, userControllers.userProfilePost);
 
@@ -107,7 +114,7 @@ router.get('/wallet', verifySession.verifyUserLoggedIn, userControllers.getWalle
 router.post('/uploadProfileImage', multer.single('file'), userControllers.profileImage);
 
 //Wishlist
-router.get('/wishlist', verifySession.verifyUserLoggedIn, userControllers.wishlist);
+router.get('/wishlist', verifySession.verifyUserLoggedIn, userControllers.userStatus,userControllers.wishlist);
 
 router.get('/addToWishlist/:id', verifySession.verifyUserLoggedIn, userControllers.wishlistPage);
 

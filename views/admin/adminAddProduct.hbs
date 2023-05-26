@@ -89,10 +89,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
-                         <button type="submit" class="btn btn-primary">Add
-                        </button> 
-
-                        {{!-- <button type="submit" class="btn btn-primary" onclick="showAlert()">Add</button> --}}
+                        <button type="submit" class="btn btn-primary" onclick="showNotification()">Add</button>
 
                     </div>
                 </div>
@@ -195,4 +192,17 @@ function validateForm() {
 
   return true;
 }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function showNotification() {
+        Swal.fire({
+            title: "Product Added!",
+            text: "The product has been successfully added.",
+            icon: "success",
+            confirmButtonText: "OK"
+        });
+    }
 </script>

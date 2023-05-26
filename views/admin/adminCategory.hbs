@@ -86,7 +86,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="text-dark" action="/admin/adminCategory" method="post" onsubmit="return validateForm()">
+                <form class="text-dark" action="" method="post" onsubmit="return validateForm()">
                     <div class="form-group">
                         <label for="name" class="col-form-label">Category Name:</label>
                         <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border" id="name">
@@ -99,7 +99,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"onclick="checkCategoryExistence(event)">Confirm</button>
+                        <button type="submit" class="btn btn-primary" onclick="applySubmit()">Confirm</button>
+
                     </div>
                 </form>
             </div>
@@ -192,23 +193,116 @@
 
 {{!-- alredy existing category alert message --}}
 
-     <script>
-    function checkCategoryExistence(event) {
-        event.preventDefault(); // Prevent form submission
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        // Retrieve the category name entered by the user
-        const categoryName = document.getElementById('name').value;
 
-        // Perform an AJAX request to check if the category already exists
-        // Replace this code with your own logic to check category existence
 
-        const categoryExists = false; // Replace with your own logic or AJAX response
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        if (categoryExists) {
-            alertify.alert('Category Already Exists', 'The category already exists. Please choose a different name.');
-        } else {
-            // Category doesn't exist, submit the form
-            event.target.form.submit();
+<script>
+    $(document).ready(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const successParam = urlParams.get('success');
+        const popUpShown = sessionStorage.getItem('popUpShown'); // Check if pop-up already shown
+
+        if (successParam === 'false') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'Category Already Added',
+                showConfirmButton: false,
+                timer: 2500,
+                customClass: {
+                    popup: 'custom-popup-class' // Custom CSS class for the pop-up container
+                }
+            });
+
+            sessionStorage.setItem('popUpShown', 'true'); // Set flag to indicate pop-up has been shown
+        } else if (successParam === 'true') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Category Added',
+                showConfirmButton: false,
+                timer: 2500,
+                customClass: {
+                    popup: 'custom-popup-class' // Custom CSS class for the pop-up container
+                }
+            }).then(() => {
+                console.log("nooooooooo");
+            });
         }
+    });
+
+    function applySubmit() {
+        var categoryNameInput = document.getElementById("name");
+        if (categoryNameInput.value.trim() === "") {
+            Swal.fire('Enter Valid Input');
+            return false;
+        }
+
+        let category = document.getElementById('name').value;
+
+        $.ajax({
+            url: '/admin/adminCategory',
+            data: {
+                name: category,
+            },
+            method: 'POST',
+            success: (response) => {
+                console.log(response);
+                // Redirect to the appropriate page based on the response
+                if (response.success === false) {
+                    window.location.href = '/admin/adminCategory?success=false';
+                } else if(response.success === true) {
+                    window.location.href = '/admin/adminCategory?success=true';
+                } else {
+                    window.location.href = '/admin/adminCategory'
+                }
+            },
+            error: (error) => {
+                console.log(error);
+                // Handle the error here and show an appropriate message
+            }
+        });
     }
 </script>
+
+<style>
+    .custom-popup-class {
+        width: 300px;
+        height: 140px;
+        padding: 5px;
+        background-color: #f5f5f5;
+        border: 5px solid #ccc;
+        border-radius: 5px;
+        /* Add any additional styling for the smaller pop-up container here */
+    }
+    
+    .custom-popup-class .swal2-title {
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        /* Additional title styling */
+    }
+    
+    .custom-popup-class .swal2-icon {
+        font-size: 13px;
+        /* Additional icon styling */
+    }
+    
+    .custom-popup-class .swal2-icon svg {
+        fill: #ff9900;
+        /* Additional icon color */
+    }
+    
+    .custom-popup-class .swal2-content {
+        font-size: 10px;
+        /* Additional content styling */
+    }
+</style>
+
+
+
+</body>

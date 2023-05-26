@@ -72,13 +72,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="cf-left mt-3">
-                            {{!-- <select class="sort"> --}}
-                                {{!-- <option value="">Sort by</option> --}}
-                                <a href="" class="btn btn-dark" onclick="sortPrice(1)">Low to High</a>
-                                <a href="" class="btn btn-dark" onclick="sortPrice(-1)">High to Low</a>
-
-
+                      <div class="cf-left col-md-12" >
+                            <select class="sort" onchange="sortPrice(this.value)">
+                                <option value="">Sort by</option>
+                                <option value="1">Low to High</option>
+                                <option value="-1">High to Low</option>
+                            </select>
                         </div>
 
                     </div>

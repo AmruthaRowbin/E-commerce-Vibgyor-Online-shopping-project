@@ -1,110 +1,120 @@
 <style>
-  .bg-image-vertical {
-    position: relative;
-    overflow: hidden;
-    background-repeat: no-repeat;
-    background-position: right center;
-    background-size: auto 100%;
-  }
-
-  @media (min-width: 1025px) {
-    .h-custom-2 {
-      height: 100%;
-    }
-  }
+    .bg-image-vertical { position: relative; overflow: hidden;
+    background-repeat: no-repeat; background-position: right center;
+    background-size: auto 100%; } @media (min-width: 1025px) { .h-custom-2 {
+    height: 100%; } }
 </style>
 
 <section>
-  <div class="container-fluid container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-6 text-black">
+    <div class="container-fluid container">
+        <div class="row">
+            <div class="col-12 text-black">
 
-        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+        <div class="d-flex justify-content-center mt-4">
+               
 
-          <form style="width: 23rem;" class="mt-5" action="/Home" method="post" name="myForm"
-            onsubmit="return validateForm()">
+                    <form style="width: 23rem;" class="mt-5" action="/Home" method="post"name="myForm" onsubmit="return validateForm()">
 
+                        <h3
+                            class="fw-normal mb-3"
+                            style="letter-spacing: 1px;"
+                        >Log in</h3>
 
+                        <div class="form-outline mb-4">
+                            <input
+                                type="email"
+                                id="form2Example18"
+                                class="form-control form-control-lg"
+                                name="email"
+                            />
+                            <label class="form-label" for="form2Example18">Email
+                                address</label>
+                                <span id="emailError"class="text-danger error-message"></span>
+                        </div>
+                        {{#if emailErr}}
+                            <label class="text-danger">{{emailErr}}</label>
+                        {{/if}}
 
-            <h3 class="fw-normal mb-3" style="letter-spacing: 1px;">Log in</h3>
+                        <div class="form-outline mb-4">
+                            <input
+                                type="password"
+                                id="form2Example28"
+                                class="form-control form-control-lg"
+                                name="password"
+                            />
+                            <label
+                                class="form-label"
+                                for="form2Example28"
+                            >Password</label>
+                            <span id="passwordError"class="text-danger error-message"></span>
+                        </div>
+                        {{#if passErr}}
+                            <label class="text-danger">{{passErr}}</label>
+                        {{/if}}
+                        <div class="pt-1 mb-4">
+                            <button
+                                class="btn btn-info btn-lg btn-block"
+                                type="submit"
+                            >Login</button>
+                            
+                        </div>
 
-            <div class="form-outline mb-4">
-              <input type="email" id="form2Example18" class="form-control form-control-lg" name="email" />
-              <label class="form-label" for="form2Example18">Email address</label>
-              <span id="emailError" class="text-danger error-message"></span>
+                        <p class="small mb-5 pb-lg-2"><a
+                                class="text-muted"
+                                href="/forgotPass"
+                            >Forgot password?</a></p>
+                        <p>Don't have an account?
+                            <a href="/signup" class="link-info">Register here</a></p>
 
+                    </form>
+                </div>
             </div>
-            {{#if emailErr}}
-            <label class="text-danger">{{emailErr}}</label>
-            {{/if}}
-
-            <div class="form-outline mb-4">
-              <input type="password" id="form2Example28" class="form-control form-control-lg" name="password" />
-              <label class="form-label" for="form2Example28">Password</label>
-              <span id="passwordError" class="text-danger error-message"></span>
-
-            </div>
-            {{#if passErr}}
-            <label class="text-danger">{{passErr}}</label>
-            {{/if}}
-
-            <div class="pt-1 mb-4">
-              <button class="btn btn-info btn-lg btn-block" type="submit">Login</button>
-            </div>
-
-            <p class="small mb-5 pb-lg-2"><a class="text-muted" href="/forgotPass">Forgot password?</a></p>
-            <p>Don't have an account? <a href="/signup" class="link-info">Register here</a></p>
-
-          </form>
+            {{!-- <div class="col-sm-6 px-0 d-none d-sm-block">
+                <img
+                    src="https://images.unsplash.com/photo-1611316185995-9624c94487d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGhkJTIwcGhvdG9zfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                    alt="Login image"
+                    style="object-fit: cover; object-position: left; width: 100vh; height: 80vh"
+                />
+            </div> --}}
         </div>
-      </div>
-      <div class="col-sm-6 px-0 d-none d-sm-block">
-        <img
-          src="https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8bW9kZWwlMjBnaXJsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-          alt="Login image" style="object-fit: cover; object-position: left; width: 100vh; height: 80vh">
-      </div>
     </div>
-  </div>
 </section>
 
-
-
-
 <script>
-  function validateForm() {
-
-    var email = document.forms["myForm"]["email"].value;
-    var password = document.forms["myForm"]["password"].value;
-
-
-
-
-    if (email == "") {
-      document.getElementById("emailError").innerHTML = "Please enter your email.";
-      return false;
-    } else {
-      document.getElementById("emailError").innerHTML = "";
-    }
-
-    if (password == "") {
-      document.getElementById("passwordError").innerHTML = "Please enter your password.";
-      return false;
-    } else {
-      document.getElementById("passwordError").innerHTML = "";
-    }
-
-  }
-
-  // Clear error message when user starts typing in input fields
-
-
-  document.getElementById("email").addEventListener("input", function () {
+function validateForm() {
+  
+  var email = document.forms["myForm"]["email"].value;
+  var password = document.forms["myForm"]["password"].value;
+  
+  
+  
+  
+  if (email == "") {
+    document.getElementById("emailError").innerHTML = "Please enter your email.";
+    return false;
+  } else {
     document.getElementById("emailError").innerHTML = "";
-  });
-
-  document.getElementById("password").addEventListener("input", function () {
+  }
+  
+  if (password == "") {
+    document.getElementById("passwordError").innerHTML = "Please enter your password.";
+    return false;
+  } else {
     document.getElementById("passwordError").innerHTML = "";
-  });
+  }
+ 
+}
+
+// Clear error message when user starts typing in input fields
+
+
+document.getElementById("email").addEventListener("input", function() {
+  document.getElementById("emailError").innerHTML = "";
+});
+
+document.getElementById("password").addEventListener("input", function() {
+  document.getElementById("passwordError").innerHTML = "";
+});
 
 
 </script>

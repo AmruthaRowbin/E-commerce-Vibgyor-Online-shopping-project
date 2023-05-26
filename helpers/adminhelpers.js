@@ -56,29 +56,7 @@ module.exports = {
         })
     },
 
-
-
-
-
-
-
   
-
-    // getUserOrder: () => {
-    //     return new Promise(async (resolve, reject) => {
-    //       try {
-      //         const userDet = await db.get().collection(collection.ORDER_COLLECTION).find().toArray();
-      
-    //         // Sort the orders based on the embedded timestamp in the _id field
-    //         const sortedOrders = userDet.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
-      
-    //         resolve(sortedOrders);
-    //       } catch (error) {
-    //         reject(error);
-    //       }
-    //     });
-    //   },
-      
     getUserOrder: () => {
         return new Promise(async (resolve, reject) => {
           try {
@@ -350,6 +328,8 @@ module.exports = {
         })
     },
 
+
+
     getAllDeliveredOrdersCount: () => {
         return new Promise((resolve, reject) => {
 
@@ -434,35 +414,42 @@ module.exports = {
         })
       },
 
-      adminAddCoupon:(coupon)=> {
-        return new Promise(async (resolve, reject)=> {
+  
+    
 
+
+        adminAddCoupon: (coupon) => {
+          return new Promise(async (resolve, reject) => {
             coupon.discount = Number(coupon.discount);
             coupon.date = new Date(coupon.date);
             coupon.status = true;
             const newDate = new Date();
-
-            if(coupon.data < newDate){
-                coupon.status = "Expired";
+      
+            if (coupon.date < newDate) {
+              coupon.status = "Expired";
             }
-
-            const couponExist = await db.get().collection(collection.COUPON_COLLECTION).findOne(
-                {
-                    code: coupon.code
-                }
-            );
-
-            if(couponExist){
-                reject("Coupon already exists");
-            }else{
-                db.get().collection(collection.COUPON_COLLECTION).insertOne(coupon).then(()=> {
-                    resolve();
-                }) .catch((error) => {
-                    reject("Failed to add coupon");
-                  });
+      
+            const couponExist = await db
+              .get()
+              .collection(collection.COUPON_COLLECTION)
+              .findOne({ code: coupon.code });
+      
+            if (couponExist) {
+              resolve({ success: false, message: "Coupon already exists" });
+            } else {
+              db.get()
+                .collection(collection.COUPON_COLLECTION)
+                .insertOne(coupon)
+                .then(() => {
+                  resolve({ success: true, message: "Coupon added successfully" });
+                })
+                .catch((error) => {
+                  reject({ success: false, message: "Failed to add coupon" });
+                });
             }
-        })
-      },
+          });
+        },
+      
 
       adminEditCoupon:(couponId, coupon)=> {
         return new Promise((resolve, reject)=> {
@@ -632,54 +619,6 @@ module.exports = {
         })
     },
 
-
-    // adminRefund: (orderId) => {
-    //     return new Promise(async (resolve, reject) => {
-    //       try {
-    //         const order = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: new objectId(orderId) });
-      
-    //         if (order) {
-    //           const balance = order.total;
-    //           const date = order.date;
-    //           const userId = order.userId;
-      
-    //           const walletCollection = db.get().collection(collection.WALLET_COLLECTION);
-      
-    //           const existingWallet = await walletCollection.findOne({userId});
-      
-    //           if (existingWallet) {
-    //             const existingBalance = existingWallet.balance;
-    //             const updatedBalance = existingBalance + balance;
-    //             console.log(updatedBalance)
-    //             console.log('updatedbalance')
-      
-    //             await walletCollection.updateOne(
-    //               {userId},
-    //               { $set: { orderId: new objectId(orderId), date: date, balance: updatedBalance } }
-                  
-    //             );
-
-    //           } else {
-    //             await walletCollection.insertOne({userId,
-    //               orderId: new objectId(orderId),
-    //               date: date,
-    //               balance: balance,
-    //             });
-    //           }
-    
-    //           await db.get().collection(collection.ORDER_COLLECTION).updateOne(
-    //             { _id: new objectId(orderId) },
-    //             { $set: { refunded: true } }
-    //           );
-              
-      
-    //           resolve();
-    //         }
-    //       } catch (error) {
-    //         reject(error);
-    //       }
-    //     });
-    //   },
 
 
     getSingle: (orderId) => {

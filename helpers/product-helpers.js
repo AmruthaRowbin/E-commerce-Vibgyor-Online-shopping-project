@@ -11,16 +11,33 @@ const slugify = require('slugify');
 module.exports = {
 
   addProducts: (product) => {
-    return new Promise((resolve, reject) => {
-      product.price = Number(product.price);
-      product.stock = Number(product.stock);
-      product.slug = slugify(`${product.name} ${product.category}`)
-      db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
-        resolve(data.insertedId);
-      })
+    return new Promise((resolve, reject)=>{
+        product.price = Number(product.price);
+        product.stock = Number(product.stock);
+        product.slug = slugify(`${product.name} ${product.category}`)
+        if(product.price <= 0 || product.stock <= 0){
+            resolve();
+        }else{
+            db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
+  
+                 db.get().collection(collection.PRODUCT_COLLECTION).updateOne(
+                    {
+                        _id: new objectId(data.insertedId)
+                    },
+                    {
+                        $set: {
+                            listed: true
+                        }
+                    }
+                )
+  
+  
+                resolve(data.insertedId);
+            })
+        }
+        
     })
   },
-
   getAdminProducts: (currentPage) => {
     return new Promise(async (resolve, reject) => {
       const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();

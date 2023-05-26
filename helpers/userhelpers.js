@@ -14,8 +14,8 @@ const { json } = require('body-parser');
 //var razorpay_key_secret = "ieGubz9JCjCmkvhbL8t8npxk"
 
 var instance = new Razorpay({
-  key_id: 'rzp_test_xMMpExEP8RJtcM',
-  key_secret: 'PgpfiQkJrfxLJnGVdHozQYeU'
+  key_id: 'rzp_test_V2TIxU08jpA7R3',
+  key_secret: 'zpXkPXQpDm9PhKExdFgrOG0n'
   ,
 })
 
@@ -194,19 +194,7 @@ module.exports = {
   },
 
 
-  // Orders
-  // getOrders: (userId) => {
-  //   return new Promise(async (resolve, reject) => {
-  //     userId = new objectId(userId);
-  //     const orders = await db.get().collection(collection.ORDER_COLLECTION).find(
-  //       {
-  //         userId: userId
-  //       }
-  //     ).sort({ date: 1 }).toArray();
-  //     resolve(orders);
-  //   })
-  // },
-
+  
 
   getOrders: (userId) => {
     return new Promise(async (resolve, reject) => {
@@ -598,7 +586,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
 
 
-      let hmac = crypto.createHmac('sha256', 'PgpfiQkJrfxLJnGVdHozQYeU');
+      let hmac = crypto.createHmac('sha256', 'zpXkPXQpDm9PhKExdFgrOG0n');
 
       hmac.update(details.response.razorpay_order_id + '|' + details.response.razorpay_payment_id);
       hmac = hmac.digest('hex');
@@ -690,7 +678,7 @@ module.exports = {
         }
       )
       resolve(activeBanner);
-    })
+    }) 
   },
 
   returnProduct: (orderId, reason) => {
@@ -771,6 +759,33 @@ getSingleorder: (orderId) => {
 
 },
 
+getCoupon:()=> {
+  return new Promise(async (resolve, reject)=> {
+     const coupon  = db.get().collection(collection.COUPON_COLLECTION).find().toArray();
+      resolve(coupon);
+  })
+},
+
+
+changeOrderPaymentStatus:(orderId) => {
+  return new Promise((resolve, reject) => {
+      db.get().collection(collection.ORDER_COLLECTION).updateOne(
+          {
+              _id: new objectId(orderId)
+          },
+          {
+              $set: {
+                  status: "failed"
+              }
+          }
+      ).then((response) => {
+          resolve(response)
+      }).catch((err) => {
+          
+          console.log(err);
+      })
+  })
+},
 
 };
 

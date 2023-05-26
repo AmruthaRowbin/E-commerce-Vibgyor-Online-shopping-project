@@ -32,9 +32,8 @@
                             <th>Status</th>
                             <th>View</th>
                             <th>Cancel</th>
-                            {{#if isDelivered}}
                             <th>Review</th>
-                            {{/if}}
+                          
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +52,9 @@
                                         class="btn btn-dark"
                                         href="/orders/viewProduct/{{_id}}"
                                     >View Details</a></td>
+
+                                
+
                                 {{#if isCancelled}}
                                     <td><a
                                             class="btn btn-danger text-light"
@@ -63,7 +65,9 @@
                                             data-toggle="modal"
                                             data-target="#return{{_id}}"
                                         >Return Order</a></td>
-                                    <td>
+ <td>
+                                
+
                                         <style>
                                             .Efhm0G:hover { /* Add your hover
                                             styles here */ background-color:
@@ -83,6 +87,10 @@
                                                 &amp; Review Product</span>
                                         </a>
                                     </td>
+                                    
+                                   
+                                   
+                                    
 
                                 {{else if isReturned}}
                                     <td><a
@@ -90,6 +98,17 @@
                                             class="btn btn-danger disabled"
                                         >order returned</a>
                                         &nbsp;</td>
+                                         <td>
+                                
+<div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                                       
+                                    </td>
                                 {{else}}
                                     <td><a
                                             href=""
@@ -98,6 +117,18 @@
                                             data-target="#delete{{this._id}}"
                                         >cancel order</a>
                                         &nbsp;</td>
+ <td>
+                                
+
+                                       <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                                    </td>
+                                        
                                 {{/if}}
                           {{!-- Cancel Modal --}}
                         <div class="modal fade" id="delete{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"

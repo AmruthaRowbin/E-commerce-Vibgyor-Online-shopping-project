@@ -40,6 +40,7 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
                   <input type="text" id="form3Example1cg" class="form-control form-control-lg" name="otp"/>
                   <label class="form-label" for="form3Example1cg">Enter OTP</label>
                 </div>
+                 <div id="countdown"></div>
 
                 {{#if errMsg}}
                 <label class="text-danger">{{errMsg}}</label>
@@ -58,3 +59,20 @@ background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244
     </div>
   </div>
 </section>
+
+
+
+<script>
+    var timeleft = 60;
+  var downloadTimer = setInterval(function(){
+    if(timeleft <= 0){
+      clearInterval(downloadTimer);
+      document.getElementById("countdown").innerHTML = "Time is Over";
+      window.location.href = '/signup'; 
+    } else {
+      document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
+    }
+    timeleft -= 1;
+  }, 1000);
+ 
+  </script>

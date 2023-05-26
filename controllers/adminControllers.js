@@ -3,6 +3,7 @@ const productHelpers = require('../helpers/product-helpers');
 const userHelpers = require('../helpers/userhelpers');
 const categoryHelpers = require('../helpers/categoryhelpers');
 const cloudinary = require('../utils/cloudinary');
+const { resolve } = require('express-hbs/lib/resolver');
 module.exports = {
 
 
@@ -90,11 +91,9 @@ module.exports = {
         adminHelpers
             .blockUser(userId)
             .then(() => {
-                if (req.session.userId === userId) {
-                req.session.userLoggedIn = false;
-                req.session.userName = false;
+              
                 res.redirect("/admin/adminUserManagement");
-                }
+                
             })
             .catch((err) => {
                 console.log(err);
@@ -199,21 +198,27 @@ module.exports = {
     },
 
    
-    addCategory:(req, res) => {
-        try{
-            categoryHelpers.addCategory(req.body).then(async(id) => {
-                res.redirect('/admin/adminCategory');
+   
+
+    addCategory: (req, res) => {
+        try {
+            categoryHelpers.addCategory(req.body).then((response) => {
+                if (response.status === false) {
+                    // Category already added
+                    res.redirect('/admin/adminCategory?success=false');
+                } else {
+                    // Category added successfully
+                    res.redirect('/admin/adminCategory?success=true');
+                }
             }).catch((err) => {
                 // Handle the error here and show an alert to the admin
-                res.send(`<script>alert('${err}'); window.location='/admin/adminCategory';</script>`);
+                res.status(500).json({ error: err });
             });
-        }catch{
+        } catch (error) {
             res.redirect('back');
         }
     },
-
-
-
+    
 
     deleteCategory: (req, res) => {
         const category = req.params.id;
@@ -280,29 +285,32 @@ module.exports = {
         req.redirect('/admin/adminSalesReport');
     },
 
-    adminSalesReportFilterPost: (req, res) => {
-        adminHelpers.filterDate(req.body.date).then((filteredOrders) => {
-
-            let totalEarnings = 0;
-            if (filteredOrders.length >= 1) {
-                filteredOrders.forEach(eachOrder => {
-                    eachOrder.productCount = eachOrder.item.length;
-                    totalEarnings += eachOrder.total;
-
-                    // date formatting
-                    const newDate = new Date(eachOrder.date);
-                    const year = newDate.getFullYear();
-                    const month = newDate.getMonth() + 1;
-                    const day = newDate.getDate();
-                    const formattedDate = `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
-                    eachOrder.date = formattedDate;
-                });
-            } else {
-                filteredOrders = false;
-            }
-            res.render('admin/adminSalesReport', { admin: true, adminName: req.session.adminName, deliveredOrders: filteredOrders, totalEarnings });
-        })
-    },
+    adminSalesReportFilterPost: async (req, res) => {
+        const fromDate = req.body.fromDate;
+        const toDate = req.body.toDate;
+    
+        let filteredOrders = await adminHelpers.filterDate([fromDate, toDate]);
+    
+        let totalEarnings = 0;
+        if (filteredOrders.length >= 1) {
+          filteredOrders.forEach(eachOrder => {
+            eachOrder.productCount = eachOrder.item.length;
+            totalEarnings += eachOrder.total;
+    
+            // Date formatting
+            const newDate = new Date(eachOrder.date);
+            const year = newDate.getFullYear();
+            const month = newDate.getMonth() + 1;
+            const day = newDate.getDate();
+            const formattedDate = `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
+            eachOrder.date = formattedDate;
+          });
+        } else {
+          filteredOrders = false;
+        }
+    
+        res.render('admin/adminSalesReport', { admin: true, adminName: req.session.adminName, deliveredOrders: filteredOrders, totalEarnings });
+      },
 
     viewDetadmin: async (req, res) => {
         console.log("inside check viewDetail");
@@ -338,26 +346,20 @@ module.exports = {
         });
          res.render('admin/adminCoupon', {admin: true, adminName: req.session.adminName, coupons})
      },
- 
-    //  adminAddCoupon:(req, res)=> {
-    //      adminHelpers.adminAddCoupon(req.body).then(()=> {
-    //          res.redirect('/admin/adminCoupon');
-    //      }).catch(()=> {
-    //          res.redirect('/admin/adminCoupon');
-    //      })
-    //  },
- 
 
-    adminAddCoupon: (req, res) => {
-        adminHelpers.adminAddCoupon(req.body)
-          .then(() => {
-            res.status(200).send({ success: "Coupon added successfully" });
-          })
-          .catch((error) => {
-            res.status(400).send({ error: error || "Failed to add coupon" });
-          });
-      },
+    
+        adminAddCoupon: (req, res) => {
+          adminHelpers.adminAddCoupon(req.body)
+            .then((response) => {
+              res.json(response); // Send the response as JSON
+            })
+            .catch(() => {
+              res.json({ success: false, message: "Failed to add coupon" });
+            });
+        },
       
+
+  
      adminEditCoupon:(req, res)=> {
         const couponId = req.params.id; 
         adminHelpers.adminEditCoupon(couponId, req.body).then(()=> {
@@ -431,16 +433,6 @@ module.exports = {
         const order = await adminHelpers.getSingleOrder(orderId);
         res.render('admin/adminOrderView', {admin: true, adminName: req.session.adminName, order})
     },
-
-
-    // adminRefund:(req, res)=> {
-    //     const orderId = req.params.id;
-    //     adminHelpers.adminRefund(orderId).then(()=>{
-    //         res.redirect('back');
-    //     })
-    // },
-
-
     
 
     adminRefund:async(req, res)=> {

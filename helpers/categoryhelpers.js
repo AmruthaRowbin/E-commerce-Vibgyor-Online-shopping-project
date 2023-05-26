@@ -3,36 +3,36 @@ const collection = require('../config/collection');
 const objectId = require('mongodb-legacy').ObjectId;
 
 module.exports = {
-   
-    
-    addCategory:(detailes) => {
-        return new Promise (async (resolve, reject) => {
-            const name=detailes.name
-            const categoryName = detailes.name.toLowerCase();
-                const Category = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ name: { $regex: new RegExp("^" + categoryName + "$", "i") } })
-                if(Category){
-                    resolve(false);
-                }else{
-                    detailes.name = name
-                    detailes.listed = true;
-                    db.get().collection(collection.CATEGORY_COLLECTION).insertOne(detailes).then( (response) => {
-                        db.get().collection(collection.PRODUCT_COLLECTION).updateMany(
-                            {
-                                category: detailes.name
-                            },
-                            {
-                                $set: {
-                                    listed: true
-                                }
+
+
+    addCategory: (details) => {
+        return new Promise(async (resolve, reject) => {
+            const name = details.name;
+            const categoryName = details.name.toLowerCase();
+            const Category = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ name: { $regex: new RegExp("^" + categoryName + "$", "i") } });
+            if (Category) {
+                resolve({ status: false });
+            } else {
+                details.name = name;
+                details.listed = true;
+                db.get().collection(collection.CATEGORY_COLLECTION).insertOne(details).then((response) => {
+                    db.get().collection(collection.PRODUCT_COLLECTION).updateMany(
+                        {
+                            category: details.name
+                        },
+                        {
+                            $set: {
+                                listed: true
                             }
-                        )
-                        resolve(response.insertedId);
-                    })
-                }
-        })
+                        }
+                    );
+                    resolve({ status: true, insertedId: response.insertedId });
+                }).catch((error) => {
+                    reject(error);
+                });
+            }
+        });
     },
-
-
     getCategory: () => {
         return new Promise(async (resolve, reject) => {
             const category = await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray();

@@ -1,28 +1,20 @@
 <!-- Lookbok Section Begin -->
 <!-- Header Info Begin -->
 <div class="header-info">
-    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4">
-                <div class="header-item">
-                    <img src="img/icons/delivery.png" alt="">
-                    <p>Free shipping on orders over ₹1000 in India</p>
-                </div>
-            </div>
-            <div class="col-md-4 text-left text-lg-center">
-                <div class="header-item">
+            {{#each coupons}}
+            {{#if this.deactivate}}
+            {{else if this.expired}}
+            {{else}}
+            <div class="col-12 text-left text-lg-center">
+                <div class="header-item d-flex align-items-center justify-content-center">
                     <img src="img/icons/voucher.png" alt="">
-                    <p>20% Student Discount</p>
+                    <p>Coupon Code: {{code}} ({{discount}} Discount)</p>
                 </div>
             </div>
-            <div class="col-md-4 text-left text-xl-right">
-                <div class="header-item">
-                    <img src="img/icons/sales.png" alt="">
-                    <p>30% off on dresses. Use code: 30OFF</p>
-                </div>
-            </div>
+            {{/if}}
+            {{/each}}
         </div>
-    </div>
 </div>
 <!-- Header Info End -->
 <!-- Header End -->

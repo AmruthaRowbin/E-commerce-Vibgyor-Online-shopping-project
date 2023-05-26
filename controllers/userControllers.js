@@ -7,7 +7,8 @@ const { ObjectId } = require("mongodb")
 const { default: axios } = require("axios");
 const { response } = require("../app");
 const cloudinary = require('../utils/cloudinary');
-
+const paypal = require('paypal-rest-sdk')
+const objectId = require('mongodb-legacy').ObjectId;
 
 // Twilio-config
 require('dotenv').config();
@@ -19,21 +20,38 @@ const serviceSid = process.env.TWILIO_SERVICE_SID
 const client = require("twilio")(accountSid, authToken);
 
 
+const paypal_client_id = "AQ7JIc9_EORc3OJGrIzwapSO4zx8E0hmjtA8tdvC_9ZWZPKWgBns7PuQZKlpHl6E_ANwLt04McOrhWkW";
+const paypal_client_secret = "EF5auVXYcPKEZTnAEVB5AcphDCCSiAkPaMtwQXLe_erh0e8kT2jGZ04Brq4dX5oXTRADLmrK4jT312kn";
 
+
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': paypal_client_id,
+  'client_secret': paypal_client_secret
+});
 
 
 
 module.exports = {
 
 
-  //User Home
   userHome: (req, res) => {
     productHelpers.getSomeProducts().then(async (products) => {
+      const coupons = await userHelpers.getCoupon()
+      coupons.forEach(coupon => {
+        coupon.deactivate = coupon.status === 'Deactivated' ? true : false;
+        coupon.expired = coupon.status === 'Expired' ? true : false;
+      })
       const banner = await userHelpers.getActiveBanner()
-      res.render("index", { user: true, userName: req.session.userName, products, banner });
+      res.render("index", {
+        user: true,
+        userName: req.session.userName,
+        products,
+        banner,
+        coupons
+      });
     });
   },
-
 
 
   //User Login & Logout 
@@ -167,37 +185,47 @@ module.exports = {
   // ====================forgotEnd=========================
 
 
-
-
-
-
-
-
   userLoginPost: (req, res) => {
-    userHelpers.doLogin(req.body).then((response) => {
-      if (response.status === "Invalid Password") {
-        req.session.passErr = response.status;
-        res.redirect("/login");
-      } else if (response.status === "Invalid User") {
-        req.session.emailErr = response.status;
-        res.redirect("/login");
-
-      } else if (response.status === "User Blocked!!!") {
-        req.session.passErr = response.status;
-        res.redirect("/login");
-      } else {
-        req.session.user = response.user;
-        req.session.userName = req.session.user.name;
-        req.session.userLoggedIn = true;
-        productHelpers.getSomeProducts().then(async (products) => {
-          const banner = await userHelpers.getActiveBanner();
-          res.render("index", { user: true, userName: req.session.userName, products, banner });
+    try {
+      userHelpers.doLogin(req.body)
+        .then((response) => {
+          if (response.status === "Invalid Password") {
+            req.session.passErr = response.status;
+            res.redirect("/login");
+          } else if (response.status === "Invalid User") {
+            req.session.emailErr = response.status;
+            res.redirect("/login");
+          } else if (response.status === "User Blocked!!!") {
+            req.session.passErr = response.status;
+            res.redirect("/login");
+          } else {
+            req.session.user = response.user;
+            // console.log(JSON.stringify(response)+"hehehehe")
+            req.session.userName = req.session.user.name;
+            req.session.userLoggedIn = true;
+            productHelpers.getSomeProducts().then(async (products) => {
+              const coupons = await userHelpers.getCoupon()
+              coupons.forEach(coupon => {
+                coupon.deactivate = coupon.status === 'Deactivated' ? true : false;
+                coupon.expired = coupon.status === 'Expired' ? true : false;
+              })
+              const banner = await userHelpers.getActiveBanner();
+              res.render("index", {
+                user: true,
+                userName: req.session.userName,
+                products,
+                banner,
+                coupons
+              });
+            });
+          }
         })
-
-      }
-    }).catch((err) => {
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
       console.log(err);
-    });
+    }
   },
 
   logout: (req, res) => {
@@ -285,7 +313,28 @@ module.exports = {
   },
 
 
+  // check user blocked or unblock
+  userStatus: async (req, res, next) => {
+    const id = req.session.user._id;
+    const userProfile = await userHelpers.getUser(id).then((response) => {
+      if (response.status == "No user Found") {
+        res.render("user/signup", {
+          user: true,
+          errMsg: response.status,
+        });
+      } else if (response.status == false) {
+        req.session.userLoggedIn = false;
+        req.session.userName = false;
+        res.render("user/login", {
+          user: true,
+          errMsg: "User Blocked",
+        });
+      } else {
+        next();
+      }
 
+    });
+  },
 
 
   // User Product Page
@@ -296,27 +345,26 @@ module.exports = {
       .getSingleProduct(productData)
       .then(async (product) => {
         if (!product) {
-          res.render("user/productNotFound", { user: true, userName });
+          res.render("user/productNotFound", {
+            user: true,
+            userName,
+          });
+        } else {
+          const getRelatedProduct = await productHelpers.getRelatedProducts(
+            product.category
+          );
+          res.render("user/productPages", {
+            user: true,
+            userName,
+            product,
+            getRelatedProduct,
+          });
         }
-        else {
-          res.render("user/productPages", { user: true, userName, product });
-        }
-        console.log(product + "category");
-        const getRelatedProduct = await productHelpers.getRelatedProducts(
-          product.category
-        );
-        res.render("user/productPages", {
-          user: true,
-          userName,
-          product,
-          getRelatedProduct,
-        });
       })
       .catch((err) => {
         console.log(err);
       });
   },
-
 
 
 
@@ -414,14 +462,28 @@ module.exports = {
 
 
   // User Checkout Page
+  // User Checkout Page
   checkOutPage: async (req, res) => {
     const userName = req.session.user.name;
     const addresses = await userHelpers.getAddress(req.session.user._id);
-    await cartHelpers.getCartTotal(req.session.user._id).then((total) => {
-      res.render("user/checkOut", { user: true, userName, addresses, total });
-    }).catch((err) => {
-      console.log(err);
-    })
+    const coupons = await userHelpers.getCoupon();
+    coupons.forEach(coupon => {
+      coupon.deactivate = coupon.status === 'Deactivated' ? true : false;
+      coupon.expired = coupon.status === 'Expired' ? true : false;
+    });
+    await cartHelpers.getCartTotal(req.session.user._id)
+      .then((total) => {
+        res.render("user/checkOut", {
+          user: true,
+          userName,
+          addresses,
+          total,
+          coupons
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 
   checkOutPost: (req, res) => {
@@ -429,93 +491,107 @@ module.exports = {
     res.redirect('back');
   },
 
-  // placeOrder: async (req, res) => {
-  //   const addressId = req.body.address
-  //   const total = await cartHelpers.getCartTotal(req.session.user._id);
-  //   // console.log(total+"//////////////////////////"); 
-  //   const paymentMethod = req.body.paymentMethod
-  //   // console.log(`addressid : 324245 ${addressId}`);
-  //   // console.log(`userID : 0987656789 ${req.session.user._id}`);
-  //   const shippingAddress = await userHelpers.findAddress(addressId, req.session.user._id)
-  //   const cartItems = await cartHelpers.getCart(req.session.user._id)
-  //   const order = {
-  //     userId: new ObjectId(req.session.user._id),
-  //     userName: req.session.userName,
-  //     item: cartItems,
-  //     shippingAddress: shippingAddress,
-  //     total: total,
-  //     paymentMethod: paymentMethod,
-  //     products: cartItems,
-  //     date: new Date().toISOString().slice(0, 19),
-  //     status: "placed"
-  //   }
-
-  //   userHelpers.addOrderDetails(order)
-  //     .then(async () => {
-  //       await cartHelpers.deleteCartFull(req.session.user._id);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-
-  //   res.json({
-  //     status: true
-  //   })
-  // },
-
   placeOrder: async (req, res) => {
-    const addressId = req.body.address
-    const userDetails = req.session.user;
+    // console.log(req.body+"asasasasasasasasasasasas")
+    try {
+      const addressId = req.body.address;
+      const userDetails = req.session.user;
+      const total = req.body.total
+      const paymentMethod = req.body.paymentMethod;
+      const shippingAddress = await userHelpers.findAddress(addressId, req.session.user._id);
+      const cartItems = await cartHelpers.getCart(req.session.user._id);
+      const now = new Date();
+      const status = req.body.paymentMethod === "COD" ? "placed" : "pending";
 
-    const total = req.body.total;
+      //Order collection
+      const order = {
+        userId: new objectId(req.session.user._id),
+        userName: req.session.userName,
+        item: cartItems,
+        shippingAddress: shippingAddress,
+        total: total,
+        paymentMethod: paymentMethod,
+        products: cartItems,
+        date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0),
+        status,
+        coupon: req.body.coupon,
+      };
 
-    const paymentMethod = req.body.paymentMethod
+      const userId = req.session.user._id;
+      userHelpers.addOrderDetails(order, userId)
+        .then((order) => {
+          cartHelpers.deleteCartFull(req.session.user._id);
 
-    const shippingAddress = await userHelpers.findAddress(addressId, req.session.user._id)
-    const cartItems = await cartHelpers.getCart(req.session.user._id)
-    const now = new Date();
-    const status = req.body.paymentMethod === "COD" ? "placed" : "pending";
-    const order = {
-      userId: new ObjectId(req.session.user._id),
-      userName: req.session.userName,
-      item: cartItems,
-      shippingAddress: shippingAddress,
-      total: total,
-      paymentMethod: paymentMethod,
-      products: cartItems,
-      date: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0),
-      status,
-      coupon: req.body.coupon,
-    }
-
-    userHelpers.addOrderDetails(order)
-      .then((order) => {
-        cartHelpers.deleteCartFull(req.session.user._id);
-
-        if (req.body.paymentMethod === "COD") {
-          res.json({
-            status: true,
-            paymentMethod: req.body.paymentMethod,
-          });
-
-        } else if (req.body.paymentMethod === "card") {
-          const orderId = order.insertedId;
-
-          userHelpers.generateRazorpay(orderId, total).then((response) => {
+          if (req.body.paymentMethod === "COD") {
             res.json({
-              response: response,
-              paymentMethod: "card",
-              userDetails: userDetails
+              status: true,
+              paymentMethod: req.body.paymentMethod,
             });
-          })
-        } else {
-          console.log("Error in cardPayment");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
 
+          } else if (req.body.paymentMethod === "card") {
+
+            const orderId = order.insertedId;
+
+            userHelpers.generateRazorpay(orderId, total).then((response) => {
+              res.json({
+                response: response,
+                paymentMethod: "card",
+                userDetails: userDetails,
+              });
+            });
+          } else {
+
+            const exchangeRate = 0.013;
+            const totalCost = (Number(req.body.total) * exchangeRate).toFixed(0);
+            const create_payment_json = {
+              intent: "sale",
+              payer: {
+                payment_method: "paypal",
+              },
+              redirect_urls: {
+                return_url: "http://localhost:7000/success",
+                cancel_url: "http://localhost:7000/cancel",
+              },
+              transactions: [
+                {
+                  amount: {
+                    currency: "USD",
+                    total: `${totalCost}`,
+                  },
+                  description: "Vibgyor Womens Ware  PLATFORM PAYPAL PAYMENT",
+                },
+              ],
+            };
+
+            paypal.payment.create(create_payment_json, function (error, payment) {
+              if (error) {
+                console.log(error + "asasasasas");
+                res.render('user/failure', { user: true, userName: req.session.userName });
+
+              } else if (payment) {
+                try {
+                  req.session.orderId = order.insertedId;
+                  userHelpers.changeOrderStatus(order.insertedId).then(() => { console.log("changed") }).catch(() => { });
+                  // productHelpers.reduceStock(cartList).then(()=>{}).catch((err)=>console.log(err));
+                } catch (err) {
+                  console.log(err);
+                } finally {
+                  for (let i = 0; i < payment.links.length; i++) {
+                    if (payment.links[i].rel === "approval_url") {
+                      res.json({
+                        approval_link: payment.links[i].href,
+                        status: "success"
+                      })
+                    }
+                  }
+                }
+              }
+            });
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
   },
 
 
@@ -551,8 +627,8 @@ module.exports = {
   },
 
   // Orders Page
-  // Orders Page
-   orders: async (req, res) => {
+  
+  orders: async (req, res) => {
     const userName = req.session.userName;
     const userId = req.session.user._id;
     const orders = await userHelpers.getOrders(userId);
@@ -570,6 +646,7 @@ module.exports = {
     });
     res.render("user/orders", { user: true, userName, orders });
   },
+
 
   cancelOrder: (req, res) => {
     const orderId = req.params.id;
@@ -778,14 +855,49 @@ module.exports = {
     }
   },
 
-  invoicegenerator:(req, res)=> {
+  invoicegenerator: (req, res) => {
     const userName = req.session.userName;
     userHelpers.getOrderedProducts(req.params.id).then((singleproduct) => {
-        userHelpers.getSingleorder(req.params.id).then((order) => { 
-        res.render('user/invoice', { user: true, singleproduct,order,userName })
+      userHelpers.getSingleorder(req.params.id).then((order) => {
+        res.render('user/invoice', { user: true, singleproduct, order, userName })
       })
     })
 
+  },
+
+
+  // Paypal
+  paypalSuccess: (req, res) => {
+    const payerId = req.query.PayerID;
+    const paymentId = req.query.paymentId;
+    const execute_payment_json = {
+      payer_id: payerId,
+      transactions: [
+        {
+          amount: {
+            currency: "USD",
+            total: "25.00",
+          },
+        },
+      ],
+    };
+    paypal.payment.execute(paymentId, execute_payment_json, (error, payment) => {
+      const userName = req.session.userName;
+      if (error) {
+        userHelpers.changeOrderPaymentStatus(req.session.orderId).then(() => {
+          console.log("changed");
+          res.render('user/failure', { user: req.session.user, userName });
+        }).catch(() => { });
+      } else {
+        userHelpers.changeOrderStatus(req.session.orderId).then(() => {
+        res.render('user/success', { user: req.session.user, payerId, paymentId, userName });
+      }).catch(() => { });
+    }
+    }
+    );
+  },
+  failure: (req, res) => {
+    res.render('user/failure', { user: true, userName: req.session.userName });
   },
 
 
