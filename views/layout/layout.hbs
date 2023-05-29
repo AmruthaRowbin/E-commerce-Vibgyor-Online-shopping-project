@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
 
-    {{!-- toastify --}}
+<head>
+  <title>{{title}}</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  {{!-- toastify --}}
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-     
-     {{#if user}}
 
-     {{!-- jquery 3.3.1 --}}
+  {{#if user}}
+
+  {{!-- jquery 3.3.1 --}}
   <script src="/javascripts/jquery-3.3.1.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 
-     
-      {{!-- jquery 3.3.1 --}}
+
+  {{!-- jquery 3.3.1 --}}
   <script src="/javascripts/jquery-3.3.1.min.js"></script>
-  
+
   {{!-- elevate zoom --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.1/jquery.elevatezoom.min.js"></script>
-  
+
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
@@ -45,63 +46,71 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
 
   {{/if}}
-     
+
   {{#if admin}}
   {{!-- pagination --}}
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
 
-  
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
 
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-   
-   <link href="/admin/img/favicon.ico" rel="icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet"> 
-    
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/admin/img/favicon.ico" rel="icon">
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel//assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
+    rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/admin/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="/admin/css/style.css" rel="stylesheet">
+  <!-- Libraries Stylesheet -->
+  <link href="lib/owlcarousel//assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
-    {{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="/admin/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Template Stylesheet -->
+  <link href="/admin/css/style.css" rel="stylesheet">
+
+  {{!--
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
   <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-MHkIuV7Lz9XnXV7ZiP+8uVRVGjI1TBrxmvTlTFAW8f80aQmdlv4+y4+j7JZ2z6ltJmk6BPLz6wzU6rDeU6GMg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+    integrity="sha512-MHkIuV7Lz9XnXV7ZiP+8uVRVGjI1TBrxmvTlTFAW8f80aQmdlv4+y4+j7JZ2z6ltJmk6BPLz6wzU6rDeU6GMg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   {{/if}}
-  </head>
-  <body>
+</head>
 
-   {{#if user}}
+<body>
+
+  {{#if user}}
   {{>user-header}}
   {{else if admin}}
   {{>admin-header}}
   {{/if}}
-    {{{body}}}
-    {{#if userName}}
-    {{>userFooters}}
-    {{/if}}
+  {{{body}}}
+  {{#if userName}}
+  {{>userFooters}}
+  {{/if}}
 
-    {{#if user}}
+  {{#if user}}
   <!-- Js Plugins -->
-  {{!-- <script src="/javascripts/jquery-3.3.1.min.js"></script> --}}
- 
+  {{!--
+  <script src="/javascripts/jquery-3.3.1.min.js"></script> --}}
+
 
   <script src="/javascripts/bootstrap.min.js"></script>
   <script src="/javascripts/jquery.magnific-popup.min.js"></script>
@@ -112,98 +121,111 @@
   <script src="/javascripts/main.js"></script>
   <script src="https://kit.fontawesome.com/377e6cb833.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-{{!-- pagination --}}
-<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
+  {{!-- pagination --}}
+  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
 
 
   {{!-- toastify --}}
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  
+
   {{!-- axios --}}
   <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
-  
+
 
 
   {{/if}}
 
 
-{{#if admin}}
-<script>cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js</script>
+  {{#if admin}}
+  <script>cdn.datatables.net / 1.13.4 / js / jquery.dataTables.min.js</script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-   <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/admin/lib/chart/chart.min.js"></script>
-    <script src="/admin/lib/easing/easing.min.js"></script>
-    <script src="/admin/lib/waypoints/waypoints.min.js"></script>
-    <script src="/admin/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="/admin/lib/tempusdominus/js/moment.min.js"></script>
-    <script src="/admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="/admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- JavaScript Libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/admin/lib/chart/chart.min.js"></script>
+  <script src="/admin/lib/easing/easing.min.js"></script>
+  <script src="/admin/lib/waypoints/waypoints.min.js"></script>
+  <script src="/admin/lib/owlcarousel/owl.carousel.min.js"></script>
+  <script src="/admin/lib/tempusdominus/js/moment.min.js"></script>
+  <script src="/admin/lib/tempusdominus/js/moment-timezone.min.js"></script>
+  <script src="/admin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.min.js" integrity="sha512-fZW4hM74Jx5mGWm16wKib5S+LHtGncRoJyR/j+g8/9W1wuH+1umAwmTWGd3P4ag0BBpMGR46NGsGZ9sH2TtT1Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Template Javascript -->
-    <script src="/admin/js/main.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
 
-{{!-- pagination --}}
-<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.min.js"
+    integrity="sha512-fZW4hM74Jx5mGWm16wKib5S+LHtGncRoJyR/j+g8/9W1wuH+1umAwmTWGd3P4ag0BBpMGR46NGsGZ9sH2TtT1Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Template Javascript -->
+  <script src="/admin/js/main.js"></script>
+
+  {{!-- pagination --}}
+  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
 
 
 
-    <!-- JavaScript -->
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+  <!-- JavaScript -->
+  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
-<!-- CSS -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+  <!-- CSS -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 
 
-<!-- DataTables JS -->
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  <!-- DataTables JS -->
+  <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
-<!-- DataTables Buttons CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+  <!-- DataTables Buttons CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
 
-<!-- DataTables Buttons JS -->
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.colVis.min.js"></script>
+  <!-- DataTables Buttons JS -->
 
-<!-- DataTables Bootstrap 4 CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 
-<!-- DataTables Bootstrap 4 JS -->
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
 
- {{!-- axios --}}
+  <!-- DataTables Bootstrap 4 CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+
+  <!-- DataTables Bootstrap 4 JS -->
+  <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+
+  {{!-- axios --}}
   <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
-    
-    
+
+
   {{/if}}
 
-   
 
-  </body>
+
+</body>
+
 </html>

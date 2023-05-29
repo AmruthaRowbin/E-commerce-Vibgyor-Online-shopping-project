@@ -1,4 +1,8 @@
-
+<style>
+    .custom-input {
+        background-color: transparent;
+    }
+</style>
 {{#if productData}}
 <div class="container">
     <div class="row tm-content-row tm-mt-big">
@@ -39,7 +43,9 @@
                     <table class="table table-hover table-striped tm-table-striped-even mt-3" id="productsTable">
                         <thead>
                             <tr class="tm-bg-gray">
+                                
                                 <th scope="col">Product Name</th>
+                                <th scope="col">ProductId</th>
                                 <th scope="col">Product Category</th>
                                 <th scope="col" class="text-center">Description</th>
                                 <th scope="col">Price</th>
@@ -52,7 +58,9 @@
                         <tbody>
                             {{#each productData}}
                             <tr>
+                               
                                 <td class="tm-product-name">{{this.name}}</td>
+                                 <td class="tm-product-name">{{this.productid}}</td>
                                 <td class="text-center">{{this.category}}</td>
                                 <td class="text-center">{{this.description}}</td>
                                 <td>{{this.price}}</td>
@@ -85,64 +93,83 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Edit User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="text-dark" action="/admin/adminEditProduct/{{this._id}}" method="post"
-                    enctype="multipart/form-data" onsubmit="return validateForm(this)">
+                <form action="/admin/adminEditProduct/{{this._id}}" method="post" enctype="multipart/form-data"
+                    onsubmit="return validateForm(this)">
                     <div class="form-group">
-                        <label for="name" class="col-form-label">Product Name : </label>
-                        <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border"
+                        <label for="name" class="col-form-label">Product Name:</label>
+                        <input type="text" name="name" value="{{this.name}}" class="form-control custom-input"
                             id="name">
                         <div class="text-danger error-message" id="name-error"></div>
                     </div>
+                      <div class="form-group">
+                        <label for="name" class="col-form-label">ProductId:</label>
+                        <input type="productid" name="productid" value="{{this.productid}}" class="form-control custom-input"
+                            id="productid">
+                        <div class="text-danger error-message" id="name-error"></div>
+                    </div>
 
-                    <div class="input-group mb-3">
-                        <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
-                        <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category"
-                            id="category" required>
+                    <div class="form-group">
+                        <label for="category" class="col-form-label">Category:</label>
+                        <select class="form-control custom-input" name="category" id="category" required>
                             <option selected>Select one</option>
                             <option>Saree</option>
                             <option>Skirt&Top</option>
                             <option>Bridal Gown</option>
-                            <option>Western wear</option>
+                            <option>Western Wear</option>
                         </select>
                         <div class="text-danger error-message" id="category-error"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="description" class="col-form-label">Description : </label>
-                        <input type="text" value="{{this.description}}" name="description" class="border"
+                        <label for="description" class="col-form-label">Description:</label>
+                        <input type="text" value="{{this.description}}" name="description" class="form-control custom-input"
                             id="description">
                         <div class="text-danger error-message" id="description-error"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="price" class="col-form-label">Price : </label>
-                        <input type="number" name="price" value="{{this.price}}" class="border" id="price">
+                        <label for="price" class="col-form-label">Price:</label>
+                        <input type="number" name="price" value="{{this.price}}" class="form-control custom-input" id="price">
                         <div class="text-danger error-message" id="price-error"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="stock" class="col-form-label">In stock : </label>
-                        <input type="number" name="stock" value="{{this.stock}}" class="border" id="stock">
-                        <div class="text-danger error-message"id="stock-error"></div>
+                        <label for="stock" class="col-form-label">In stock:</label>
+                        <input type="number" name="stock" value="{{this.stock}}" class="form-control custom-input" id="stock">
+                        <div class="text-danger error-message" id="stock-error"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="fileInput" class="col-form-label">Images : </label>
-                        <input type="file" name="image" multiple value="{{this.images.[0]}}" class="border"
+                        <label for="fileInput" class="col-form-label">Images:</label>
+                        <input type="file" name="image" multiple value="{{this.images.[0]}}" class="form-control custom-input"
                             id="fileInput">
-                       
+                            <img src="{{this.images.[0]}}" width="100" class="img-thumbnail mt-3" alt="">
                     </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-                        <a><button type="submit" class="btn btn-primary">confirm</button></a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
                     </div>
                 </form>
-                </div>
             </div>
         </div>
     </div>
+</div>
+
+<style>
+    .custom-input {
+        background-color: white;
+    }
+</style>
+
+
+
     {{/each}}
 
     {{!-- Delete Modal --}}
@@ -210,7 +237,9 @@
                     <table class="table table-hover table-striped tm-table-striped-even mt-3"id="productsTable">
                         <thead>
                             <tr class="tm-bg-gray">
+                                
                                 <th scope="col">Product Name</th>
+                                <th scope="col">ProductId</th>
                                 <th scope="col">Product Category</th>
                                 <th scope="col" class="text-center">Description</th>
                                 <th scope="col">Price</th>
@@ -223,7 +252,9 @@
                         <tbody>
                             {{#each product}}
                             <tr>
+                               
                                 <td class="tm-product-name">{{this.name}}</td>
+                                 <td class="tm-product-name">{{this.productid}}</td>
                                 <td class="text-center">{{this.category}}</td>
                                 <td class="text-center">{{this.description}}</td>
                                 <td>{{this.price}}</td>
@@ -255,64 +286,74 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Edit User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="text-dark" action="/admin/adminEditProduct/{{this._id}}" method="post"
-                    enctype="multipart/form-data" onsubmit="return validateForm(this)">
+                <form action="/admin/adminEditProduct/{{this._id}}" method="post" enctype="multipart/form-data"
+                    onsubmit="return validateForm(this)">
                     <div class="form-group">
-                        <label for="name" class="col-form-label">Product Name : </label>
-                        <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border"
+                        <label for="name" class="col-form-label">Product Name:</label>
+                        <input type="text" name="name" value="{{this.name}}" class="form-control custom-input"
                             id="name">
                         <div class="text-danger error-message" id="name-error"></div>
                     </div>
+                     <div class="form-group">
+                        <label for="name" class="col-form-label">ProductId:</label>
+                        <input type="productid" name="productid" value="{{this.productid}}" class="form-control custom-input"
+                            id="productid">
+                        <div class="text-danger error-message" id="name-error"></div>
+                    </div>
 
-                    <div class="input-group mb-3">
-                        <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
-                        <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category"
-                            id="category" required>
+                    <div class="form-group">
+                        <label for="category" class="col-form-label">Category:</label>
+                        <select class="form-control custom-input" name="category" id="category" required>
                             <option selected>Select one</option>
                             <option>Saree</option>
                             <option>Skirt&Top</option>
                             <option>Bridal Gown</option>
-                            <option>Western wear</option>
+                              <option>Western Wear</option>
                         </select>
                         <div class="text-danger error-message" id="category-error"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="description" class="col-form-label">Description : </label>
-                        <input type="text" value="{{this.description}}" name="description" class="border"
+                        <label for="description" class="col-form-label">Description:</label>
+                        <input type="text" value="{{this.description}}" name="description" class="form-control custom-input"
                             id="description">
-                        <div class="text-danger error-message"id="description-error"></div>
+                        <div class="text-danger error-message" id="description-error"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="price" class="col-form-label">Price : </label>
-                        <input type="number" name="price" value="{{this.price}}" class="border" id="price">
-                        <div class="text-danger error-message"id="price-error"></div>
+                        <label for="price" class="col-form-label">Price:</label>
+                        <input type="number" name="price" value="{{this.price}}" class="form-control custom-input" id="price">
+                        <div class="text-danger error-message" id="price-error"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="stock" class="col-form-label">In stock : </label>
-                        <input type="number" name="stock" value="{{this.stock}}" class="border" id="stock">
+                        <label for="stock" class="col-form-label">In stock:</label>
+                        <input type="number" name="stock" value="{{this.stock}}" class="form-control custom-input" id="stock">
                         <div class="text-danger error-message" id="stock-error"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="fileInput" class="col-form-label">Images : </label>
-                        <input type="file" name="image" multiple value="{{this.images.[0]}}" class="border"
+                        <label for="fileInput" class="col-form-label">Images:</label>
+                        <input type="file" name="image" multiple value="{{this.images.[0]}}" class="form-control custom-input"
                             id="fileInput">
-                        
+                            <img src="{{this.images.[0]}}" width="100" class="img-thumbnail mt-3" alt="">
                     </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-                        <a><button type="submit" class="btn btn-primary">confirm</button></a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
                     </div>
                 </form>
-                </div>
             </div>
         </div>
     </div>
+</div>
     {{/each}}
 
     {{!-- Delete Modal --}}

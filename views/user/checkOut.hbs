@@ -136,8 +136,7 @@
                       <div class="col-md-12">
                         {{#each addresses}}
                         <div class="d-flex mb-3">
-                          <input type="radio" id="{{_id}}" value="{{_id}}" class="activeAddress mr-3" name="address"
-                            data-address="{{_id}}">
+                         <input type="radio" id="{{_id}}" value="{{_id}}" class="activeAddress mr-3" name="address" data-address="{{_id}}" checked>
                           <div class="border p-3" style="color: rgb(80, 80, 80);">
                             <b>{{name}}</b>, <br>
                             {{address}}, <br>
@@ -264,8 +263,8 @@
             </div>
             <div class="custom custom-radio">
               <label for="COD">Pay when you get the package</label>
-              <input class="mt-3 ml-2" type="radio" id="COD" name="paymentMethod" class="custom-control-label" onclick="validateSubmit()"
-                value="COD" required>
+             <input class="mt-3 ml-2" type="radio" id="COD" name="paymentMethod" class="custom-control-label" onclick="validateSubmit()"
+                value="COD" required checked>
             </div>
             <button id="checkoutBtn" disabled class="btn btn-dark btn-lg btn-block mt-3" type="submit">Place your
               order</button>
@@ -468,20 +467,39 @@
 
 <script>
   function validateRadioAddr() {
-    var radioButtons = document.getElementsByName('address');
-    var isSelected = false;
-    for (var i = 0; i < radioButtons.length; i++) {
-      if (radioButtons[i].checked) {
-        isSelected = true;
-        break;
-      }
+  var radioButtons = document.getElementsByName('address');
+  var isSelected = false;
+
+  for (var i = 0; i < radioButtons.length; i++) {
+    if (radioButtons[i].checked) {
+      isSelected = true;
+      break;
     }
-    if (!isSelected) {
-      alert('Please select an address option.');
-      return false;
-    }
-    return true;
   }
+
+  if (!isSelected) {
+    // No address option is selected, set a default option
+    radioButtons[0].checked = true; // Assuming the first radio button is the default option
+  }
+
+  isSelected = false; // Reset the isSelected flag
+
+  for (var i = 0; i < radioButtons.length; i++) {
+    if (radioButtons[i].checked) {
+      isSelected = true;
+      break;
+    }
+  }
+
+  if (!isSelected) {
+    alert('Please select an address option.');
+    return false;
+  }
+
+  return true;
+}
+
+
 
   function validateRadioCOD() {
     var radioButtons = document.getElementsByName('paymentMethod');

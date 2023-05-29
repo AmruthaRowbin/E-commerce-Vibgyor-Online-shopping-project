@@ -1,20 +1,20 @@
 <!-- Lookbok Section Begin -->
 <!-- Header Info Begin -->
 <div class="header-info">
-        <div class="row">
-            {{#each coupons}}
-            {{#if this.deactivate}}
-            {{else if this.expired}}
-            {{else}}
-            <div class="col-12 text-left text-lg-center">
-                <div class="header-item d-flex align-items-center justify-content-center">
-                    <img src="img/icons/voucher.png" alt="">
-                    <p>Coupon Code: {{code}} ({{discount}} Discount)</p>
-                </div>
+    <div class="row">
+        {{#each coupons}}
+        {{#if this.deactivate}}
+        {{else if this.expired}}
+        {{else}}
+        <div class="col-12 text-left text-lg-center">
+            <div class="header-item d-flex align-items-center justify-content-center">
+                <img src="img/icons/voucher.png" alt="">
+                <p>Coupon Code: {{code}} ({{discount}} Discount)</p>
             </div>
-            {{/if}}
-            {{/each}}
         </div>
+        {{/if}}
+        {{/each}}
+    </div>
 </div>
 <!-- Header Info End -->
 <!-- Header End -->
@@ -28,7 +28,7 @@
                     <div class="col-lg-12">
                         <h1>2023</h1>
                         {{!-- <h2>Fasion World</h2> --}}
-                         <h2>{{banner.heading}}.</h2>
+                        <h2>{{banner.heading}}.</h2>
                         <a href="/shop" class="primary-btn">See Products</a>
                     </div>
                 </div>
@@ -101,7 +101,8 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="single-box-item first-box">
-                                <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8ZmFzaGlvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="">
+                                <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8ZmFzaGlvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                                    alt="">
                                 {{!-- <div style="margin-top: 300px; margin-right: 100px;" class="box-text">
                                     <a href="#" class="primary-btn text-white">See More</a>
                                 </div> --}}
@@ -158,7 +159,9 @@
             <div class="col-lg-3 col-sm-6 mix all accesories bags">
                 <div class="single-product-item">
                     <figure>
-                        <a href="#"><img src="https://assets.ajio.com/medias/sys_master/root/20230224/U1fu/63f927a4aeb26924e38e8b58/-1117Wx1400H-465823691-navy-MODEL.jpg" alt=""></a>
+                        <a href="#"><img
+                                src="https://assets.ajio.com/medias/sys_master/root/20230224/U1fu/63f927a4aeb26924e38e8b58/-1117Wx1400H-465823691-navy-MODEL.jpg"
+                                alt=""></a>
                         <div class="p-status popular">popular</div>
                     </figure>
                     <div class="product-text">
@@ -170,7 +173,9 @@
             <div class="col-lg-3 col-sm-6 mix all accesories bags">
                 <div class="single-product-item">
                     <figure>
-                        <a href="#"><img src="https://assets.ajio.com/medias/sys_master/root/20221116/YtdF/637409acf997ddfdbd786f84/-1117Wx1400H-465287402-rust-MODEL2.jpg" alt=""></a>
+                        <a href="#"><img
+                                src="https://assets.ajio.com/medias/sys_master/root/20221116/YtdF/637409acf997ddfdbd786f84/-1117Wx1400H-465287402-rust-MODEL2.jpg"
+                                alt=""></a>
                         <div class="p-status popular">popular</div>
                     </figure>
                     <div class="product-text">
@@ -182,7 +187,9 @@
             <div class="col-lg-3 col-sm-6 mix all accesories bags">
                 <div class="single-product-item">
                     <figure>
-                        <a href="#"><img src="https://assets.ajio.com/medias/sys_master/root/20230105/Xp9v/63b5e9feaeb269659c25789f/-1117Wx1400H-465555211-navy-MODEL.jpg" alt=""></a>
+                        <a href="#"><img
+                                src="https://assets.ajio.com/medias/sys_master/root/20230105/Xp9v/63b5e9feaeb269659c25789f/-1117Wx1400H-465555211-navy-MODEL.jpg"
+                                alt=""></a>
                         <div class="p-status popular">popular</div>
                     </figure>
                     <div class="product-text">
@@ -194,7 +201,9 @@
             <div class="col-lg-3 col-sm-6 mix all accesories bags">
                 <div class="single-product-item">
                     <figure>
-                        <a href="#"><img src="https://assets.ajio.com/medias/sys_master/root/20230109/yYu2/63bbd1e2aeb269c651cb902a/-1117Wx1400H-465571092-multi-MODEL.jpg" alt=""></a>
+                        <a href="#"><img
+                                src="https://assets.ajio.com/medias/sys_master/root/20230109/yYu2/63bbd1e2aeb269c651cb902a/-1117Wx1400H-465571092-multi-MODEL.jpg"
+                                alt=""></a>
                         <div class="p-status popular">popular</div>
                     </figure>
                     <div class="product-text">
@@ -204,27 +213,27 @@
                 </div>
             </div>
         </div> --}}
-         <div class="container">
-        <div class="row">
-            {{#each products}}
-            <div class="col-lg-3 col-md-6">
-                <div class="single-product-item">
-                    <figure>
-                        <img src="{{this.images.[0]}}" alt="">
-                        <div class="p-status">new</div>
-                    </figure>
-                    <div class="product-text">
-                        <a href="/product/{{this._id}}">
-                            <h5>{{name}}</h5>
-                            <h6>{{category}}</h6>
-                            <p>₹{{price}}.00</p>
-                        </a>
+        <div class="container">
+            <div class="row">
+                {{#each products}}
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-product-item">
+                        <figure>
+                            <img src="{{this.images.[0]}}" alt="">
+                            <div class="p-status">new</div>
+                        </figure>
+                        <div class="product-text">
+                            <a href="/product/{{this._id}}">
+                                <h5>{{name}}</h5>
+                                <h6>{{category}}</h6>
+                                <p>₹{{price}}.00</p>
+                            </a>
+                        </div>
                     </div>
                 </div>
+                {{/each}}
             </div>
-            {{/each}}
         </div>
-    </div>
 </section>
 <!-- Latest Product End -->
 
@@ -237,19 +246,33 @@
                     <div class="section-title">
                         <h2>2023 <br />#lookbook</h2>
                     </div>
-                    <p>Welcome to Vibgyor, the ultimate destination for women's fashion and style! At Vibgyor, we believe that fashion is an expression of individuality and that every woman deserves to feel confident and beautiful. Our e-commerce site is dedicated to offering a wide range of trendy and stylish clothing, accessories, and footwear for the modern woman.
+                    <p>Welcome to Vibgyor, the ultimate destination for women's fashion and style! At Vibgyor, we
+                        believe that fashion is an expression of individuality and that every woman deserves to feel
+                        confident and beautiful. Our e-commerce site is dedicated to offering a wide range of trendy and
+                        stylish clothing, accessories, and footwear for the modern woman.
 
-We understand that shopping for women's fashion can be overwhelming, which is why we have made it our mission to provide you with a seamless and enjoyable shopping experience. From casual wear to formal attire, we offer a wide variety of options that cater to all styles and occasions. Our collection is carefully curated to ensure that you can find everything you need to express yourself through fashion.
+                        We understand that shopping for women's fashion can be overwhelming, which is why we have made
+                        it our mission to provide you with a seamless and enjoyable shopping experience. From casual
+                        wear to formal attire, we offer a wide variety of options that cater to all styles and
+                        occasions. Our collection is carefully curated to ensure that you can find everything you need
+                        to express yourself through fashion.
 
-At Vibgyor, we prioritize quality, affordability, and sustainability. We work with trusted brands and designers to ensure that our products are of the highest quality and offer great value for your money. Additionally, we are committed to reducing our environmental impact by offering sustainable and eco-friendly options.
+                        At Vibgyor, we prioritize quality, affordability, and sustainability. We work with trusted
+                        brands and designers to ensure that our products are of the highest quality and offer great
+                        value for your money. Additionally, we are committed to reducing our environmental impact by
+                        offering sustainable and eco-friendly options.
 
-Whether you are looking for the perfect outfit for a special occasion or simply want to update your wardrobe, Vibgyor has got you covered. Shop with us today and experience the joy of finding the perfect piece that makes you feel confident, beautiful, and uniquely you!</p>
+                        Whether you are looking for the perfect outfit for a special occasion or simply want to update
+                        your wardrobe, Vibgyor has got you covered. Shop with us today and experience the joy of finding
+                        the perfect piece that makes you feel confident, beautiful, and uniquely you!</p>
                     <a href="#" class="primary-btn look-btn">See More</a>
                 </div>
             </div>
             <div class="col-lg-5 offset-lg-1">
                 <div class="lookbok-pic">
-                    <img style="height: 637px;" src="https://images.unsplash.com/photo-1574201635302-388dd92a4c3f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGZhc2hpb258ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"alt="">
+                    <img style="height: 637px;"
+                        src="https://images.unsplash.com/photo-1574201635302-388dd92a4c3f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGZhc2hpb258ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
+                        alt="">
                     <div class="pic-text ">fashion</div>
                 </div>
             </div>

@@ -15,7 +15,7 @@ const multer = require('../utils/multer');
 
 
 
-router.get('/', userControllers.userHome);
+router.get('/', verifySession.verifyUserLoggedIn,userControllers.userHome);
 
 router.post('/Home', userControllers.userLoginPost);
 
@@ -26,6 +26,7 @@ router.get('/logout',verifySession.verifyUserLoggedIn, userControllers.logout);
 router.get('/signup',verifySession.ifUserLoggedIn, userControllers.signUp);
 
 router.get('/signup', userControllers.userSignup);
+
 router.post('/signup', userControllers.signUpPost);
 
 router.get('/forgotPass',userControllers.forgotPass)
@@ -57,6 +58,8 @@ router.get('/product/:id',verifySession.verifyUserLoggedIn, userControllers.prod
 
 // User Cart
 router.get('/cart/',verifySession.verifyUserLoggedIn,userControllers.userStatus, userControllers.cart);
+
+
 
 router.get('/addToCart/:id', verifySession.verifyUserLoggedIn, userControllers.cartPage);
 

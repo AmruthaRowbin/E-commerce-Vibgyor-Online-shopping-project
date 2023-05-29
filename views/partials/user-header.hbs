@@ -36,10 +36,10 @@
                         </ul> --}}
                     </li>
                     <li><a href="/wishlist">Wishlist</a></li>
-                    <li><a href="/cart">Cart</a></li>
+                    <li><a href="/cart">Cart </a>{{#if cartCount}}<span class="badge badge-success"> {{cartCount}}</span>{{/if}}</li>                   
                     <li><a href="/orders">Orders</a></li>
                     <li><a href="/userProfile">My profile</a></li>
-                    <li>{{userName}}  &nbsp;<i class="fa-solid fa-caret-down"></i>
+                    <li>{{userName}} &nbsp;<i class="fa-solid fa-caret-down"></i>
                         <ul class="sub-menu">
                             <li><a href="/logout">Logout</a></li>
                         </ul>
@@ -48,12 +48,12 @@
             </nav>
 
             {{else}}
-         <div class="main-menu mobile-menu header-right">
-  <ul>
-    <li><a href="/signUp" style="margin-left: 10px;">Register</a></li>
-    <li><a href="/login">Login</a></li>
-  </ul>
-</div>
+            <div class="main-menu mobile-menu header-right">
+                <ul>
+                    <li><a href="/signUp" style="margin-left: 10px;">Register</a></li>
+                    <li><a href="/login">Login</a></li>
+                </ul>
+            </div>
             {{/if}}
         </div>
     </div>

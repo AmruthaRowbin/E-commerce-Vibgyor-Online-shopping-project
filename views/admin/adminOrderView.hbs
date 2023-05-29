@@ -32,7 +32,7 @@
                                 <td class="text-center">{{order.total}}</td>
                                 <td class="text-center">{{order.status}}</td>
                                 {{#if order.cancel}}
-                                <td class="text-center">{{order.cancel}}</td>
+                                <td class="text-center">{{order.cancel}}<a class="btn btn-dark text-white ml-3"  data-toggle="modal" data-target="#refund{{_id}}" {{#if order.refunded}}disabled{{/if}}>Refund</a></td>
                                 {{else if order.return}}
                                 <td class="text-center">{{order.return}} <a class="btn btn-dark text-white ml-3"  data-toggle="modal" data-target="#refund{{_id}}" {{#if order.refunded}}disabled{{/if}}>Refund</a></td>
                                 {{/if}}

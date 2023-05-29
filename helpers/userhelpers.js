@@ -5,6 +5,7 @@ const objectId = require('mongodb-legacy').ObjectId
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const { json } = require('body-parser');
+const { count } = require('console');
 
 
 
@@ -194,7 +195,7 @@ module.exports = {
   },
 
 
-  
+
 
   getOrders: (userId) => {
     return new Promise(async (resolve, reject) => {
@@ -207,8 +208,8 @@ module.exports = {
       resolve(orders);
     });
   },
-  
-  
+
+
 
   addOrderDetails: (order, userId) => {
     return new Promise(async (resolve, reject) => {
@@ -290,7 +291,7 @@ module.exports = {
   },
 
 
-  
+
   cancelOrder: (orderId, reason) => {
     return new Promise((resolve, reject) => {
       db.get().collection(collection.ORDER_COLLECTION)
@@ -678,7 +679,7 @@ module.exports = {
         }
       )
       resolve(activeBanner);
-    }) 
+    })
   },
 
   returnProduct: (orderId, reason) => {
@@ -713,79 +714,94 @@ module.exports = {
           reject(error);
         });
     });
-},
+  },
 
-getUser:(userId)=> {
+  getUser: (userId) => {
 
-  return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
 
       const user = await db.get().collection(collection.USER_COLLECTION).findOne(
-          {
-              _id: new objectId(userId)
-          }
+        {
+          _id: new objectId(userId)
+        }
       )
       console.log(user);
       resolve(user);
-  })
-},
+    })
+  },
 
-getOrderedProducts: (orderId) => {
-  return new Promise(async (resolve, reject) => {
+  getOrderedProducts: (orderId) => {
+    return new Promise(async (resolve, reject) => {
       orderId = new objectId(orderId);
       const order = await db.get().collection(collection.ORDER_COLLECTION).find({ _id: orderId }).toArray();
       resolve(order);
-  });
-},
-getOrderedProduct: (ordersId) => {
-  return new Promise(async (resolve, reject) => {
-    ordersId = new objectId(ordersId);
-    console.log(ordersId);
-    const orders = await db.get().collection(collection.ORDER_COLLECTION).find({ _id: ordersId }).toArray();
+    });
+  },
+  getOrderedProduct: (ordersId) => {
+    return new Promise(async (resolve, reject) => {
+      ordersId = new objectId(ordersId);
+      console.log(ordersId);
+      const orders = await db.get().collection(collection.ORDER_COLLECTION).find({ _id: ordersId }).toArray();
 
-    console.log(orders);
-    resolve(orders);
-  });
-},
+      console.log(orders);
+      resolve(orders);
+    });
+  },
 
 
-getSingleorder: (orderId) => {
-  return new Promise((resolve, reject) => {
+  getSingleorder: (orderId) => {
+    return new Promise((resolve, reject) => {
       db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: new objectId(orderId) }).then((orderdata) => {
-          resolve(orderdata)
+        resolve(orderdata)
 
       })
 
-  })
+    })
 
-},
+  },
 
-getCoupon:()=> {
-  return new Promise(async (resolve, reject)=> {
-     const coupon  = db.get().collection(collection.COUPON_COLLECTION).find().toArray();
+  getCoupon: () => {
+    return new Promise(async (resolve, reject) => {
+      const coupon = db.get().collection(collection.COUPON_COLLECTION).find().toArray();
       resolve(coupon);
-  })
-},
+    })
+  },
 
 
-changeOrderPaymentStatus:(orderId) => {
-  return new Promise((resolve, reject) => {
+  changeOrderPaymentStatus: (orderId) => {
+    return new Promise((resolve, reject) => {
       db.get().collection(collection.ORDER_COLLECTION).updateOne(
-          {
-              _id: new objectId(orderId)
-          },
-          {
-              $set: {
-                  status: "failed"
-              }
+        {
+          _id: new objectId(orderId)
+        },
+        {
+          $set: {
+            status: "failed"
           }
+        }
       ).then((response) => {
-          resolve(response)
+        resolve(response)
       }).catch((err) => {
-          
-          console.log(err);
+
+        console.log(err);
       })
-  })
-},
+    })
+  },
+
+  getCartCount: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      user = userId;
+      let count = 0;
+      let cart = await db
+        .get()
+        .collection(collection.CART_COLLECTION)
+        .findOne({ userId: new objectId(user) });
+      if (cart) {
+        count = cart.product.length;  // Change 'products' to 'product'
+      }
+      resolve(count)
+    });
+  },
 
 };
 

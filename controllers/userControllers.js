@@ -43,12 +43,15 @@ module.exports = {
         coupon.expired = coupon.status === 'Expired' ? true : false;
       })
       const banner = await userHelpers.getActiveBanner()
+      cartCount = await userHelpers.getCartCount(req.session.user._id);
+
       res.render("index", {
         user: true,
         userName: req.session.userName,
         products,
         banner,
-        coupons
+        coupons,
+        cartCount
       });
     });
   },
@@ -185,44 +188,45 @@ module.exports = {
   // ====================forgotEnd=========================
 
 
-  userLoginPost: (req, res) => {
+  userLoginPost: async (req, res) => {
     try {
-      userHelpers.doLogin(req.body)
-        .then((response) => {
-          if (response.status === "Invalid Password") {
-            req.session.passErr = response.status;
-            res.redirect("/login");
-          } else if (response.status === "Invalid User") {
-            req.session.emailErr = response.status;
-            res.redirect("/login");
-          } else if (response.status === "User Blocked!!!") {
-            req.session.passErr = response.status;
-            res.redirect("/login");
-          } else {
-            req.session.user = response.user;
-            // console.log(JSON.stringify(response)+"hehehehe")
-            req.session.userName = req.session.user.name;
-            req.session.userLoggedIn = true;
-            productHelpers.getSomeProducts().then(async (products) => {
-              const coupons = await userHelpers.getCoupon()
-              coupons.forEach(coupon => {
-                coupon.deactivate = coupon.status === 'Deactivated' ? true : false;
-                coupon.expired = coupon.status === 'Expired' ? true : false;
-              })
-              const banner = await userHelpers.getActiveBanner();
-              res.render("index", {
-                user: true,
-                userName: req.session.userName,
-                products,
-                banner,
-                coupons
-              });
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+      const response = await userHelpers.doLogin(req.body);
+
+      if (response.status === "Invalid Password") {
+        req.session.passErr = response.status;
+        res.redirect("/login");
+      } else if (response.status === "Invalid User") {
+        req.session.emailErr = response.status;
+        res.redirect("/login");
+      } else if (response.status === "User Blocked!!!") {
+        req.session.passErr = response.status;
+        res.redirect("/login");
+      } else {
+        req.session.user = response.user;
+        req.session.userName = req.session.user.name;
+        req.session.userLoggedIn = true;
+
+        const products = await productHelpers.getSomeProducts();
+        const coupons = await userHelpers.getCoupon();
+
+        coupons.forEach((coupon) => {
+          coupon.deactivate = coupon.status === "Deactivated";
+          coupon.expired = coupon.status === "Expired";
         });
+
+        const banner = await userHelpers.getActiveBanner();
+        cartCount = await userHelpers.getCartCount(req.session.user._id);
+        res.render("index", {
+          user: true,
+          userName: req.session.userName,
+          products,
+          banner,
+          coupons,
+          cartCount,
+        });
+
+
+      }
     } catch (err) {
       console.log(err);
     }
@@ -276,10 +280,14 @@ module.exports = {
     res.render('user/otpVerify', { user: true });
   },
 
-  otpVerification: (req, res) => {
+  otpVerification: async (req, res) => {
     const otp = req.body.otp;
     const phone = req.session.userDetailes.phone;
     console.log(req.body);
+    const banner = await userHelpers.getActiveBanner();
+    const products = await productHelpers.getSomeProducts();
+    const coupons = await userHelpers.getCoupon();
+
     client.verify
       .v2.services(serviceSid)
       .verificationChecks.create({ to: '+91' + phone, code: otp })
@@ -292,10 +300,33 @@ module.exports = {
               req.session.emailExist = response;
               res.render("user/signup", { user: true, emailExist: req.session.emailExist });
             } else {
+
               req.session.user = response.user;
               req.session.userName = req.session.user.name;
               req.session.userLoggedIn = true;
-              res.render("index", { user: true, userName: req.session.userName });
+
+
+              coupons.forEach((coupon) => {
+                coupon.deactivate = coupon.status === "Deactivated";
+                coupon.expired = coupon.status === "Expired";
+              });
+
+
+
+              let cartCount = null;
+
+
+
+
+
+              res.render("index", {
+                user: true,
+                userName: req.session.userName,
+                products,
+                banner,
+                coupons,
+
+              });
             }
           }).catch((err) => {
             console.log(err);
@@ -311,6 +342,13 @@ module.exports = {
         res.render('user/otpVerify', { user: true, errMsg: 'Something went wrong. Please try again.' });
       });
   },
+
+
+
+
+
+
+
 
 
   // check user blocked or unblock
@@ -341,6 +379,8 @@ module.exports = {
   productPage: async (req, res) => {
     const productData = req.params.id;
     const userName = req.session.userName;
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
+
     productHelpers
       .getSingleProduct(productData)
       .then(async (product) => {
@@ -358,6 +398,7 @@ module.exports = {
             userName,
             product,
             getRelatedProduct,
+            cartCount
           });
         }
       })
@@ -377,6 +418,7 @@ module.exports = {
     const maxPrice = req.session.maxPrice;
     const sortedProducts = req.session.sortedProduct;
     const categories = await productHelpers.getListedCategory();
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
 
     //pagination
     const totalPages = await productHelpers.totalPages();
@@ -395,9 +437,7 @@ module.exports = {
       req.session.maxPrice = false;
       req.session.minPrice = false;
       productHelpers.getProducts(currentPage).then((products) => {
-        console.log("insideproducts");
-        console.log(products);
-        res.render("user/shop", { user: true, categories, userName, products, currentPage, totalPages });
+        res.render("user/shop", { user: true, categories, userName, products, currentPage, totalPages, cartCount });
       })
         .catch((err) => {
           console.log(err);
@@ -410,20 +450,23 @@ module.exports = {
     const userName = req.session.user.name;
     const userId = req.session.user._id;
     const userDetailes = await cartHelpers.getCart(userId);
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
     if (!userDetailes.length == 0) {
       await cartHelpers.getCartTotal(req.session.user._id).then((total) => {
-        res.render("user/cart", { user: true, userName, userDetailes, total: total });
+        res.render("user/cart", { user: true, userName, userDetailes, total: total, cartCount });
       })
     } else {
-      res.render('user/cart', { user: true, userName });
+      res.render('user/cart', { user: true, userName, cartCount });
     }
   },
 
 
   cartPage: async (req, res) => {
     const productId = req.params.id;
+
     let quantity = 1;
     await cartHelpers.addToCart(productId, req.session.user._id, quantity);
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
     res.json({
       status: "success",
       message: "added to cart"
@@ -467,6 +510,8 @@ module.exports = {
     const userName = req.session.user.name;
     const addresses = await userHelpers.getAddress(req.session.user._id);
     const coupons = await userHelpers.getCoupon();
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
+
     coupons.forEach(coupon => {
       coupon.deactivate = coupon.status === 'Deactivated' ? true : false;
       coupon.expired = coupon.status === 'Expired' ? true : false;
@@ -478,7 +523,8 @@ module.exports = {
           userName,
           addresses,
           total,
-          coupons
+          coupons,
+          cartCount
         });
       })
       .catch((err) => {
@@ -627,11 +673,12 @@ module.exports = {
   },
 
   // Orders Page
-  
+
   orders: async (req, res) => {
     const userName = req.session.userName;
     const userId = req.session.user._id;
     const orders = await userHelpers.getOrders(userId);
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
 
     orders.forEach(order => {
       order.isCancelled = order.status === "cancelled" ? true : false;
@@ -644,7 +691,7 @@ module.exports = {
       const formattedDate = `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
       order.date = formattedDate;
     });
-    res.render("user/orders", { user: true, userName, orders });
+    res.render("user/orders", { user: true, userName, orders, cartCount });
   },
 
 
@@ -673,7 +720,9 @@ module.exports = {
   userProfile: async (req, res) => {
     const userName = req.session.userName;
     const userProfile = await userHelpers.getUser(req.session.user._id);
-    res.render("user/userProfile", { user: true, userName, userDetailes: req.session.user, userProfile });
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
+
+    res.render("user/userProfile", { user: true, userName, userDetailes: req.session.user, userProfile, cartCount });
   },
 
   userProfilePost: (req, res) => {
@@ -729,8 +778,9 @@ module.exports = {
 
   manageAddress: async (req, res) => {
     const userName = req.session.userName;
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
     const addresses = await userHelpers.getAddress(req.session.user._id);
-    res.render('user/manageAddress', { user: true, userName, addresses })
+    res.render('user/manageAddress', { user: true, userName, addresses, cartCount })
   },
 
 
@@ -740,7 +790,8 @@ module.exports = {
   wishlist: async (req, res) => {
     const userName = req.session.userName;
     const wishlist = await userHelpers.getWishlist(req.session.user._id);
-    res.render('user/wishlist', { user: true, userName, wishlist })
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
+    res.render('user/wishlist', { user: true, userName, wishlist, cartCount })
   },
 
 
@@ -765,9 +816,7 @@ module.exports = {
     req.session.minPrice = req.body.minPrice;
     req.session.maxPrice = req.body.maxPrice;
     const category = req.session.category;
-
     req.session.filteredProduct = await productHelpers.filterPrice(req.session.minPrice, req.session.maxPrice, category);
-
     res.json({
       status: "success"
     });
@@ -775,7 +824,6 @@ module.exports = {
 
 
   sortPrice: async (req, res) => {
-    console.log("inside");
     req.session.minPrice = req.body.minPrice;
     req.session.maxPrice = req.body.maxPrice;
     const category = req.session.category;
@@ -848,7 +896,9 @@ module.exports = {
     try {
       const userId = req.session.user._id;
       const wallet = await userHelpers.getWallet(userId);
-      res.render('user/wallet', { user: true, userName: req.session.userName, wallet: wallet });
+      cartCount = await userHelpers.getCartCount(req.session.user._id);
+
+      res.render('user/wallet', { user: true, userName: req.session.userName, wallet: wallet, cartCount });
     } catch (error) {
       // Handle any errors that occurred during the process
       res.render('error', { message: 'An error occurred', error: error });
@@ -890,15 +940,14 @@ module.exports = {
         }).catch(() => { });
       } else {
         userHelpers.changeOrderStatus(req.session.orderId).then(() => {
-        res.render('user/success', { user: req.session.user, payerId, paymentId, userName });
-      }).catch(() => { });
-    }
+          res.render('user/success', { user: req.session.user, payerId, paymentId, userName });
+        }).catch(() => { });
+      }
     }
     );
   },
   failure: (req, res) => {
     res.render('user/failure', { user: true, userName: req.session.userName });
   },
-
 
 }

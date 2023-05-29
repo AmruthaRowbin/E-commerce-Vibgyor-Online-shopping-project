@@ -32,16 +32,17 @@
                             <img src="{{product.images.[0]}}" id="main_product_image"
                                 data-zoom-image='{{product.images.[0]}}' class="img-fluid" alt="image of product">
                             <div class="p-status">new</div>
-                        </figure>                        
-                    </div>                 
+                        </figure>
+                    </div>
                 </div>
-                 <div style="width: 30vh;" class="mySlides mt-4">
+                <div style="width: 30vh;" class="mySlides mt-4">
                     <ul style="list-style-type: none; display: flex; flex-direction: row;" class="col-sm-12">
                         {{#each product.images}}
                         {{#unless @first}}
                         <li class="col-sm-12">
                             <a href="{{this}}" data-fancybox="product-gallery">
-                            <img src="{{this}}" data-zoom-image="{{this}}" class="img-fluid " alt="image of product">
+                                <img src="{{this}}" data-zoom-image="{{this}}" class="img-fluid "
+                                    alt="image of product">
                             </a>
                         </li>
                         {{/unless}}
@@ -66,7 +67,7 @@
                     <ul class="tags">
                         <li><span>Category :</span> {{product.category}}</li>
                         <li><span>Tags :</span> {{product.category}}, elegant, cool</li>
-                         {{#if (gte product.stock 1)}}
+                        {{#if (gte product.stock 1)}}
                         <li><span>Product in Stock :</span> {{product.stock}}</li>
                         {{else}}
                         <li><span class="text-danger mt-5" style="font-weight: bold;">Product out of stock</span></li>
@@ -86,60 +87,61 @@
                         <a href="/login" class="primary-btn pc-btn mx-4 mb-4">Add to cart</a>
                         {{/if}}
 
-                  
-                    {{#if userName}}
-                        <a onclick="addWishlist('{{product._id}}')" class="primary-btn pc-btn mx-4 mb-4">Add to Wishlist</a>
+
+                        {{#if userName}}
+                        <a onclick="addWishlist('{{product._id}}')" class="primary-btn pc-btn mx-4 mb-4">Add to
+                            Wishlist</a>
                         {{else}}
                         <a href="/login" class="primary-btn pc-btn mx-4 mb-4">Add to Wishlist</a>
                         {{/if}}
-                    <ul class="p-info">
-                        <li>Product Information</li>
-                        <li>Reviews</li>
-                        <li>Product Care</li>
-                    </ul>
+                        <ul class="p-info">
+                            <li>Product Information</li>
+                            <li>Reviews</li>
+                            <li>Product Care</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </section>
 <!-- Product Page Section End -->
 
 <!-- Related Product Section Begin -->
-    <section class="related-product spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="section-title">
-                        <h2>Related Products</h2>
-                    </div>
+<section class="related-product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>Related Products</h2>
                 </div>
             </div>
-             {{#if getRelatedProduct}}
-            <div class="row">
-                 {{#each getRelatedProduct}}
-               <div class="col-lg-3 col-sm-6">
-                    <div class="single-product-item">
-                        <figure>
-                            <img src="{{this.images.[0]}}">
-                            <div class="p-status">new</div>
-                        </figure>
-                        <div class="product-text">
-                          <a href="/product/{{this._id}}">
+        </div>
+        {{#if getRelatedProduct}}
+        <div class="row">
+            {{#each getRelatedProduct}}
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-product-item">
+                    <figure>
+                        <img src="{{this.images.[0]}}">
+                        <div class="p-status">new</div>
+                    </figure>
+                    <div class="product-text">
+                        <a href="/product/{{this._id}}">
                             <h5>{{this.name}}</h5>
                             <h6>{{this.category}}</h6>
                             <p>₹{{this.price}}.00</p>
                         </a>
-                        </div>
                     </div>
                 </div>
- {{/each}}
             </div>
-            {{/if}}
-                
+            {{/each}}
         </div>
-    </section>
-<!-- Related Product Section End -->  
+        {{/if}}
+
+    </div>
+</section>
+<!-- Related Product Section End -->
 
 
 {{!-- axios AddToCart and AddToWishlist --}}
@@ -147,6 +149,7 @@
     function addToCart(productId) {
         console.log("apicall")
         axios.get(`/addToCart/${productId}`).then((response) => {
+
             if (response.status) {
                 Toastify({
                     text: `${response.data.message}`,
@@ -157,7 +160,7 @@
                     style: {
                         background: "linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)",
                     }
-                }).showToast(); 
+                }).showToast();
             }
         }).catch((err) => {
             Toastify({
@@ -172,22 +175,22 @@
             }).showToast();
         })
     }
-   function addWishlist(productId) {
-  axios.get(`/addToWishlist/${productId}`).then((response) => {
-    if (response.status) {
-      Toastify({
-        text: `${response.data.message}`,
-        duration: 3000,
-        className: "info",
-        gravity: "bottom",
-        position: "center",
-        style: {
-          background: "linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)",
-        }
-      }).showToast();
+    function addWishlist(productId) {
+        axios.get(`/addToWishlist/${productId}`).then((response) => {
+            if (response.status) {
+                Toastify({
+                    text: `${response.data.message}`,
+                    duration: 3000,
+                    className: "info",
+                    gravity: "bottom",
+                    position: "center",
+                    style: {
+                        background: "linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%)",
+                    }
+                }).showToast();
 
-      
-    }
+
+            }
         }).catch((err) => {
             Toastify({
                 text: "product is not added to wishlis",
@@ -214,9 +217,9 @@
     let main_prodcut_image = document.getElementById('main_product_image');
     //main_prodcut_image.src = element.src;
     $("#main_product_image").data('zoom-image', main_prodcut_image.src).elevateZoom({
-       responsive: true, 
-       zoomWindowWidth: 300, 
-       zoomWindowHeight:300
+        responsive: true,
+        zoomWindowWidth: 300,
+        zoomWindowHeight: 300
     });
     //$("#main_product_image").elevateZoom({
     //    responsive: true

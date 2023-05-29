@@ -149,6 +149,7 @@ module.exports = {
           {
             $set: {
               name: data.name,
+              productid:data.productid,
               category: data.category,
               description: data.description,
               price: Number(data.price),

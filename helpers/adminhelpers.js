@@ -37,7 +37,7 @@ module.exports = {
         })
     },
 
-   
+
 
     deletUser: (userId) => {
         return new Promise((resolve, reject) => {
@@ -56,59 +56,59 @@ module.exports = {
         })
     },
 
-  
+
     getUserOrder: () => {
         return new Promise(async (resolve, reject) => {
-          try {
-            const userDet = await db
-              .get()
-              .collection(collection.ORDER_COLLECTION)
-              .find()
-              .sort({ _id: -1 }) // Sort by _id in descending order
-              .toArray();
-            resolve(userDet);
-          } catch (error) {
-            reject(error);
-          }
+            try {
+                const userDet = await db
+                    .get()
+                    .collection(collection.ORDER_COLLECTION)
+                    .find()
+                    .sort({ _id: -1 }) // Sort by _id in descending order
+                    .toArray();
+                resolve(userDet);
+            } catch (error) {
+                reject(error);
+            }
         });
-      },
-      
+    },
+
 
 
     adminOrderStatus: (orderId, status) => {
         return new Promise((resolve, reject) => {
-          db.get().collection(collection.ORDER_COLLECTION)
-            .findOne({ _id: new objectId(orderId) })
-            .then((order) => {
-              if (order.status === "Cancelled") {
-                console.log("User has already cancelled the product");
-                reject("User has already cancelled the product");
-              } else {
-                db.get().collection(collection.ORDER_COLLECTION)
-                  .updateOne(
-                    { _id: new objectId(orderId) },
-                    {
-                      $set: {
-                        status: status === "cancelled" ? "Cancelled" : status
-                      }
+            db.get().collection(collection.ORDER_COLLECTION)
+                .findOne({ _id: new objectId(orderId) })
+                .then((order) => {
+                    if (order.status === "Cancelled") {
+                        console.log("User has already cancelled the product");
+                        reject("User has already cancelled the product");
+                    } else {
+                        db.get().collection(collection.ORDER_COLLECTION)
+                            .updateOne(
+                                { _id: new objectId(orderId) },
+                                {
+                                    $set: {
+                                        status: status === "cancelled" ? "Cancelled" : status
+                                    }
+                                }
+                            )
+                            .then((response) => {
+                                console.log("Status updated successfully");
+                                resolve(response);
+                            })
+                            .catch((error) => {
+                                console.log("Error updating status:", error);
+                                reject(error);
+                            });
                     }
-                  )
-                  .then((response) => {
-                    console.log("Status updated successfully");
-                    resolve(response);
-                  })
-                  .catch((error) => {
-                    console.log("Error updating status:", error);
+                })
+                .catch((error) => {
+                    console.log("Error finding order:", error);
                     reject(error);
-                  });
-              }
-            })
-            .catch((error) => {
-              console.log("Error finding order:", error);
-              reject(error);
-            });
+                });
         });
-      },
+    },
 
 
 
@@ -390,74 +390,74 @@ module.exports = {
     },
 
 
-    getCoupon:()=> {
-        return new Promise(async(resolve, reject)=> {
-            try{
-            const coupons = await db.get().collection(collection.COUPON_COLLECTION).find().toArray();
-            const newDate = new Date();
-            coupons.forEach(coupon => {
-                if(coupon.date < newDate){
-                    coupon.status = 'Expired';
-                }
+    getCoupon: () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const coupons = await db.get().collection(collection.COUPON_COLLECTION).find().toArray();
+                const newDate = new Date();
+                coupons.forEach(coupon => {
+                    if (coupon.date < newDate) {
+                        coupon.status = 'Expired';
+                    }
 
-                const date = new Date(coupon.date);
-                const year = date.getFullYear();
-                const month = date.getMonth() + 1; // add 1 because months are zero-indexed
-                const day = date.getDate();
-                const formattedDate = `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
-                coupon.date = formattedDate;
-            })
-            resolve(coupons);
-        }catch(error){
-            reject("Failed to get coupons");
-        }
+                    const date = new Date(coupon.date);
+                    const year = date.getFullYear();
+                    const month = date.getMonth() + 1; // add 1 because months are zero-indexed
+                    const day = date.getDate();
+                    const formattedDate = `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
+                    coupon.date = formattedDate;
+                })
+                resolve(coupons);
+            } catch (error) {
+                reject("Failed to get coupons");
+            }
         })
-      },
-
-  
-    
+    },
 
 
-        adminAddCoupon: (coupon) => {
-          return new Promise(async (resolve, reject) => {
+
+
+
+    adminAddCoupon: (coupon) => {
+        return new Promise(async (resolve, reject) => {
             coupon.discount = Number(coupon.discount);
             coupon.date = new Date(coupon.date);
             coupon.status = true;
             const newDate = new Date();
-      
-            if (coupon.date < newDate) {
-              coupon.status = "Expired";
-            }
-      
-            const couponExist = await db
-              .get()
-              .collection(collection.COUPON_COLLECTION)
-              .findOne({ code: coupon.code });
-      
-            if (couponExist) {
-              resolve({ success: false, message: "Coupon already exists" });
-            } else {
-              db.get()
-                .collection(collection.COUPON_COLLECTION)
-                .insertOne(coupon)
-                .then(() => {
-                  resolve({ success: true, message: "Coupon added successfully" });
-                })
-                .catch((error) => {
-                  reject({ success: false, message: "Failed to add coupon" });
-                });
-            }
-          });
-        },
-      
 
-      adminEditCoupon:(couponId, coupon)=> {
-        return new Promise((resolve, reject)=> {
+            if (coupon.date < newDate) {
+                coupon.status = "Expired";
+            }
+
+            const couponExist = await db
+                .get()
+                .collection(collection.COUPON_COLLECTION)
+                .findOne({ code: coupon.code });
+
+            if (couponExist) {
+                resolve({ success: false, message: "Coupon already exists" });
+            } else {
+                db.get()
+                    .collection(collection.COUPON_COLLECTION)
+                    .insertOne(coupon)
+                    .then(() => {
+                        resolve({ success: true, message: "Coupon added successfully" });
+                    })
+                    .catch((error) => {
+                        reject({ success: false, message: "Failed to add coupon" });
+                    });
+            }
+        });
+    },
+
+
+    adminEditCoupon: (couponId, coupon) => {
+        return new Promise((resolve, reject) => {
 
             coupon.data = new Date(coupon.data);
             coupon.status = true;
             const newDate = new Date();
-            if(coupon.date < newDate){
+            if (coupon.date < newDate) {
                 coupon.status = 'Expired';
             }
             db.get().collection(collection.COUPON_COLLECTION).updateOne(
@@ -474,18 +474,18 @@ module.exports = {
                         status: coupon.status
                     }
                 }
-            ).then(()=> {
+            ).then(() => {
                 resolve()
-            }).catch(()=> {
+            }).catch(() => {
                 reject();
             })
 
         })
-      },
+    },
 
 
-      deactivateoCupon:(couponId)=> {
-        return new Promise((resolve, reject)=> {
+    deactivateoCupon: (couponId) => {
+        return new Promise((resolve, reject) => {
 
             db.get().collection(collection.COUPON_COLLECTION).updateOne(
                 {
@@ -493,20 +493,20 @@ module.exports = {
                 },
                 {
                     $set: {
-                        status:'Deactivated'
+                        status: 'Deactivated'
                     }
                 }
-            ).then(()=> {
+            ).then(() => {
                 resolve();
-            }).catch(()=> {
+            }).catch(() => {
                 reject();
             })
         })
-      },
+    },
 
-      activateCoupon:(couponId)=> {
+    activateCoupon: (couponId) => {
 
-        return new Promise((resolve, reject)=> {
+        return new Promise((resolve, reject) => {
 
             db.get().collection(collection.COUPON_COLLECTION).updateOne(
                 {
@@ -517,34 +517,34 @@ module.exports = {
                         status: 'Activated'
                     }
                 }
-            ).then(()=> {
+            ).then(() => {
                 resolve();
-            }).catch(()=> {
+            }).catch(() => {
                 reject();
             })
         })
-      },
+    },
 
 
-       // Admin Banner
-    getBanner:()=> {
-        return new Promise(async (resolve, reject)=> {
+    // Admin Banner
+    getBanner: () => {
+        return new Promise(async (resolve, reject) => {
             const banner = await db.get().collection(collection.BANNER_COLLECTION).find().toArray();
             resolve(banner);
         });
-      },
+    },
 
-    addBanner:(banner)=> {
-        return new Promise((resolve, reject)=> {
-            db.get().collection(collection.BANNER_COLLECTION).insertOne(banner).then((response)=> {
+    addBanner: (banner) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.BANNER_COLLECTION).insertOne(banner).then((response) => {
                 resolve(response);
             })
 
         })
-      },
+    },
 
-    adminBannerImageEdit:(bannerId, imageUrl)=> {
-        return new Promise((resolve, reject)=> {
+    adminBannerImageEdit: (bannerId, imageUrl) => {
+        return new Promise((resolve, reject) => {
 
             db.get().collection(collection.BANNER_COLLECTION).updateOne(
                 {
@@ -555,14 +555,14 @@ module.exports = {
                         image: imageUrl
                     }
                 }
-            ).then((response)=> {
+            ).then((response) => {
                 resolve(response);
             })
         })
-      },
+    },
 
-    adminEditBanner:(bannerId, banner)=> {
-        return new Promise((resolve, reject)=> {
+    adminEditBanner: (bannerId, banner) => {
+        return new Promise((resolve, reject) => {
 
             db.get().collection(collection.BANNER_COLLECTION).updateOne(
                 {
@@ -574,14 +574,14 @@ module.exports = {
                         heading: banner.heading
                     }
                 }
-            ).then((response)=> {
+            ).then((response) => {
                 resolve(response)
             })
         })
-      },
+    },
 
-    adminActivateBanner:(bannerId)=> {
-        return new Promise((resolve, reject)=> {
+    adminActivateBanner: (bannerId) => {
+        return new Promise((resolve, reject) => {
 
             db.get().collection(collection.BANNER_COLLECTION).updateMany(
                 {},
@@ -602,14 +602,14 @@ module.exports = {
                         active: true
                     }
                 }
-            ).then((response)=> {
+            ).then((response) => {
                 resolve(response);
             })
         })
-      },
+    },
 
-      getSingleOrder:(orderId)=> {
-        return new Promise(async (resolve, reject)=> {
+    getSingleOrder: (orderId) => {
+        return new Promise(async (resolve, reject) => {
             const orderDet = await db.get().collection(collection.ORDER_COLLECTION).findOne(
                 {
                     _id: new objectId(orderId)
@@ -623,75 +623,75 @@ module.exports = {
 
     getSingle: (orderId) => {
         return new Promise((resolve, reject) => {
-          db.get()
-            .collection(collection.ORDER_COLLECTION)
-            .findOne({ _id: new objectId(orderId) })
-            .then((orderData) => {
-              if (orderData) {
-                const userId = orderData.userId;
-                console.log('userId')
-                console.log(userId)
-                // Add the userId property to the orderData object
-                orderData.userId = userId;
-                resolve(userId);
-                
-              } else {
-                reject(new Error('Order not found'));
-              }
-            })
-            .catch((error) => {
-              reject(error);
-            });
-        });
-      },
+            db.get()
+                .collection(collection.ORDER_COLLECTION)
+                .findOne({ _id: new objectId(orderId) })
+                .then((orderData) => {
+                    if (orderData) {
+                        const userId = orderData.userId;
+                        console.log('userId')
+                        console.log(userId)
+                        // Add the userId property to the orderData object
+                        orderData.userId = userId;
+                        resolve(userId);
 
-
-      adminRefund: (orderId, userId) => {
-        return new Promise(async (resolve, reject) => {
-          try {
-            const order = await db.get()
-              .collection(collection.ORDER_COLLECTION)
-              .findOne({ _id: new objectId(orderId) });
-      
-            if (order) {
-              const balance = order.total;
-              const date = order. date;
-              
-              const walletCollection = db.get().collection(collection.WALLET_COLLECTION);
-      
-              const existingWallet = await walletCollection.findOne({ _id: new objectId(userId) });
-      
-              if (existingWallet) {
-                const existingBalance = existingWallet.balance;
-                const updatedBalance = existingBalance + balance;
-      
-                await walletCollection.updateOne(
-                  { _id: new objectId(userId) },
-                  { $set: { balance: updatedBalance } }
-                );
-              } else {
-                await walletCollection.insertOne({
-                  _id: new objectId(userId),
-                  orderId: new objectId(orderId),
-                  date : date,
-                  balance: balance
+                    } else {
+                        reject(new Error('Order not found'));
+                    }
+                })
+                .catch((error) => {
+                    reject(error);
                 });
-              }
-      
-              await db.get().collection(collection.ORDER_COLLECTION).updateOne(
-                { _id: new objectId(orderId) },
-                { $set: { refunded: true } }
-              );
-      
-              resolve();
-            } else {
-              reject(new Error('Order not found'));
-            }
-          } catch (error) {
-            reject(error);
-          }
         });
-      },
+    },
+
+
+    adminRefund: (orderId, userId) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const order = await db.get()
+                    .collection(collection.ORDER_COLLECTION)
+                    .findOne({ _id: new objectId(orderId) });
+
+                if (order) {
+                    const balance = order.total;
+                    const date = order.date;
+
+                    const walletCollection = db.get().collection(collection.WALLET_COLLECTION);
+
+                    const existingWallet = await walletCollection.findOne({ _id: new objectId(userId) });
+
+                    if (existingWallet) {
+                        const existingBalance = existingWallet.balance;
+                        const updatedBalance = existingBalance + balance;
+
+                        await walletCollection.updateOne(
+                            { _id: new objectId(userId) },
+                            { $set: { balance: updatedBalance } }
+                        );
+                    } else {
+                        await walletCollection.insertOne({
+                            _id: new objectId(userId),
+                            orderId: new objectId(orderId),
+                            date: date,
+                            balance: balance
+                        });
+                    }
+
+                    await db.get().collection(collection.ORDER_COLLECTION).updateOne(
+                        { _id: new objectId(orderId) },
+                        { $set: { refunded: true } }
+                    );
+
+                    resolve();
+                } else {
+                    reject(new Error('Order not found'));
+                }
+            } catch (error) {
+                reject(error);
+            }
+        });
+    },
 
 
 
