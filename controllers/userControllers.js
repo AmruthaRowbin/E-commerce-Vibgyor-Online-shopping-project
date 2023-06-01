@@ -705,7 +705,7 @@ module.exports = {
     const userProfile = await userHelpers.getUser(req.session.user._id);
     cartCount = await userHelpers.getCartCount(req.session.user._id);
 
-    res.render("user/userprofile", { user: true, userName, userDetailes: req.session.user, userProfile, cartCount });
+    res.render("user/userProfile", { user: true, userName, userDetailes: req.session.user, userProfile, cartCount });
   },
 
   userProfilePost: (req, res) => {
@@ -715,19 +715,19 @@ module.exports = {
         userHelpers.editPassword(userId, req.body).then((response) => {
           if (response) {
             req.session.changePassword = "";
-            res.redirect('/userprofile');
+            res.redirect('/userProfile');
           } else {
             req.session.changePassword = "Invalid old password";
-            res.redirect('/userprofile');
+            res.redirect('/userProfile');
           }
         }).catch((error) => {
           console.log(error);
           req.session.changePassword = "An error occurred while changing the password";
-          res.redirect('/userprofile');
+          res.redirect('/userProfile');
         });
       } else {
         req.session.changePassword = "";
-        res.redirect('/userprofile');
+        res.redirect('/userProfile');
       }
     });
   },
