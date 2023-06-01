@@ -63,7 +63,7 @@ module.exports = {
                         }
                     }
                 )
-                console.log(listed);
+            
                 resolve();
             }).catch((err) => {
                 console.log(err);

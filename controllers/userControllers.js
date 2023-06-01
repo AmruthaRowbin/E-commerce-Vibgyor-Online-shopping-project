@@ -705,7 +705,7 @@ module.exports = {
     const userProfile = await userHelpers.getUser(req.session.user._id);
     cartCount = await userHelpers.getCartCount(req.session.user._id);
 
-    res.render("user/userProfile", { user: true, userName, userDetailes: req.session.user, userProfile, cartCount });
+    res.render("user/userprofile", { user: true, userName, userDetailes: req.session.user, userProfile, cartCount });
   },
 
   userProfilePost: (req, res) => {
