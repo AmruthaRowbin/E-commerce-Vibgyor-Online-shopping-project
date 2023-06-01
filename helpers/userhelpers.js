@@ -15,8 +15,8 @@ const { count } = require('console');
 //var razorpay_key_secret = "ieGubz9JCjCmkvhbL8t8npxk"
 
 var instance = new Razorpay({
-  key_id: 'rzp_test_V2TIxU08jpA7R3',
-  key_secret: 'zpXkPXQpDm9PhKExdFgrOG0n'
+  key_id: 'rzp_test_pAzUmloFW4AZ9X',
+  key_secret: 'VNkIiMPVosxmH3iOpJySZSgO'
   ,
 })
 
@@ -587,7 +587,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
 
 
-      let hmac = crypto.createHmac('sha256', 'zpXkPXQpDm9PhKExdFgrOG0n');
+      let hmac = crypto.createHmac('sha256', 'VNkIiMPVosxmH3iOpJySZSgO');
 
       hmac.update(details.response.razorpay_order_id + '|' + details.response.razorpay_payment_id);
       hmac = hmac.digest('hex');

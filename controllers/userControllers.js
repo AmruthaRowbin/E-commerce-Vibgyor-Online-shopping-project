@@ -43,16 +43,23 @@ module.exports = {
         coupon.expired = coupon.status === 'Expired' ? true : false;
       })
       const banner = await userHelpers.getActiveBanner()
-      cartCount = await userHelpers.getCartCount(req.session.user._id);
-
-      res.render("index", {
-        user: true,
-        userName: req.session.userName,
-        products,
-        banner,
-        coupons,
-        cartCount
-      });
+      if(req.session.user){
+        cartCount = await userHelpers.getCartCount(req.session.user._id); 
+        res.render("index", {
+          user: true,
+          userName: req.session.userName,
+          products,
+          banner,
+          coupons,
+          cartCount
+        });}
+        else{res.render("index", {
+          user: true,
+          userName: req.session.userName,
+          products,
+          banner,
+          coupons      
+        });}
     });
   },
 
@@ -114,8 +121,6 @@ module.exports = {
     delete req.body.confirmPass;
 
     // Remove the rePassword field from the request body
-
-
     // Validate the password using regular expressions
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
 
@@ -125,10 +130,6 @@ module.exports = {
       //res.render('index',{user:true,userName:true});
       return;
     }
-
-
-
-
     userHelpers.checkuserBlockExist(req.body.email).then((response) => {
 
       if (response.status == "No user Found") {
@@ -151,7 +152,6 @@ module.exports = {
       }
     });
   },
-
 
   forgotPassOtpVerificaion: (req, res) => {
     const userOtp = req.body.otp;
@@ -205,10 +205,8 @@ module.exports = {
         req.session.user = response.user;
         req.session.userName = req.session.user.name;
         req.session.userLoggedIn = true;
-
         const products = await productHelpers.getSomeProducts();
         const coupons = await userHelpers.getCoupon();
-
         coupons.forEach((coupon) => {
           coupon.deactivate = coupon.status === "Deactivated";
           coupon.expired = coupon.status === "Expired";
@@ -310,23 +308,8 @@ module.exports = {
                 coupon.deactivate = coupon.status === "Deactivated";
                 coupon.expired = coupon.status === "Expired";
               });
-
-
-
               let cartCount = null;
-
-
-
-
-
-              res.render("index", {
-                user: true,
-                userName: req.session.userName,
-                products,
-                banner,
-                coupons,
-
-              });
+              res.redirect("/");
             }
           }).catch((err) => {
             console.log(err);
@@ -542,7 +525,7 @@ module.exports = {
     try {
       const addressId = req.body.address;
       const userDetails = req.session.user;
-      const total = req.body.total
+      const total = Number(req.body.total)
       const paymentMethod = req.body.paymentMethod;
       const shippingAddress = await userHelpers.findAddress(addressId, req.session.user._id);
       const cartItems = await cartHelpers.getCart(req.session.user._id);

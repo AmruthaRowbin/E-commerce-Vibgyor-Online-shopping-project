@@ -1,219 +1,213 @@
-
-
-
-
 <div class="row tm-mt-big">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-        <div class="bg-black tm-block">
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="tm-block-title d-inline-block">Add Product</h2>
-                </div>
-            </div>
-             <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                     <div class="bg-secondary rounded h-100 p-4">
-                        <div class="form-floating mb-3">
-                            
-                            
-                    <form action="/admin/adminAddProduct" method="post" enctype="multipart/form-data" class="tm-edit-product-form" name="myForm" onsubmit="return validateForm()">
-                  
-                        <div class="input-group mb-3">
-                            <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Product
-                                Name
-                            </label>
-                            <input id="name" name="name" type="text"
-                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" >
-                                <span id="nameError" class="text-danger error-message"></span>
-                               
-                        </div>
-                        <div class="input-group mb-3">
-                            <label for="productid" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">ProductId
-                              
-                  
-                            </label>
-                            <input id="productid" name="productid" type="productid"
-                                class="form-control validate col-xl-9 col-lg-8 col-md-7 col-sm-7" >
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+    <div class="bg-black tm-block">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="tm-block-title d-inline-block">Add Product</h2>
+        </div>
+      </div>
+      <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+          <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+              <div class="form-floating mb-3">
 
-                                  <span id="stockError" class="text-danger error-message"></span>
-                                 
-                        </div>
-                        <div class="input-group mb-3">
-                            <label for="description"
-                                class="col-xl-4 col-lg-4 col-md-4 col-sm-5 mb-2">Description</label>
-                                <input id="description" name="description" type="text"
-                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" >
-                                  <span id="descriptionError" class="text-danger error-message"></span>
-                               
-                            {{!-- <textarea class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" rows="3"
-                                name="description" ></textarea> --}}
-                        </div>
-                        <div class="input-group mb-3">
-                            <label for="category"
-                                class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
-                                 {{!-- <input id="category" name="category" type="text"
-                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" > --}}
-                                
-                            <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category"
-                                id="category" >
-                               <option value="">Select one</option>
-                                {{#each category}}
-                                
-                                <option value="{{this.name}}">{{this.name}}</option>
-                              
-                                {{/each}}
-                            </select>
-                            <span id="categoryError" class="text-danger error-message"></span>
-                        </div>
-                        <div class="input-group mb-3">
-                            <label for="expire_date" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Price
-                            </label>
-                            <input id="expire_date" name="price" type="text"
-                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" data-large-mode="true">
-                                   <span id="priceError" class="text-danger error-message"></span>
-                                 
-                                
-                        </div>
-                        <div class="input-group mb-3">
-                            <label for="stock" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Units
-                                In
-                                Stock
-                            </label>
-                            <input id="stock" name="stock" type="text"
-                                class="form-control validate col-xl-9 col-lg-8 col-md-7 col-sm-7" >
 
-                                  <span id="stockError" class="text-danger error-message"></span>
-                                 
-                        </div>
+                <form action="/admin/adminAddProduct" method="post" enctype="multipart/form-data"
+                  class="tm-edit-product-form" name="myForm" onsubmit="return validateForm()">
+
+                  <div class="input-group mb-3">
+                    <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Product
+                      Name
+                    </label>
+                    <input id="name" name="name" type="text"
+                      class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7">
+                    <span id="nameError" class="text-danger error-message"></span>
+
+                  </div>
+                  <div class="input-group mb-3">
+                    <label for="productid" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">ProductId
+
+
+                    </label>
+                    <input id="productid" name="productid" type="productid"
+                      class="form-control validate col-xl-9 col-lg-8 col-md-7 col-sm-7">
+
+                    <span id="stockError" class="text-danger error-message"></span>
+
+                  </div>
+                  <div class="input-group mb-3">
+                    <label for="description" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 mb-2">Description</label>
+                    <input id="description" name="description" type="text"
+                      class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7">
+                    <span id="descriptionError" class="text-danger error-message"></span>
+
+                    {{!-- <textarea class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" rows="3"
+                      name="description"></textarea> --}}
+                  </div>
+                  <div class="input-group mb-3">
+                    <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
+                    {{!-- <input id="category" name="category" type="text"
+                      class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"> --}}
+
+                    <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category" id="category">
+                      <option value="">Select one</option>
+                      {{#each category}}
+
+                      <option value="{{this.name}}">{{this.name}}</option>
+
+                      {{/each}}
+                    </select>
+                    <span id="categoryError" class="text-danger error-message"></span>
+                  </div>
+                  <div class="input-group mb-3">
+                    <label for="expire_date" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Price
+                    </label>
+                    <input id="expire_date" name="price" type="text"
+                      class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" data-large-mode="true">
+                    <span id="priceError" class="text-danger error-message"></span>
+
+
+                  </div>
+                  <div class="input-group mb-3">
+                    <label for="stock" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Units
+                      In
+                      Stock
+                    </label>
+                    <input id="stock" name="stock" type="text"
+                      class="form-control validate col-xl-9 col-lg-8 col-md-7 col-sm-7">
+
+                    <span id="stockError" class="text-danger error-message"></span>
+
+                  </div>
+
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-12 mx-auto mb-4">
+                <div class="tm-product-img-dummy mx-auto">
+                  <i class="fas fa-5x fa-cloud-upload-alt"></i>
+                </div>
+                <div class="custom-file mt-3 mb-3">
+                  <input id="fileInput" multiple type="file" style="display:none;" name="image" />
+                  <input type="button" class="btn btn-primary d-block mx-auto" value="Upload ..."
+                    onclick="document.getElementById('fileInput').click();" />
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
+                  <button type="submit" class="btn btn-primary" onclick="showNotification()">Add</button>
 
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 mx-auto mb-4">
-                    <div class="tm-product-img-dummy mx-auto">
-                        <i class="fas fa-5x fa-cloud-upload-alt"></i>
-                    </div>
-                    <div class="custom-file mt-3 mb-3">
-                        <input id="fileInput" multiple type="file" style="display:none;" name="image" />
-                        <input type="button" class="btn btn-primary d-block mx-auto" value="Upload ..."
-                            onclick="document.getElementById('fileInput').click();"  />
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
-                        <button type="submit" class="btn btn-primary" onclick="showNotification()">Add</button>
-
-                    </div>
-                </div>
+              </div>
             </div>
             </form>
+          </div>
         </div>
-     </div>
-     </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
+  <script>
 
-function validateForm() {
-  var name = document.forms["myForm"]["name"].value;
-  var description = document.forms["myForm"]["description"].value;
-  var category = document.forms["myForm"]["category"].value;
-  var price = document.forms["myForm"]["expire_date"].value;
-  var stock = document.forms["myForm"]["stock"].value;
-  var file = document.forms["myForm"]["image"].value;
-  
-
-  // Validate name
-  if (name == "") {
-    document.getElementById("nameError").innerHTML = "Please enter a name.";
-    document.forms["myForm"]["name"].addEventListener("click", function() {
-      document.getElementById("nameError").innerHTML = "";
-    });
-    return false;
-  }
-
-  // Validate description
-  if (description == "") {
-    document.getElementById("descriptionError").innerHTML = "Please enter a description.";
-    document.forms["myForm"]["description"].addEventListener("click", function() {
-      document.getElementById("descriptionError").innerHTML = "";
-    });
-    return false;
-  }
-
-  // Validate category
-  if (category == "") {
-    document.getElementById("categoryError").innerHTML = "Please select a category.";
-    document.forms["myForm"]["category"].addEventListener("click", function() {
-      document.getElementById("categoryError").innerHTML = "";
-    });
-    return false;
-  }
-
-  // Validate price
-  if (price == "") {
-    document.getElementById("priceError").innerHTML = "Please enter a price.";
-    document.forms["myForm"]["expire_date"].addEventListener("click", function() {
-      document.getElementById("priceError").innerHTML = "";
-    });
-    return false;
-  } else if (isNaN(price)) {
-    document.getElementById("priceError").innerHTML = "Price must be a number.";
-    document.forms["myForm"]["expire_date"].addEventListener("click", function() {
-      document.getElementById("priceError").innerHTML = "";
-    });
-    return false;
-  } else if (price <= 0) {
-    document.getElementById("priceError").innerHTML = "Price cannot be negative or Zero.";
-    document.forms["myForm"]["expire_date"].addEventListener("click", function() {
-      document.getElementById("priceError").innerHTML = "";
-    });
-    return false;
-  }
-
-  // Validate stock
-  if (stock == "") {
-    document.getElementById("stockError").innerHTML = "Please enter the number of units in stock.";
-    document.forms["myForm"]["stock"].addEventListener("click", function() {
-      document.getElementById("stockError").innerHTML = "";
-    });
-    return false;
-  } else if (isNaN(stock)) {
-    document.getElementById("stockError").innerHTML = "Units in stock must be a number.";
-    document.forms["myForm"]["stock"].addEventListener("click", function() {
-      document.getElementById("stockError").innerHTML = "";
-    });
-    return false;
-  } else if (stock <= 0) {
-    document.getElementById("stockError").innerHTML = "Units in stock cannot be negative or Zero.";
-    document.forms["myForm"]["stock"].addEventListener("click", function() {
-      document.getElementById("stockError").innerHTML = "";
-    });
-    return false;
-  }
-
-  // Validate file
-  if (file == "") {
-    alert("Please select a file to upload.");
-    document.forms["myForm"]["image"].addEventListener("click", function() {
-      alert("Please select a file to upload.");
-    });
-    return false;
-  }
-
-  return true;
-}
-</script>
+    function validateForm() {
+      var name = document.forms["myForm"]["name"].value;
+      var description = document.forms["myForm"]["description"].value;
+      var category = document.forms["myForm"]["category"].value;
+      var price = document.forms["myForm"]["expire_date"].value;
+      var stock = document.forms["myForm"]["stock"].value;
+      var file = document.forms["myForm"]["image"].value;
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function showNotification() {
-        Swal.fire({
-            title: "Product Added!",
-            text: "The product has been successfully added.",
-            icon: "success",
-            confirmButtonText: "OK"
+      // Validate name
+      if (name == "") {
+        document.getElementById("nameError").innerHTML = "Please enter a name.";
+        document.forms["myForm"]["name"].addEventListener("click", function () {
+          document.getElementById("nameError").innerHTML = "";
         });
+        return false;
+      }
+
+      // Validate description
+      if (description == "") {
+        document.getElementById("descriptionError").innerHTML = "Please enter a description.";
+        document.forms["myForm"]["description"].addEventListener("click", function () {
+          document.getElementById("descriptionError").innerHTML = "";
+        });
+        return false;
+      }
+
+      // Validate category
+      if (category == "") {
+        document.getElementById("categoryError").innerHTML = "Please select a category.";
+        document.forms["myForm"]["category"].addEventListener("click", function () {
+          document.getElementById("categoryError").innerHTML = "";
+        });
+        return false;
+      }
+
+      // Validate price
+      if (price == "") {
+        document.getElementById("priceError").innerHTML = "Please enter a price.";
+        document.forms["myForm"]["expire_date"].addEventListener("click", function () {
+          document.getElementById("priceError").innerHTML = "";
+        });
+        return false;
+      } else if (isNaN(price)) {
+        document.getElementById("priceError").innerHTML = "Price must be a number.";
+        document.forms["myForm"]["expire_date"].addEventListener("click", function () {
+          document.getElementById("priceError").innerHTML = "";
+        });
+        return false;
+      } else if (price <= 0) {
+        document.getElementById("priceError").innerHTML = "Price cannot be negative or Zero.";
+        document.forms["myForm"]["expire_date"].addEventListener("click", function () {
+          document.getElementById("priceError").innerHTML = "";
+        });
+        return false;
+      }
+
+      // Validate stock
+      if (stock == "") {
+        document.getElementById("stockError").innerHTML = "Please enter the number of units in stock.";
+        document.forms["myForm"]["stock"].addEventListener("click", function () {
+          document.getElementById("stockError").innerHTML = "";
+        });
+        return false;
+      } else if (isNaN(stock)) {
+        document.getElementById("stockError").innerHTML = "Units in stock must be a number.";
+        document.forms["myForm"]["stock"].addEventListener("click", function () {
+          document.getElementById("stockError").innerHTML = "";
+        });
+        return false;
+      } else if (stock <= 0) {
+        document.getElementById("stockError").innerHTML = "Units in stock cannot be negative or Zero.";
+        document.forms["myForm"]["stock"].addEventListener("click", function () {
+          document.getElementById("stockError").innerHTML = "";
+        });
+        return false;
+      }
+
+      // Validate file
+      if (file == "") {
+        alert("Please select a file to upload.");
+        document.forms["myForm"]["image"].addEventListener("click", function () {
+          alert("Please select a file to upload.");
+        });
+        return false;
+      }
+
+      return true;
     }
-</script>
+  </script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    function showNotification() {
+      Swal.fire({
+        title: "Product Added!",
+        text: "The product has been successfully added.",
+        icon: "success",
+        confirmButtonText: "OK"
+      });
+    }
+  </script>

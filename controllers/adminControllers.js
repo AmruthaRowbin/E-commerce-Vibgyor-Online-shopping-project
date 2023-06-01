@@ -312,7 +312,7 @@ module.exports = {
     },
 
     viewDetadmin: async (req, res) => {
-        console.log("inside check viewDetail");
+        
         const adminName = req.session.adminName;
         const orderId = req.params.id;
 

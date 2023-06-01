@@ -1,309 +1,318 @@
 <div class="container">
-        <div class="row tm-content-row tm-mt-big">
-            <div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-block-col">
-                {{!-- <div class="bg-white tm-block h-100"> --}}
-                    <div class="row">
-                       
-                        <div class="col-md-8 col-sm-12">
-                            <h2 class="tm-block-title d-inline-block">Category</h2>
-                        </div>
+    <div class="row tm-content-row tm-mt-big">
+        <div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-block-col">
+            {{!-- <div class="bg-white tm-block h-100"> --}}
+                <div class="row">
 
-                       <div class="col-md-4 col-sm-12 text-right">
-                            <a data-toggle="modal" data-target="#add" class="btn btn-small btn-primary">Add Category</a>
-                        </div>
+                    <div class="col-md-8 col-sm-12">
+                        <h2 class="tm-block-title d-inline-block">Category</h2>
                     </div>
-                    <!-- Table Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">  
-                    <div class="col-12">
-                        <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Category</h6>
-                            <div class="table-responsive">
-                                <table class="table"  id="productsTable">
-                                    <thead>
-                                        <tr class="tm-bg-gray">
-                                    <th scope="col">Category Name</th>
-                                    <th scope="col">Delete Category </th>
-                                </tr>
-                                    </thead>
-                                    <tbody>
-                                         {{#each category}} 
-                                <tr>
-                                    <td>{{this.name}}</td>
-                                    <td><a class=" btn btn-primary" data-toggle="modal" data-target="#delete{{this._id}}"><i
-                                            class="fas fa-trash-alt tm-trash-icon"></i></a></td>
-                                            
-                                </tr>
-                                {{/each}}
-                                    </tbody>
-                                </table>
+
+                    <div class="col-md-4 col-sm-12 text-right">
+                        <a data-toggle="modal" data-target="#add" class="btn btn-small btn-primary">Add Category</a>
+                    </div>
+                </div>
+                <!-- Table Start -->
+                <div class="container-fluid pt-4 px-4">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="bg-secondary rounded h-100 p-4">
+                                <h6 class="mb-4">Category</h6>
+                                <div class="table-responsive">
+                                    <table class="table" id="productsTable">
+                                        <thead>
+                                            <tr class="tm-bg-gray">
+                                                <th scope="col">Category Name</th>
+                                                <th scope="col">Delete Category </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each category}}
+                                            <tr>
+                                                <td>{{this.name}}</td>
+                                                <td><a class=" btn btn-primary" data-toggle="modal"
+                                                        data-target="#delete{{this._id}}"><i
+                                                            class="fas fa-trash-alt tm-trash-icon"></i></a></td>
+
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Table End -->
-                    
-                        
-                             
+                <!-- Table End -->
 
-        {{#if category.length}}
 
-        {{#each category}}
-        <div class="modal fade" id="delete{{this._id}}" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Do you want to delete Category <b class="text-dark">{{this.name}}</b>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" >cancel</button>
-                        <button type="button" class="btn btn-danger"id="confirmDelete{{this._id}}/{{this.name}}">delete</button>
+
+
+                {{#if category.length}}
+
+                {{#each category}}
+                <div class="modal fade" id="delete{{this._id}}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Do you want to delete Category <b class="text-dark">{{this.name}}</b>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                                <button type="button" class="btn btn-danger"
+                                    id="confirmDelete{{this._id}}/{{this.name}}">delete</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        {{/each}}
-        {{else}}
-    <p style="font-size: 2.2em;">No category found</p>
-{{/if}}
+                {{/each}}
+                {{else}}
+                <p style="font-size: 2.2em;">No category found</p>
+                {{/if}}
 
 
-<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" style="color: black; font-weight: bold;">Add Category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="text-dark" action="" method="post" onsubmit="return validateForm()">
-                    <div class="form-group">
-                        <label for="name" class="col-form-label">Category Name:</label>
-                        <input type="text" name="name" value="{{this.name}}" class="form-control bg-white text-black" id="name">
-                        <span id="name-error" class="text-danger error-message"></span>
+                <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel" style="color: black; font-weight: bold;">
+                                    Add Category</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="text-dark" action="" method="post" onsubmit="return validateForm()">
+                                    <div class="form-group">
+                                        <label for="name" class="col-form-label">Category Name:</label>
+                                        <input type="text" name="name" value="{{this.name}}"
+                                            class="form-control bg-white text-black" id="name">
+                                        <span id="name-error" class="text-danger error-message"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-form-label">Description:</label>
+                                        <input type="text" name="description" value="{{this.description}}"
+                                            class="form-control bg-white text-black" id="description">
+                                        <span id="description-error" class="text-danger error-message"></span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary"
+                                            onclick="applySubmit()">Confirm</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="description" class="col-form-label">Description:</label>
-                        <input type="text" name="description" value="{{this.description}}" class="form-control bg-white text-black" id="description">
-                        <span id="description-error" class="text-danger error-message"></span>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" onclick="applySubmit()">Confirm</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+                </div>
 
 
 
 
 
-<script>
-  function validateForm() {
-    var name = document.getElementById("name").value;
-    var description = document.getElementById("description").value;
-    var nameError = document.getElementById("name-error");
-    var descriptionError = document.getElementById("description-error");
-    var hasError = false;
+                <script>
+                    function validateForm() {
+                        var name = document.getElementById("name").value;
+                        var description = document.getElementById("description").value;
+                        var nameError = document.getElementById("name-error");
+                        var descriptionError = document.getElementById("description-error");
+                        var hasError = false;
 
-    // Validation for name
-    if (name === "") {
-        nameError.innerHTML = "Name is required";
-        nameError.style.display = "block";
-        hasError = true;
-    } else {
-        nameError.innerHTML = "";
-        nameError.style.display = "none";
-    }
+                        // Validation for name
+                        if (name === "") {
+                            nameError.innerHTML = "Name is required";
+                            nameError.style.display = "block";
+                            hasError = true;
+                        } else {
+                            nameError.innerHTML = "";
+                            nameError.style.display = "none";
+                        }
 
-    // Validation for description
-    if (description === "") {
-        descriptionError.innerHTML = "Description is required";
-        descriptionError.style.display = "block";
-        hasError = true;
-    } else {
-        descriptionError.innerHTML = "";
-        descriptionError.style.display = "none";
-    }
+                        // Validation for description
+                        if (description === "") {
+                            descriptionError.innerHTML = "Description is required";
+                            descriptionError.style.display = "block";
+                            hasError = true;
+                        } else {
+                            descriptionError.innerHTML = "";
+                            descriptionError.style.display = "none";
+                        }
 
-    // If there are errors, prevent form submission
-    if (hasError) {
-        return false;
-    }
-}
-
-
-
-</script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-
-<script>
-     $(function () {
-    $('#productsTable').DataTable();
-  });
-</script>
-
-{{!-- category delete alert message --}}
-
-<script>
-        const confirmDeleteButtons = document.querySelectorAll('[id^="confirmDelete"]');
-
-        confirmDeleteButtons.forEach(button => {
-          button.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            const categoryId = button.id.replace('confirmDelete', '');
-
-            fetch(`/admin/adminDeleteCategory/${categoryId}`, {
-              method: 'get',
-            })
-              .then(response => {
-                if (response.ok) {
-                  alertify.set('notifier', 'position', 'top-right');
-                  alertify.notify('category deleted successfully.', 'success', 2, function () { location.reload(); }); // Reload the page after 3 seconds
-                } else {
-                  alertify.error('Failed to delete category.');
-                }
-              })
-              .catch(error => {
-                alertify.error('Failed to delete category.');
-                console.error(error);
-              });
-          });
-        });
-      </script>
-
-
-{{!-- alredy existing category alert message --}}
-
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                        // If there are errors, prevent form submission
+                        if (hasError) {
+                            return false;
+                        }
+                    }
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                </script>
 
-<script>
-    $(document).ready(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const successParam = urlParams.get('success');
-        const popUpShown = sessionStorage.getItem('popUpShown'); // Check if pop-up already shown
 
-        if (successParam === 'false') {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'info',
-                title: 'Category Already Added',
-                showConfirmButton: false,
-                timer: 2500,
-                customClass: {
-                    popup: 'custom-popup-class' // Custom CSS class for the pop-up container
-                }
-            });
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                <script
+                    src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-            sessionStorage.setItem('popUpShown', 'true'); // Set flag to indicate pop-up has been shown
-        } else if (successParam === 'true') {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Category Added',
-                showConfirmButton: false,
-                timer: 2500,
-                customClass: {
-                    popup: 'custom-popup-class' // Custom CSS class for the pop-up container
-                }
-            }).then(() => {
-                console.log("nooooooooo");
-            });
-        }
-    });
 
-    function applySubmit() {
-        var categoryNameInput = document.getElementById("name");
-        if (categoryNameInput.value.trim() === "") {
-            Swal.fire('Enter Valid Input');
-            return false;
-        }
+                <script>
+                    $(function () {
+                        $('#productsTable').DataTable();
+                    });
+                </script>
 
-        let category = document.getElementById('name').value;
+                {{!-- category delete alert message --}}
 
-        $.ajax({
-            url: '/admin/adminCategory',
-            data: {
-                name: category,
-            },
-            method: 'POST',
-            success: (response) => {
-                console.log(response);
-                // Redirect to the appropriate page based on the response
-                if (response.success === false) {
-                    window.location.href = '/admin/adminCategory?success=false';
-                } else if(response.success === true) {
-                    window.location.href = '/admin/adminCategory?success=true';
-                } else {
-                    window.location.href = '/admin/adminCategory'
-                }
-            },
-            error: (error) => {
-                console.log(error);
-                // Handle the error here and show an appropriate message
-            }
-        });
-    }
-</script>
+                <script>
+                    const confirmDeleteButtons = document.querySelectorAll('[id^="confirmDelete"]');
 
-<style>
-    .custom-popup-class {
-        width: 300px;
-        height: 140px;
-        padding: 5px;
-        background-color: #f5f5f5;
-        border: 5px solid #ccc;
-        border-radius: 5px;
-        /* Add any additional styling for the smaller pop-up container here */
-    }
-    
-    .custom-popup-class .swal2-title {
-        font-size: 15px;
-        font-weight: bold;
-        margin-bottom: 5px;
-        /* Additional title styling */
-    }
-    
-    .custom-popup-class .swal2-icon {
-        font-size: 13px;
-        /* Additional icon styling */
-    }
-    
-    .custom-popup-class .swal2-icon svg {
-        fill: #ff9900;
-        /* Additional icon color */
-    }
-    
-    .custom-popup-class .swal2-content {
-        font-size: 10px;
-        /* Additional content styling */
-    }
-</style>
+                    confirmDeleteButtons.forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            event.preventDefault();
+
+                            const categoryId = button.id.replace('confirmDelete', '');
+
+                            fetch(`/admin/adminDeleteCategory/${categoryId}`, {
+                                method: 'get',
+                            })
+                                .then(response => {
+                                    if (response.ok) {
+                                        alertify.set('notifier', 'position', 'top-right');
+                                        alertify.notify('category deleted successfully.', 'success', 2, function () { location.reload(); }); // Reload the page after 3 seconds
+                                    } else {
+                                        alertify.error('Failed to delete category.');
+                                    }
+                                })
+                                .catch(error => {
+                                    alertify.error('Failed to delete category.');
+                                    console.error(error);
+                                });
+                        });
+                    });
+                </script>
+
+
+                {{!-- alredy existing category alert message --}}
+
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
-</body>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                <script>
+                    $(document).ready(() => {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const successParam = urlParams.get('success');
+                        const popUpShown = sessionStorage.getItem('popUpShown'); // Check if pop-up already shown
+
+                        if (successParam === 'false') {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'info',
+                                title: 'Category Already Added',
+                                showConfirmButton: false,
+                                timer: 2500,
+                                customClass: {
+                                    popup: 'custom-popup-class' // Custom CSS class for the pop-up container
+                                }
+                            });
+
+                            sessionStorage.setItem('popUpShown', 'true'); // Set flag to indicate pop-up has been shown
+                        } else if (successParam === 'true') {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Category Added',
+                                showConfirmButton: false,
+                                timer: 2500,
+                                customClass: {
+                                    popup: 'custom-popup-class' // Custom CSS class for the pop-up container
+                                }
+                            }).then(() => {
+                                console.log("nooooooooo");
+                            });
+                        }
+                    });
+
+                    function applySubmit() {
+                        var categoryNameInput = document.getElementById("name");
+                        if (categoryNameInput.value.trim() === "") {
+                            Swal.fire('Enter Valid Input');
+                            return false;
+                        }
+
+                        let category = document.getElementById('name').value;
+
+                        $.ajax({
+                            url: '/admin/adminCategory',
+                            data: {
+                                name: category,
+                            },
+                            method: 'POST',
+                            success: (response) => {
+                                console.log(response);
+                                // Redirect to the appropriate page based on the response
+                                if (response.success === false) {
+                                    window.location.href = '/admin/adminCategory?success=false';
+                                } else if (response.success === true) {
+                                    window.location.href = '/admin/adminCategory?success=true';
+                                } else {
+                                    window.location.href = '/admin/adminCategory'
+                                }
+                            },
+                            error: (error) => {
+                                console.log(error);
+                                // Handle the error here and show an appropriate message
+                            }
+                        });
+                    }
+                </script>
+
+                <style>
+                    .custom-popup-class {
+                        width: 300px;
+                        height: 140px;
+                        padding: 5px;
+                        background-color: #f5f5f5;
+                        border: 5px solid #ccc;
+                        border-radius: 5px;
+                        /* Add any additional styling for the smaller pop-up container here */
+                    }
+
+                    .custom-popup-class .swal2-title {
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                        /* Additional title styling */
+                    }
+
+                    .custom-popup-class .swal2-icon {
+                        font-size: 13px;
+                        /* Additional icon styling */
+                    }
+
+                    .custom-popup-class .swal2-icon svg {
+                        fill: #ff9900;
+                        /* Additional icon color */
+                    }
+
+                    .custom-popup-class .swal2-content {
+                        font-size: 10px;
+                        /* Additional content styling */
+                    }
+                </style>
+
+
+
+                </body>

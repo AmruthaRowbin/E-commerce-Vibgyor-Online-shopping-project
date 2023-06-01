@@ -19,14 +19,14 @@ router.get('/adminpanel', verifySession.verifyAdminLoggedIn, adminControllers.ad
 router.post('/adminpanel', adminControllers.adminLoginPost);
 
 // Admin Users
-router.get('/adminUserManagement',  verifySession.verifyAdminLoggedIn, adminControllers.adminUserManagement);
+router.get('/adminUserManagement', verifySession.verifyAdminLoggedIn, adminControllers.adminUserManagement);
 
 
 
 router.get('/deleteUser/:id', adminControllers.adminDeleteUser);
 
 router.get('/adminBlockUser/:id', adminControllers.adminBlockUser);
-router.post('/suser',   adminControllers.adminsearchuser);
+router.post('/suser', adminControllers.adminsearchuser);
 
 
 // Admin Products
@@ -34,9 +34,9 @@ router.get('/adminProduct', verifySession.verifyAdminLoggedIn, adminControllers.
 
 router.get('/adminAddProduct', verifySession.verifyAdminLoggedIn, adminControllers.adminAddProduct);
 
-router.post('/adminAddProduct',upload.array('image'), adminControllers.adminAddProductPost);
+router.post('/adminAddProduct', upload.array('image'), adminControllers.adminAddProductPost);
 
-router.post('/adminEditProduct/:id',upload.array('image'), adminControllers.adminEditProduct);
+router.post('/adminEditProduct/:id', upload.array('image'), adminControllers.adminEditProduct);
 
 router.get('/adminDeleteProduct/:id', adminControllers.adminDeleteProduct);
 
@@ -48,7 +48,7 @@ router.get('/adminCategory', verifySession.verifyAdminLoggedIn, adminControllers
 
 router.post('/adminCategory', adminControllers.addCategory);
 
-router.get('/adminDeleteCategory/:id/:name', verifySession.verifyAdminLoggedIn, adminControllers. deleteCategory);
+router.get('/adminDeleteCategory/:id/:name', verifySession.verifyAdminLoggedIn, adminControllers.deleteCategory);
 
 // Admin Order
 router.get('/adminOrder', verifySession.verifyAdminLoggedIn, adminControllers.adminOrder);
@@ -71,8 +71,6 @@ router.get('/adminSalesReportFilter', verifySession.verifyAdminLoggedIn, adminCo
 
 router.post('/adminSalesReportFilter', verifySession.verifyAdminLoggedIn, adminControllers.adminSalesReportFilterPost);
 
-
-
 router.get('/adminCoupon', verifySession.verifyAdminLoggedIn, adminControllers.adminCoupon);
 
 router.post('/adminAddCoupon', verifySession.verifyAdminLoggedIn, adminControllers.adminAddCoupon);
@@ -82,7 +80,6 @@ router.post('/adminEditCoupon/:id', verifySession.verifyAdminLoggedIn, adminCont
 router.get('/adminDeactivate/:id', verifySession.verifyAdminLoggedIn, adminControllers.adminDeactivate);
 
 router.get('/adminActivate/:id', verifySession.verifyAdminLoggedIn, adminControllers.adminActivate);
-
 
 // Admin Banner
 router.get('/adminBanner', verifySession.verifyAdminLoggedIn, adminControllers.adminBanner);

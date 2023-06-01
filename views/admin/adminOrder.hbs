@@ -2,14 +2,14 @@
 <div class="container">
     <div class="row tm-content-row tm-mt-big">
         <div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-block-col">
-            
-                <div class="row">
-                    <div class="col-md-8 col-sm-12">
-                        <h2 class="tm-block-title d-inline-block">Order</h2>
-                    </div>
+
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    <h2 class="tm-block-title d-inline-block">Order</h2>
                 </div>
-                <div class="table-responsive">
-                    <div class="bg-secondary rounded h-100 p-4">
+            </div>
+            <div class="table-responsive">
+                <div class="bg-secondary rounded h-100 p-4">
                     <!-- orders.hbs -->
                     <table class="table table-hover table-striped tm-table-striped-even mt-3" id="productsTable">
                         <thead>
@@ -26,35 +26,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
-                            
+
+
                             {{#each adminOrder}}
-                            
+
                             <tr>
-                                <td class="tm-product-name"> <a href="/admin/adminOrdersView/{{this._id}}">{{#each products}}{{product.name}} <br> {{/each}}</a></td>
+                                <td class="tm-product-name"> <a href="/admin/adminOrdersView/{{this._id}}">{{#each
+                                        products}}{{product.name}} <br> {{/each}}</a></td>
                                 <td class="text-center">{{userName}}</td>
                                 <td class="text-center">{{shippingAddress.phone}}</td>
-                                
+
 
                                 <td>{{total}}</td>
                                 <td>{{status}}</td>
-                                <td> {{#each products}}<img src="{{product.images.[0]}}" alt="" style="width: 60px; height: 60px;" >{{/each}} 
+                                <td> {{#each products}}<img src="{{product.images.[0]}}" alt=""
+                                        style="width: 60px; height: 60px;">{{/each}}
                                 </td>
-                                
+
                                 <td>
                                     <a data-toggle="modal" data-target="#edit{{_id}}">
-                                      <i class="fas fa-edit" >
-                                     <style>
-                                       .fa-edit:hover {
-                                         color: white;
-                                           cursor: pointer;
-                                              }
-                                           </style>
-                                           </i>
-                                            </a>
-                                            </td>
-                                             <td><a class="btn btn-sm btn-primary" href="/admin/viewProducts/{{this._id}}">Detail</a></td>
-                                </tr>
+                                        <i class="fas fa-edit">
+                                            <style>
+                                                .fa-edit:hover {
+                                                    color: white;
+                                                    cursor: pointer;
+                                                }
+                                            </style>
+                                        </i>
+                                    </a>
+                                </td>
+                                <td><a class="btn btn-sm btn-primary" href="/admin/viewProducts/{{this._id}}">Detail</a>
+                                </td>
+                            </tr>
 
                             {{!-- Edit order Modal --}}
                             <div class="modal fade" id="edit{{_id}}" tabindex="-1" role="dialog"
@@ -62,7 +65,8 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Edit User</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Edit
+                                                User</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -71,49 +75,41 @@
                                             <form class="text-dark" action="/admin/adminOrderStatus/{{_id}}"
                                                 method="post">
                                                 <dm iv class="form-group">
-                                                   {{!-- <select name="" id=""><label for="name" class="col-form-label">Status: 
-                                                        <option value="{{this.name}}">{{status}}</option> --}}
-                                                        
-                                                        {{!-- <input type="text" name="status" value="{{status}}"
-                                                        style="color: black;" class="border" id="name"> --}}
-                                                    {{!-- </label>
-                                                    </select> --}}
+                                                    <select class="custom-select tm-select-accounts" id="name"
+                                                        name="status">
+                                                        <option value="placed">placed</option>
+                                                        <option value="Shipped">Shipped</option>
+                                                        <option value="Delivered">Delivered</option>
+                                                        <option value="Canceled">Cancelled</option>
+                                                    </select>
 
-                                                <select class="custom-select tm-select-accounts" id="name" name="status">
-                                                  <option value="placed">placed</option>
-                                                  <option value="Shipped" >Shipped</option>
-                                                  <option value="Delivered" >Delivered</option>
-                                                  <option value="Canceled" >Cancelled</option>
-                                                </select>
-                                                    
-                                                    {{!-- <input hidden name="userId" value="{{this.userId}}"> --}}
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">cancel</button>
-                                                    <a><button type="submit"
-                                                            class="btn btn-primary">confirm</button></a>
-                                                </div>
-                                            </form>
+
                                         </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">cancel</button>
+                                            <a><button type="submit" class="btn btn-primary">confirm</button></a>
+                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                            {{/each}} 
-                            {{else}}
-                            <tr>
-                                <td colspan="7" class="text-center">No orders found.</td>
-                            </tr>
-                            {{/if}}
-                        </tbody>
-                    </table>
                 </div>
+                {{/each}}
+                {{else}}
+                <tr>
+                    <td colspan="7" class="text-center">No orders found.</td>
+                </tr>
+                {{/if}}
+                </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
-    {{!-- Add Coupon --}}
-   
+{{!-- Add Coupon --}}
+
 <div class="modal fade" id="added" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -125,11 +121,11 @@
             </div>
             <div class="modal-body">
                 <form class="text-dark" action="/admin/adminAddCoupon" method="post">
-                   <div class="form-group">
-                            <label for="name" class="col-form-label">Product Name : </label>
-                            <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border"
-                                id="name">
-                        </div>
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">Product Name : </label>
+                        <input type="text" name="name" value="{{this.name}}" style="color: black;" class="border"
+                            id="name">
+                    </div>
 
 
                 </form>
@@ -137,7 +133,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="view{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="view{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -150,34 +147,35 @@
                 <form class="text-dark">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <p class="small text-muted mb-0" style="font-size: 1.2em; font-weight: bold;">Order Details of: {{userName}}</p>
+                            <p class="small text-muted mb-0" style="font-size: 1.2em; font-weight: bold;">Order Details
+                                of: {{userName}}</p>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <p class="lead fw-normal mb-0" style="color: #ffffff;">Receipt</p>
                             <p class="small text-muted mb-0">Order Id: {{_id}}</p>
                         </div>
                         {{#each products}}
-                            <div class="card shadow-0 border mb-4">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <img src="{{this.product.images.[0]}}" class="img-fluid" alt="Phone">
-                                        </div>
-                                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                            <p class="text-muted mb-0">{{this.product.name}}</p>
-                                        </div>
-                                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                            <p class="text-muted mb-0 small">{{this.product.category}}</p>
-                                        </div>
-                                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                            <p class="text-muted mb-0 small">Qty: {{this.quantity}}</p>
-                                        </div>
-                                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                            <p class="text-muted mb-0 small">₹{{this.product.price}}</p>
-                                        </div>
+                        <div class="card shadow-0 border mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <img src="{{this.product.images.[0]}}" class="img-fluid" alt="Phone">
+                                    </div>
+                                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                        <p class="text-muted mb-0">{{this.product.name}}</p>
+                                    </div>
+                                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                        <p class="text-muted mb-0 small">{{this.product.category}}</p>
+                                    </div>
+                                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                        <p class="text-muted mb-0 small">Qty: {{this.quantity}}</p>
+                                    </div>
+                                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                                        <p class="text-muted mb-0 small">₹{{this.product.price}}</p>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         {{/each}}
                     </div>
                     <hr class="mb-4">
@@ -197,22 +195,22 @@
                             <p class="text-muted mb-0">Order Status: {{status}}</p>
                             <p class="text-muted mb-0">
 
-                    </div>
-                      </div>
-                </form>
                         </div>
-                          </div>
-                            </div>
-  </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 {{!-- pagination --}}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
 <script>
-     $(function () {
-    $('#productsTable').DataTable();
-  });
+    $(function () {
+        $('#productsTable').DataTable();
+    });
 </script>

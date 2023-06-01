@@ -11,31 +11,31 @@ const slugify = require('slugify');
 module.exports = {
 
   addProducts: (product) => {
-    return new Promise((resolve, reject)=>{
-        product.price = Number(product.price);
-        product.stock = Number(product.stock);
-        product.slug = slugify(`${product.name} ${product.category}`)
-        if(product.price <= 0 || product.stock <= 0){
-            resolve();
-        }else{
-            db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
-  
-                 db.get().collection(collection.PRODUCT_COLLECTION).updateOne(
-                    {
-                        _id: new objectId(data.insertedId)
-                    },
-                    {
-                        $set: {
-                            listed: true
-                        }
-                    }
-                )
-  
-  
-                resolve(data.insertedId);
-            })
-        }
-        
+    return new Promise((resolve, reject) => {
+      product.price = Number(product.price);
+      product.stock = Number(product.stock);
+      product.slug = slugify(`${product.name} ${product.category}`)
+      if (product.price <= 0 || product.stock <= 0) {
+        resolve();
+      } else {
+        db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
+
+          db.get().collection(collection.PRODUCT_COLLECTION).updateOne(
+            {
+              _id: new objectId(data.insertedId)
+            },
+            {
+              $set: {
+                listed: true
+              }
+            }
+          )
+
+
+          resolve(data.insertedId);
+        })
+      }
+
     })
   },
   getAdminProducts: (currentPage) => {
@@ -91,25 +91,25 @@ module.exports = {
     })
   },
 
-  getProductsAdmin:(currentPage) => {
-    return new Promise (async (resolve, reject) => {
+  getProductsAdmin: (currentPage) => {
+    return new Promise(async (resolve, reject) => {
       currentPage = parseInt(currentPage);
-        console.log('currentPage');
-        console.log(currentPage);
-        const limit = 8;
-        const skip = (currentPage-1)*limit;
-        const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find(
-          {
-              listed: true
-          }
-      ).skip(skip).limit(limit).toArray();
-  
-        // const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();
-        if(productData){
-            resolve(productData);
-        }else{
-            resolve("No data to show")
+      console.log('currentPage');
+      console.log(currentPage);
+      const limit = 8;
+      const skip = (currentPage - 1) * limit;
+      const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find(
+        {
+          listed: true
         }
+      ).skip(skip).limit(limit).toArray();
+
+      // const productData = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();
+      if (productData) {
+        resolve(productData);
+      } else {
+        resolve("No data to show")
+      }
     })
   },
 
@@ -149,7 +149,7 @@ module.exports = {
           {
             $set: {
               name: data.name,
-              productid:data.productid,
+              productid: data.productid,
               category: data.category,
               description: data.description,
               price: Number(data.price),
