@@ -578,8 +578,8 @@ module.exports = {
                 payment_method: "paypal",
               },
               redirect_urls: {
-                return_url: "http://localhost:7000/success",
-                cancel_url: "http://localhost:7000/cancel",
+                return_url: "https://vibgyor.site/success",
+                cancel_url: "https://vibgyor.site/cancel",
               },
               transactions: [
                 {
