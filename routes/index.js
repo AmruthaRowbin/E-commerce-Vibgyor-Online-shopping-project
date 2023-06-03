@@ -71,15 +71,13 @@ router.post('/change-product-quantity', verifySession.verifyUserLoggedIn, userCo
 
 router.get('/checkOut', verifySession.verifyUserLoggedIn, userControllers.checkOutPage);
 
-router.get('/checkOut', verifySession.verifyUserLoggedIn, userControllers.checkOutPage);
-
-router.post('/checkOutPost', verifySession.verifyUserLoggedIn, userControllers.checkOutPost);
+router.post('/checkOutPost', verifySession.verifyUserLoggedIn, userControllers.userStatus,userControllers.checkOutPost);
 
 router.post('/editAddressPost/:id', verifySession.verifyUserLoggedIn, userControllers.editAddressPost);
 
 router.get('/deleteAddress/:id', verifySession.verifyUserLoggedIn, userControllers.deleteAddress);
 
-router.post('/placeOrder', verifySession.verifyUserLoggedIn, userControllers.placeOrder);
+router.post('/placeOrder', verifySession.verifyUserLoggedIn, userControllers.userStatus, userControllers.placeOrder);
 
 router.post('/verifyPayment', verifySession.verifyUserLoggedIn, userControllers.verifyPayment);
 

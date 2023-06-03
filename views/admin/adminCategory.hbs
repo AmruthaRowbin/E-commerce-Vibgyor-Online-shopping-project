@@ -46,10 +46,6 @@
                 <!-- Table End -->
 
 
-
-
-                {{#if category.length}}
-
                 {{#each category}}
                 <div class="modal fade" id="delete{{this._id}}" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -73,9 +69,6 @@
                     </div>
                 </div>
                 {{/each}}
-                {{else}}
-                <p style="font-size: 2.2em;">No category found</p>
-                {{/if}}
 
 
                 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

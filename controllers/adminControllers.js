@@ -54,8 +54,6 @@ module.exports = {
         const jun = await adminHelpers.getMonthCount(6, 2023)
         const userCount = await adminHelpers.getUsersCount()
         const total = await adminHelpers.getLastMonthTotal()
-        console.log('total check')
-        console.log(total)
         const totalOrdersPlaced = await productHelpers.totalOrdersPlaced()
         let totalEarnings = 0;
         totalEarnings = await adminHelpers.getOrderTotalPrice();
