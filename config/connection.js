@@ -26,7 +26,7 @@ module.exports.connect = function (done) {
     })
     done()
 }
-
+// test
 module.exports.get = function(){
     return state.db
 }
