@@ -487,7 +487,7 @@ module.exports = {
   },
 
 
-  // User Checkout Page
+ //bcbscbjscjhcjjc
   // User Checkout Page
   checkOutPage: async (req, res) => {
     const userName = req.session.user.name;
