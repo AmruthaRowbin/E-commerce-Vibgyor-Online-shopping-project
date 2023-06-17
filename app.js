@@ -1,22 +1,25 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const bodyparser = require("body-parser");
+
 const handlebars = require('handlebars')
 const session = require('express-session');
+var indexRouter = require('./routes/index');
+var adminRouter = require('./routes/admin');
+const bodyparser = require("body-parser");
 const yup = require('yup');
 //const flash = require('express-flash');
 const flash = require('connect-flash');
 const mathHelpers = require('./helpers/mathHelpers');
-require('dotenv').config();
+
 const nocache = require('nocache')
 
 // var hbs = require('express-hbs')
 handlebars.registerHelper(mathHelpers);
-var indexRouter = require('./routes/index');
-var adminRouter = require('./routes/admin');
+
 const hbs = require('express-handlebars');
 
 var db = require('./config/connection')
@@ -55,10 +58,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// db.connect((err) => {
+//   if (err) console.log('connection Error' + err)
+//   else console.log("database connected to port 27017")
+// })
+
 db.connect((err) => {
-  if (err) console.log('connection Error' + err)
-  else console.log("database connected to port 27017")
-})
+  if (err) {
+    console.log('Connection Error: ', err);
+    process.exit(1); // Exit with failure status code
+  } else {
+    console.log("Database connected to port 27017");
+  }
+});
 
 
 app.use('/', indexRouter);
